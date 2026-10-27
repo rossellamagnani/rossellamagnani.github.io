@@ -1098,12 +1098,14 @@ main:not(.is-deep) .deep-content {
 /* Images form from top to bottom: the opening one on load, the others with the scroll */
 @keyframes form-down { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0); } }
 .hero__media .placeholder__surface { animation: form-down 1.4s cubic-bezier(.65, 0, .35, 1) .15s both; }
-.placeholder__surface {
-  clip-path: inset(0 0 calc((1 - var(--grow, 1)) * 100%) 0);
-  will-change: clip-path;
+.placeholder__surface.will-form {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1s cubic-bezier(.65, 0, .35, 1) var(--form-delay, 0s);
 }
-/* The picture inside settles from a slight zoom while its frame opens */
-.placeholder__surface > img, .placeholder__surface > video { scale: calc(1 + (1 - var(--grow, 1)) * .12); }
+.placeholder__surface.will-form.is-formed { clip-path: inset(0); }
+/* The picture inside settles from a slight zoom while it forms */
+.will-form > img, .will-form > video { scale: 1.12; transition: scale 1.3s cubic-bezier(.65, 0, .35, 1) var(--form-delay, 0s); }
+.will-form.is-formed > img, .will-form.is-formed > video { scale: 1; }
 
 /* The grey deep-dive band also runs under the vertical section label */
 .expanded-research { margin-left: calc(-1 * var(--marker-gutter)); padding-left: var(--marker-gutter); }
@@ -1116,7 +1118,7 @@ main:not(.is-deep) .deep-content {
 
 @media (prefers-reduced-motion: reduce) {
   .hero__media .placeholder__surface { animation: none; }
-  .placeholder__surface { clip-path: none; }
+  .placeholder__surface.will-form { clip-path: none; transition: none; }
 }
 
 /* Quieter scale for the large statements inside case studies */

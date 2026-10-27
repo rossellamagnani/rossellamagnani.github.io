@@ -344,68 +344,35 @@ function Placeholder({
   )
 }
 
-// Case study images form from top to bottom as you scroll; grouped images (cards, pairs,
-// process strip) do it one after another, left to right
+// Case study images form from top to bottom once they enter the screen; the animation always runs
+// to the end on its own. Grouped images (cards, pairs, process strip) start one after another
 const GROW_SELECTOR = '.placeholder__surface:not(.hero__media .placeholder__surface)'
 const GROUP_SELECTOR = '.instrument-grid, .paired-media, .process-strip'
-const easeInOut = (value: number) => 0.5 - Math.cos(Math.PI * value) / 2
-const clamp01 = (value: number) => Math.min(1, Math.max(0, value))
 
 function useGrowOnScroll(dependency: unknown) {
   useEffect(() => {
     if (prefersReducedMotion()) return
-    const elements = Array.from(document.querySelectorAll<HTMLElement>(GROW_SELECTOR))
-    const target = () => {
-      const viewport = window.innerHeight
-      return elements.map(element => {
-        const group = element.closest<HTMLElement>(GROUP_SELECTOR)
-        if (group) {
-          const index = Array.from(group.querySelectorAll(GROW_SELECTOR)).indexOf(element)
-          return clamp01((viewport * 0.95 - group.getBoundingClientRect().top) / (viewport * 0.75) - index * 0.3)
-        }
-        // The forming edge never passes the bottom of the screen, so it stays visible even on very tall
-        // images; the image is complete by the time its bottom reaches 60% of the screen
-        const rect = element.getBoundingClientRect()
-        return clamp01((viewport * 0.95 - rect.top) / (rect.height + viewport * 0.35))
-      })
-    }
-    const apply = (progress: number[]) => {
-      elements.forEach((element, index) => element.style.setProperty('--grow', String(easeInOut(progress[index]))))
-    }
-    // Progress glides toward the scroll position at the same pace on any screen refresh rate,
-    // so wheel steps turn into one continuous movement
-    let current = target()
-    apply(current)
-    let frame = 0
-    let last = 0
-    const tick = (now: number) => {
-      const blend = last ? 1 - Math.exp(-(now - last) / 160) : 0.1
-      last = now
-      const goal = target()
-      let moving = false
-      current = current.map((value, index) => {
-        const distance = goal[index] - value
-        if (Math.abs(distance) < 0.001) return goal[index]
-        moving = true
-        return value + distance * blend
-      })
-      apply(current)
-      if (moving) frame = window.requestAnimationFrame(tick)
-      else {
-        frame = 0
-        last = 0
-      }
-    }
-    const onScroll = () => {
-      if (!frame) frame = window.requestAnimationFrame(tick)
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-      if (frame) window.cancelAnimationFrame(frame)
-    }
+    const elements = Array.from(document.querySelectorAll<HTMLElement>(GROW_SELECTOR)).filter(
+      element => !element.classList.contains('is-formed'),
+    )
+    const observer = new IntersectionObserver(
+      entries =>
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return
+          const element = entry.target as HTMLElement
+          const group = element.closest(GROUP_SELECTOR)
+          const index = group ? Array.from(group.querySelectorAll(GROW_SELECTOR)).indexOf(element) : 0
+          element.style.setProperty('--form-delay', `${index * 0.18}s`)
+          element.classList.add('is-formed')
+          observer.unobserve(element)
+        }),
+      { rootMargin: '0px 0px -12% 0px' },
+    )
+    elements.forEach(element => {
+      element.classList.add('will-form')
+      observer.observe(element)
+    })
+    return () => observer.disconnect()
   }, [dependency])
 }
 
