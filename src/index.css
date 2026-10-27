@@ -1095,18 +1095,20 @@ main:not(.is-deep) .deep-content {
   font-weight: 400; line-height: 1.12; letter-spacing: -.02em;
 }
 
-.split__w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .14em; margin-bottom: -.14em; }
+.split__w { display: inline-block; vertical-align: top; padding-bottom: .14em; margin-bottom: -.14em; }
 .split__w > span {
-  display: inline-block; transform: translateY(110%);
-  transition: transform .9s cubic-bezier(.2, .7, .2, 1);
-  transition-delay: calc(min(var(--i), 30) * 28ms);
+  display: inline-block; clip-path: inset(0 0 100% 0);
+  transition: clip-path .8s cubic-bezier(.4, 0, .2, 1);
+  transition-delay: calc(min(var(--line, 0), 12) * 140ms);
 }
-.is-visible .split__w > span, .reveal:focus-within .split__w > span { transform: none; }
+.is-visible .split__w > span, .reveal:focus-within .split__w > span { clip-path: inset(0 0 -.2em 0); }
 
-.hero__media .placeholder__surface,
+/* Opening image draws in from the top when the page loads; the others follow the scroll */
+@keyframes uncover { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0); } }
+.hero__media .placeholder__surface { animation: uncover 1.4s cubic-bezier(.4, 0, .2, 1) .15s both; }
 .research-row .placeholder__surface,
 .outcome-gallery .placeholder__surface {
-  clip-path: inset(0 calc((1 - var(--grow, 1)) * 12%));
+  clip-path: inset(0 0 calc((1 - var(--grow, 1)) * 100%) 0);
   will-change: clip-path;
 }
 
@@ -1117,8 +1119,8 @@ main:not(.is-deep) .deep-content {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .split__w > span { transform: none; transition: none; }
-  .hero__media .placeholder__surface,
+  .split__w > span { clip-path: none; transition: none; }
+  .hero__media .placeholder__surface { animation: none; }
   .research-row .placeholder__surface,
   .outcome-gallery .placeholder__surface { clip-path: none; }
 }

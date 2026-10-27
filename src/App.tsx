@@ -345,13 +345,36 @@ function Placeholder({
 }
 
 function SplitWords({ text }: { text: string }) {
+  const ref = useRef<HTMLSpanElement>(null)
+
+  // Number the visual lines so they can be revealed one after another, top to bottom
+  useEffect(() => {
+    const element = ref.current
+    if (!element) return
+    const markLines = () => {
+      let line = -1
+      let lastTop = Number.NEGATIVE_INFINITY
+      element.querySelectorAll<HTMLElement>('.split__w').forEach(word => {
+        if (word.offsetTop > lastTop + 2) {
+          line += 1
+          lastTop = word.offsetTop
+        }
+        word.style.setProperty('--line', String(line))
+      })
+    }
+    markLines()
+    const observer = new ResizeObserver(markLines)
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [text])
+
   return (
     <>
       <span className="sr-only">{text}</span>
-      <span className="split" aria-hidden="true">
+      <span className="split" aria-hidden="true" ref={ref}>
         {text.split(' ').map((word, index) => (
           <span key={index}>
-            <span className="split__w" style={{ '--i': index } as React.CSSProperties}>
+            <span className="split__w">
               <span>{word}</span>
             </span>{' '}
           </span>
@@ -361,9 +384,9 @@ function SplitWords({ text }: { text: string }) {
   )
 }
 
-const GROW_SELECTOR = '.hero__media .placeholder__surface, .research-row .placeholder__surface, .outcome-gallery .placeholder__surface'
+const GROW_SELECTOR = '.research-row .placeholder__surface, .outcome-gallery .placeholder__surface'
 
-// Case study images open up from an inset frame to full width as they scroll into view
+// Case study images are uncovered from top to bottom as they scroll into view
 function useGrowOnScroll(dependency: unknown) {
   useEffect(() => {
     if (prefersReducedMotion()) return
@@ -372,9 +395,7 @@ function useGrowOnScroll(dependency: unknown) {
     const update = () => {
       const viewport = window.innerHeight
       elements.forEach(element => {
-        const progress = element.closest('.hero__media')
-          ? 0.4 + window.scrollY / (viewport * 0.6)
-          : (viewport - element.getBoundingClientRect().top) / (viewport * 0.75)
+        const progress = (viewport - element.getBoundingClientRect().top) / (viewport * 0.6)
         element.style.setProperty('--grow', String(Math.min(1, Math.max(0, progress))))
       })
       frame = 0
