@@ -1095,12 +1095,20 @@ main:not(.is-deep) .deep-content {
   font-weight: 400; line-height: 1.12; letter-spacing: -.02em;
 }
 
-/* Opening image draws in from the top when the page loads; the others follow the scroll */
-@keyframes uncover { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0); } }
-.hero__media .placeholder__surface { animation: uncover 1.4s cubic-bezier(.4, 0, .2, 1) .15s both; }
+/* Images open from a narrow band in the centre: the opening one on load, the others with the scroll */
+@keyframes open-band { from { clip-path: inset(0 40% 0 40%); } to { clip-path: inset(0); } }
+.hero__media .placeholder__surface { animation: open-band 1.4s cubic-bezier(.65, 0, .35, 1) .15s both; }
 .placeholder__surface {
+  clip-path: inset(0 calc((1 - var(--grow, 1)) * 40%) 0 calc((1 - var(--grow, 1)) * 40%));
+}
+/* Grouped images grow downwards, one after another */
+.instrument-grid .placeholder__surface,
+.paired-media .placeholder__surface,
+.process-strip .placeholder__surface {
   clip-path: inset(0 0 calc((1 - var(--grow, 1)) * 100%) 0);
 }
+/* The picture inside settles from a slight zoom while its frame opens */
+.placeholder__surface > img, .placeholder__surface > video { scale: calc(1 + (1 - var(--grow, 1)) * .12); }
 
 /* The grey deep-dive band also runs under the vertical section label */
 .expanded-research { margin-left: calc(-1 * var(--marker-gutter)); padding-left: var(--marker-gutter); }
@@ -1142,7 +1150,7 @@ main:has(> .section-marker) .reveal { opacity: 1; transform: none; transition: n
 .sequence__surface {
   position: absolute; inset: 0; background: #e8e8e6;
   background-image: linear-gradient(135deg, transparent 49.8%, rgba(17,17,17,.12) 50%, transparent 50.2%);
-  clip-path: inset(0 0 calc((1 - var(--reveal, 0)) * 100%) 0);
+  clip-path: inset(0 calc((1 - var(--reveal, 0)) * 40%) 0 calc((1 - var(--reveal, 0)) * 40%));
 }
 .sequence__surface::after { content: ''; position: absolute; inset: 16px; border: 1px solid rgba(17,17,17,.16); }
 .sequence__frame figcaption {

@@ -344,28 +344,51 @@ function Placeholder({
   )
 }
 
-// Every case study image except the opening one (which draws in on load) is uncovered from top to bottom as it scrolls into view
+// Case study images open as you scroll: a single image widens from a narrow band in the centre,
+// grouped images (cards, pairs, process strip) grow downwards one after another
 const GROW_SELECTOR = '.placeholder__surface:not(.hero__media .placeholder__surface)'
+const GROUP_SELECTOR = '.instrument-grid, .paired-media, .process-strip'
+const easeInOut = (value: number) => (value < 0.5 ? 4 * value ** 3 : 1 - (-2 * value + 2) ** 3 / 2)
+const clamp01 = (value: number) => Math.min(1, Math.max(0, value))
 
 function useGrowOnScroll(dependency: unknown) {
   useEffect(() => {
     if (prefersReducedMotion()) return
     const elements = Array.from(document.querySelectorAll<HTMLElement>(GROW_SELECTOR))
-    let frame = 0
-    const update = () => {
+    const target = () => {
       const viewport = window.innerHeight
-      elements.forEach(element => {
-        // The uncovered edge stays near the bottom of the screen, so the reveal is visible even on very tall images
+      return elements.map(element => {
+        const group = element.closest<HTMLElement>(GROUP_SELECTOR)
+        if (group) {
+          const index = Array.from(group.querySelectorAll(GROW_SELECTOR)).indexOf(element)
+          return clamp01((viewport * 0.9 - group.getBoundingClientRect().top) / (viewport * 0.45) - index * 0.18)
+        }
         const rect = element.getBoundingClientRect()
-        const progress = (viewport * 0.85 - rect.top) / rect.height
-        element.style.setProperty('--grow', String(Math.min(1, Math.max(0, progress))))
+        return clamp01((viewport * 0.9 - rect.top) / Math.min(rect.height, viewport * 0.6))
       })
-      frame = 0
+    }
+    const apply = (progress: number[]) => {
+      elements.forEach((element, index) => element.style.setProperty('--grow', String(easeInOut(progress[index]))))
+    }
+    // Progress glides toward the scroll position, so wheel steps turn into a continuous movement
+    let current = target()
+    apply(current)
+    let frame = 0
+    const tick = () => {
+      const goal = target()
+      let moving = false
+      current = current.map((value, index) => {
+        const distance = goal[index] - value
+        if (Math.abs(distance) < 0.002) return goal[index]
+        moving = true
+        return value + distance * 0.12
+      })
+      apply(current)
+      frame = moving ? window.requestAnimationFrame(tick) : 0
     }
     const onScroll = () => {
-      if (!frame) frame = window.requestAnimationFrame(update)
+      if (!frame) frame = window.requestAnimationFrame(tick)
     }
-    update()
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onScroll)
     return () => {
@@ -376,8 +399,8 @@ function useGrowOnScroll(dependency: unknown) {
   }, [dependency])
 }
 
-// Outcome images: the screen holds on one full-screen image at a time; scrolling draws it in from
-// the top, keeps it complete for a moment, then clears it for the next one
+// Outcome images: the screen holds on one image at a time; scrolling opens it from a narrow band
+// in the centre, keeps it complete for a moment, then the next one opens over it
 function OutcomeSequence({ frames }: { frames: Array<{ caption: string; play?: boolean }> }) {
   const trackRef = useRef<HTMLDivElement>(null)
 
@@ -385,15 +408,14 @@ function OutcomeSequence({ frames }: { frames: Array<{ caption: string; play?: b
     const track = trackRef.current
     if (!track || prefersReducedMotion()) return
     const items = Array.from(track.querySelectorAll<HTMLElement>('.sequence__frame'))
-    const ease = (value: number) => (value < 0.5 ? 4 * value ** 3 : 1 - (-2 * value + 2) ** 3 / 2)
     const target = () => {
       const segment = window.innerHeight * 0.6
       const scrolled = -track.getBoundingClientRect().top + segment * 0.3
-      return items.map((_, index) => Math.min(1, Math.max(0, (scrolled - index * segment) / (segment * 0.7))))
+      return items.map((_, index) => clamp01((scrolled - index * segment) / (segment * 0.7)))
     }
     const apply = (progress: number[]) => {
       items.forEach((item, index) => {
-        item.style.setProperty('--reveal', String(ease(progress[index])))
+        item.style.setProperty('--reveal', String(easeInOut(progress[index])))
         // An image stays underneath until the next one has fully drawn over it
         item.classList.toggle('is-past', (progress[index + 1] ?? 0) >= 1)
       })
