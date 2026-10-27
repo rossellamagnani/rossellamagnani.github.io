@@ -1134,17 +1134,12 @@ main:not(.is-deep) .deep-content {
 /* Case studies: text sits still, only images animate */
 main:has(> .section-marker) .reveal { opacity: 1; transform: none; transition: none; }
 
-/* Outcome: one full-screen image at a time, held while it draws in from the top */
-/* Each image takes 60% of a screen of scrolling */
-.sequence { position: relative; height: calc(100svh + (var(--count) - .3) * 60svh); }
-.sequence__stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+/* Outcome: a column of large images; each scroll gesture centres the next one, where it forms */
+.sequence { display: flex; flex-direction: column; align-items: center; gap: 8svh; padding-block: 8svh; }
 .sequence__frame {
-  position: absolute; top: 50%; left: 50%; translate: -50% -50%; margin: 0;
-  width: min(100% - 32px, 1400px, 80svh * 16 / 9); aspect-ratio: 16 / 9;
+  position: relative; margin: 0;
+  width: min(100% - 32px, 1400px, 70svh * 16 / 9); aspect-ratio: 16 / 9;
 }
-/* Snap points: one scroll moves to the next image */
-html.sequence-snap { scroll-snap-type: y proximity; }
-.sequence__stop { position: absolute; left: 0; top: calc(var(--i) * 60svh); height: 1px; scroll-snap-align: start; }
 .sequence__surface {
   position: absolute; inset: 0; background: #e8e8e6;
   background-image: linear-gradient(135deg, transparent 49.8%, rgba(17,17,17,.12) 50%, transparent 50.2%);
@@ -1159,9 +1154,5 @@ html.sequence-snap { scroll-snap-type: y proximity; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sequence { height: auto; }
-  .sequence__stage { position: static; height: auto; overflow: visible; display: flex; flex-direction: column; gap: 24px; }
-  .sequence__frame { position: relative; top: auto; left: auto; translate: none; margin-inline: auto; }
   .sequence__surface { clip-path: none; }
-  .sequence__stop { display: none; }
 }
