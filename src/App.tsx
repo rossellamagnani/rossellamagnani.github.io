@@ -27,8 +27,8 @@ const process = [
 ]
 
 const projects = [
-  { title: "Oltre l'ascolto", type: 'MULTISENSORY DESIGN · ACCESSIBILITY', slug: 'oltre-lascolto' },
-  { title: 'Sovrapposizioni', type: 'EXHIBITION DESIGN · AI', slug: 'sovrapposizioni' },
+  { title: "Oltre l'ascolto", type: 'MULTISENSORY DESIGN · ACCESSIBILITY', slug: 'oltre-lascolto', lang: 'it' },
+  { title: 'Sovrapposizioni', type: 'EXHIBITION DESIGN · AI', slug: 'sovrapposizioni', lang: 'it' },
   { title: 'Marco Magnani Art', type: 'BRAND IDENTITY · ART DIRECTION', slug: 'marco-magnani-art' },
   { title: 'Crossing Kyiv', type: 'EDITORIAL DESIGN · CULTURAL PROJECT', slug: 'crossing-kyiv' },
   { title: 'PRO Brera', type: 'SPECULATIVE DESIGN · SPATIAL', slug: 'brera-district' },
@@ -279,6 +279,9 @@ const sectionNames: Record<string, string> = {
   'next-project': 'Next project',
 }
 
+const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+const scrollBehavior = (): ScrollBehavior => (prefersReducedMotion() ? 'auto' : 'smooth')
+
 function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null)
 
@@ -324,9 +327,9 @@ function Placeholder({
   return (
     <figure className={`placeholder ${className}`}>
       <div className="placeholder__surface">
-        <span className="placeholder__index">IMAGE / VIDEO</span>
+        <span className="placeholder__index" aria-hidden="true">IMAGE / VIDEO</span>
         {play && (
-          <span className="play" aria-label="Play video">
+          <span className="play" aria-hidden="true">
             <span />
           </span>
         )}
@@ -345,9 +348,18 @@ function SectionHeading({ number, children }: { number?: string; children: React
   )
 }
 
-function SiteHeader() {
+function SiteHeader({ skipTo = 'content' }: { skipTo?: string }) {
+  const skip = (event: React.MouseEvent) => {
+    event.preventDefault()
+    const target = document.getElementById(skipTo)
+    target?.focus({ preventScroll: true })
+    target?.scrollIntoView({ behavior: scrollBehavior() })
+  }
   return (
     <header className="nav shell site-header">
+      <a href={`#${skipTo}`} className="skip-link" onClick={skip}>
+        Skip to content
+      </a>
       <a href="/" className="brand">
         Rossella Magnani
       </a>
@@ -417,13 +429,13 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
         <strong>{sectionNames[activeSection]}</strong>
       </aside>
 
-      <article>
+      <article id="content" tabIndex={-1}>
         <section className="hero shell reveal">
           <Placeholder
             className="hero__media"
             caption={`${project.title}: main project visual`}
           />
-          <h1>{project.title}</h1>
+          <h1 lang={projects[projectIndex]?.lang}>{project.title}</h1>
           <p className="hero__subtitle">
             {project.slug === 'crossing-kyiv'
               ? 'Ukrainian creativity beyond the narratives of war.'
@@ -590,7 +602,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
                 <h2>{project.processTitle}</h2>
                 <p>{project.processDescription} →</p>
               </div>
-              <div className="process-strip">
+              <div className="process-strip" tabIndex={0} role="region" aria-label="Process images, scroll sideways">
                 {Array.from({ length: 5 }, (_, index) => (
                   <Placeholder
                     key={index}
@@ -618,7 +630,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
 
         <a id="next-project" data-section className="next-project reveal" href={`/${nextProject.slug}`}>
           <span className="next-project__label">Next project</span>
-          <strong>{nextProject.title}</strong>
+          <strong lang={nextProject.lang}>{nextProject.title}</strong>
           <i aria-hidden="true">
             <svg viewBox="0 0 180 120">
               <path d="M0 51h151v18H0z" />
@@ -678,7 +690,7 @@ function AboutTable({
                 <span>{year}</span>
                 <i aria-hidden="true">{openRow === index ? '−' : '+'}</i>
               </button>
-              <div className="about-table__detail">
+              <div className="about-table__detail" inert={openRow !== index}>
                 <p>
                   Placeholder text: add a short description of your role, responsibilities,
                   process and contribution to this experience.
@@ -712,7 +724,7 @@ function About() {
     <main className="about">
       <SiteHeader />
 
-      <article>
+      <article id="content" tabIndex={-1}>
         <section className="about-hero shell reveal">
           <h1>I design the moment when content meets people in a physical space.</h1>
           <div className="about-hero__bio">
@@ -847,18 +859,18 @@ function Home() {
   }, [view])
 
   const scrollToProject = (index: number) => {
-    document.getElementById(`project-${index}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    document.getElementById(`project-${index}`)?.scrollIntoView({ behavior: scrollBehavior(), block: 'center' })
   }
   const changeView = (nextView: 'gallery' | 'list') => {
     setView(nextView)
     window.requestAnimationFrame(() => {
-      window.scrollTo({ top: window.innerHeight * 0.34, behavior: 'smooth' })
+      window.scrollTo({ top: window.innerHeight * 0.34, behavior: scrollBehavior() })
     })
   }
 
   return (
     <main className="home">
-      <SiteHeader />
+      <SiteHeader skipTo="work" />
 
       <section
         id="about"
@@ -875,13 +887,18 @@ function Home() {
         <button
           type="button"
           className="home-scroll"
-          onClick={() => window.scrollTo({ top: window.innerHeight * 0.34, behavior: 'smooth' })}
+          inert={introOpacity < 0.08}
+          onClick={() => window.scrollTo({ top: window.innerHeight * 0.34, behavior: scrollBehavior() })}
         >
           Scroll <span>↓</span>
         </button>
       </section>
 
-      <aside className={`home-project-nav ${galleryVisible && view === 'gallery' ? 'visible' : ''}`} aria-label="Projects">
+      <aside
+        className={`home-project-nav ${galleryVisible && view === 'gallery' ? 'visible' : ''}`}
+        aria-label="Projects"
+        inert={!(galleryVisible && view === 'gallery')}
+      >
         {projects.map((project, index) => (
           <button
             type="button"
@@ -889,25 +906,25 @@ function Home() {
             onClick={() => scrollToProject(index)}
             key={project.title}
           >
-            <span>{project.title}</span>
+            <span lang={project.lang}>{project.title}</span>
             {activeProject === index && <small>{project.type}</small>}
           </button>
         ))}
       </aside>
 
-      <div className={`home-view-toggle ${galleryVisible ? 'visible' : ''}`}>
-        <button className={view === 'gallery' ? 'active' : ''} onClick={() => changeView('gallery')}>Gallery</button>
-        <span>/</span>
-        <button className={view === 'list' ? 'active' : ''} onClick={() => changeView('list')}>List</button>
+      <div className={`home-view-toggle ${galleryVisible ? 'visible' : ''}`} role="group" aria-label="View" inert={!galleryVisible}>
+        <button type="button" className={view === 'gallery' ? 'active' : ''} aria-pressed={view === 'gallery'} onClick={() => changeView('gallery')}>Gallery</button>
+        <span aria-hidden="true">/</span>
+        <button type="button" className={view === 'list' ? 'active' : ''} aria-pressed={view === 'list'} onClick={() => changeView('list')}>List</button>
       </div>
 
-      <div className={`home-mobile-current ${galleryVisible && view === 'gallery' ? 'visible' : ''}`}>
+      <div className={`home-mobile-current ${galleryVisible && view === 'gallery' ? 'visible' : ''}`} aria-hidden="true">
         <span>({String(activeProject + 1).padStart(2, '0')})</span>
         <strong>{projects[activeProject].title}</strong>
       </div>
 
       {view === 'gallery' ? (
-        <section id="work" className="home-gallery">
+        <section id="work" className="home-gallery" tabIndex={-1} aria-label="Projects">
           {projects.map((project, index) => (
             <article
               id={`project-${index}`}
@@ -915,8 +932,11 @@ function Home() {
               key={project.title}
             >
               <a href={`/${project.slug}`}>
-                <span className="home-project__number">({String(index + 1).padStart(2, '0')})</span>
-                <div className="home-project__image">
+                <span className="home-project__number" aria-hidden="true">({String(index + 1).padStart(2, '0')})</span>
+                <span className="sr-only">
+                  <span lang={project.lang}>{project.title}</span>, {project.type.toLowerCase()}
+                </span>
+                <div className="home-project__image" aria-hidden="true">
                   <span>PROJECT IMAGE</span>
                 </div>
               </a>
@@ -924,11 +944,11 @@ function Home() {
           ))}
         </section>
       ) : (
-        <section id="work" className="home-list">
+        <section id="work" className="home-list" tabIndex={-1} aria-label="Projects">
           <div className="home-list__head"><span>Project</span><span>Type</span></div>
           {projects.map(project => (
             <a href={`/${project.slug}`} key={project.title}>
-              <strong>{project.title}</strong>
+              <strong lang={project.lang}>{project.title}</strong>
               <span>{project.type}</span>
               <i aria-hidden="true">
                 <svg viewBox="0 0 180 120">
@@ -997,13 +1017,13 @@ function CaseStudy() {
         <strong>{sectionNames[activeSection]}</strong>
       </aside>
 
-      <article>
+      <article id="content" tabIndex={-1}>
         <section className="hero shell reveal">
           <Placeholder
             className="hero__media"
             caption="Main video still: abstract visualisation of electronic sound"
           />
-          <h1>Oltre<br />l’ascolto</h1>
+          <h1 lang="it">Oltre<br />l’ascolto</h1>
           <p className="hero__subtitle hero__subtitle--ink">
             Making sound accessible <span>beyond hearing</span>
           </p>
@@ -1145,7 +1165,7 @@ function CaseStudy() {
               <h2>From signal to surface</h2>
               <p>Scroll sideways →</p>
             </div>
-            <div className="process-strip">
+            <div className="process-strip" tabIndex={0} role="region" aria-label="Process images, scroll sideways">
               {process.map(([number, caption]) => (
                 <Placeholder key={number} caption={`${number}: ${caption}`} />
               ))}
@@ -1169,7 +1189,7 @@ function CaseStudy() {
 
         <a id="next-project" data-section href="/sovrapposizioni" className="next-project reveal">
           <span className="next-project__label">Next project</span>
-          <strong>Sovrapposizioni</strong>
+          <strong lang="it">Sovrapposizioni</strong>
           <i aria-hidden="true">
             <svg viewBox="0 0 180 120">
               <path d="M0 51h151v18H0z" />
@@ -1194,6 +1214,10 @@ function CaseStudy() {
 export default function App() {
   const path = window.location.pathname.replace(/^\/|\/$/g, '')
   const project = caseStudies.find(item => item.slug === path)
+  const pageName = path === 'about' ? 'About' : path === 'oltre-lascolto' ? "Oltre l'ascolto" : project?.title
+  useEffect(() => {
+    document.title = pageName ? `${pageName} · Rossella Magnani` : 'Rossella Magnani · Exhibition and experiential designer'
+  }, [pageName])
   return (
     <>
       <CustomCursor />
