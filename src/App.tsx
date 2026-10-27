@@ -852,7 +852,7 @@ function Home() {
   const changeView = (nextView: 'gallery' | 'list') => {
     setView(nextView)
     window.requestAnimationFrame(() => {
-      window.scrollTo({ top: window.innerHeight * 0.75, behavior: 'smooth' })
+      window.scrollTo({ top: window.innerHeight * 0.34, behavior: 'smooth' })
     })
   }
 
@@ -875,7 +875,7 @@ function Home() {
         <button
           type="button"
           className="home-scroll"
-          onClick={() => window.scrollTo({ top: window.innerHeight * 0.75, behavior: 'smooth' })}
+          onClick={() => window.scrollTo({ top: window.innerHeight * 0.34, behavior: 'smooth' })}
         >
           Scroll <span>↓</span>
         </button>

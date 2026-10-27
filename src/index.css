@@ -728,7 +728,7 @@ main:not(.is-deep) .deep-content {
 .home-view-toggle button { color: #999893; cursor: pointer; }
 .home-view-toggle button.active { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
 .home-view-toggle span { color: var(--home-accent); }
-.home-gallery { padding: 100svh 0 4vh; }
+.home-gallery { padding: 44vh 0 4vh; }
 .home-project {
   min-height: 0; padding-block: 2vh; display: grid; place-items: center;
 }
@@ -758,7 +758,7 @@ main:not(.is-deep) .deep-content {
 .home-mobile-current { display: none; }
 .home-list {
   width: min(100% - 40px, 1480px); min-height: 120vh; margin-inline: auto;
-  padding: 100svh 0 14vh;
+  padding: 44vh 0 14vh;
 }
 .home-list__head, .home-list > a {
   display: grid; grid-template-columns: 2fr 1.15fr 36px; gap: 28px; align-items: center;
@@ -825,7 +825,7 @@ main:not(.is-deep) .deep-content {
   .home-mobile-current.visible { opacity: 1; }
   .home-mobile-current span { color: var(--home-accent); }
   .home-mobile-current strong { font-weight: 600; }
-  .home-gallery { padding: 100svh 16px 4vh; }
+  .home-gallery { padding: 48vh 16px 4vh; }
   .home-project { min-height: 0; padding-block: 3vh; }
   .home-project > a,
   .home-project--2 > a,
@@ -833,7 +833,7 @@ main:not(.is-deep) .deep-content {
   .home-project.active > a { transform: scale(1); }
   .home-project__number { left: 0; top: -22px; }
   .home-list {
-    width: calc(100% - 32px); min-height: 110vh; padding: 100svh 0 40px;
+    width: calc(100% - 32px); min-height: 110vh; padding: 42vh 0 40px;
   }
   .home-list__head { display: none; }
   .home-list > a { grid-template-columns: 1fr auto; gap: 12px 20px; padding: 24px 0; }
