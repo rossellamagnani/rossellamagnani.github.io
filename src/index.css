@@ -1322,20 +1322,26 @@ main { animation: page-in .45s ease-out both; }
 .instrument-card .instrument-card__body p { margin-top: 10px; }
 .section-heading h2 { margin-top: 8px; }
 
-/* "Got more time?": once opened, the button row and the deep dive form one near-black band */
-main.is-deep .reading-mode,
+/* "Got more time?": the deep dive opens as a near-black band starting right under the button */
 .expanded-research {
   --ink: #f2f1ee; --muted: #a8a7a2; --line: rgba(242, 241, 238, .2); --accent: #f2f1ee;
   background: #161616; color: var(--ink);
 }
-main.is-deep .reading-mode {
-  padding-bottom: 0; box-shadow: 0 0 0 100vmax #161616; clip-path: inset(0 -100vmax);
-}
-main.is-deep .reading-action,
-main.is-deep .reading-action i { color: var(--ink); }
+main.is-deep .reading-mode { padding-bottom: 0; }
 .expanded-research #challenge { padding-top: clamp(48px, 5vw, 72px); }
+
+/* Opening: the band unrolls downwards from the button over the first screen */
+@keyframes band-open {
+  from { clip-path: inset(0 0 100% 0); }
+  to { clip-path: inset(0 0 calc(100% - 100vh) 0); }
+}
+.is-deep .expanded-research { animation: band-open .9s cubic-bezier(.5, 1, .89, 1); }
+@media (prefers-reduced-motion: reduce) {
+  .is-deep .expanded-research { animation: none; }
+}
 
 /* Image placeholders read as frames on the dark band */
 .expanded-research .placeholder__surface { background-color: #262625; background-image: linear-gradient(135deg, transparent 49.8%, rgba(242,241,238,.1) 50%, transparent 50.2%); }
 .expanded-research .placeholder__surface::after { border-color: rgba(242, 241, 238, .14); }
 .expanded-research .placeholder__index { color: var(--muted); }
+.reading-action[aria-expanded="true"]:hover i { transform: none; }
