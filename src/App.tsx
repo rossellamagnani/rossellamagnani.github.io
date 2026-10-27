@@ -400,94 +400,6 @@ function useGrowOnScroll(dependency: unknown) {
   }, [dependency])
 }
 
-// Outcome images in a normal column: each wheel gesture moves to the next image and centres it,
-// where it slowly forms from top to bottom; the images above and below stay in view
-function OutcomeSequence({ frames }: { frames: Array<{ caption: string; play?: boolean }> }) {
-  const listRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const list = listRef.current
-    if (!list || prefersReducedMotion()) return
-    const items = Array.from(list.querySelectorAll<HTMLElement>('.sequence__frame'))
-    // Signed distance of each image's centre from the centre of the screen (positive = below)
-    const offsets = () =>
-      items.map(item => {
-        const rect = item.getBoundingClientRect()
-        return rect.top + rect.height / 2 - window.innerHeight / 2
-      })
-
-    let frame = 0
-    const markActive = () => {
-      offsets().forEach((offset, index) => {
-        if (Math.abs(offset) < items[index].offsetHeight * 0.35) items[index].classList.add('is-active')
-      })
-      frame = 0
-    }
-    const onScroll = () => {
-      if (!frame) frame = window.requestAnimationFrame(markActive)
-    }
-
-    // One gesture, one image: wheel events are absorbed until the gesture (and its inertia) ends
-    let locked = false
-    let lockedAt = 0
-    let lastWheel = 0
-    const onWheel = (event: WheelEvent) => {
-      const now = performance.now()
-      if (locked) {
-        if (now - lockedAt > 900 && now - lastWheel > 180) locked = false
-        else {
-          lastWheel = now
-          event.preventDefault()
-          return
-        }
-      }
-      const direction = Math.sign(event.deltaY)
-      if (!direction) return
-      const current = offsets()
-      const reach = window.innerHeight
-      const target =
-        direction > 0
-          ? current.findIndex(offset => offset > 8 && offset < reach)
-          : current.map((offset, index) => (offset < -8 && offset > -reach ? index : -1)).filter(index => index >= 0).pop() ?? -1
-      if (target < 0) return
-      event.preventDefault()
-      window.scrollTo({ top: window.scrollY + current[target], behavior: 'smooth' })
-      locked = true
-      lockedAt = now
-      lastWheel = now
-    }
-
-    markActive()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-    window.addEventListener('wheel', onWheel, { passive: false })
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-      window.removeEventListener('wheel', onWheel)
-      if (frame) window.cancelAnimationFrame(frame)
-    }
-  }, [])
-
-  return (
-    <div className="sequence" ref={listRef}>
-      {frames.map(({ caption, play }) => (
-        <figure className="sequence__frame" key={caption}>
-          <div className="sequence__surface">
-            <span className="placeholder__index" aria-hidden="true">IMAGE / VIDEO</span>
-            {play && (
-              <span className="play" aria-hidden="true">
-                <span />
-              </span>
-            )}
-          </div>
-          <figcaption>{caption}</figcaption>
-        </figure>
-      ))}
-    </div>
-  )
-}
-
 function SectionHeading({ number, children }: { number?: string; children: React.ReactNode }) {
   return (
     <div className="section-heading">
@@ -770,16 +682,14 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
           <div className="outcome-gallery reveal">
             <span className="outcome-gallery__number">03</span>
             <h2>{project.summary}</h2>
+            <Placeholder className="outcome-gallery__hero" play caption={`${project.title}: main outcome`} />
+            <div className="outcome-gallery__grid">
+              <Placeholder caption={`${project.title}: outcome detail 01`} />
+              <Placeholder caption={`${project.title}: outcome detail 02`} />
+              <Placeholder caption={`${project.title}: outcome detail 03`} />
+            </div>
           </div>
         </section>
-        <OutcomeSequence
-          frames={[
-            { caption: `${project.title}: main outcome`, play: true },
-            { caption: `${project.title}: outcome detail 01` },
-            { caption: `${project.title}: outcome detail 02` },
-            { caption: `${project.title}: outcome detail 03` },
-          ]}
-        />
 
         <a id="next-project" data-section className="next-project reveal" href={`/${nextProject.slug}`}>
           <span className="next-project__label">Next project</span>
@@ -1319,16 +1229,14 @@ function CaseStudy() {
           <div className="outcome-gallery reveal">
             <span className="outcome-gallery__number">03</span>
             <h2>Designing with, not only for, the senses.</h2>
+            <Placeholder className="outcome-gallery__hero" play caption="Final video, 04:12" />
+            <div className="outcome-gallery__grid">
+              <Placeholder caption="Tempophon: tactile artefact" />
+              <Placeholder caption="Speed Variator: tactile artefact" />
+              <Placeholder caption="Amplitude Modulator: tactile artefact" />
+            </div>
           </div>
         </section>
-        <OutcomeSequence
-          frames={[
-            { caption: 'Final video, 04:12', play: true },
-            { caption: 'Tempophon: tactile artefact' },
-            { caption: 'Speed Variator: tactile artefact' },
-            { caption: 'Amplitude Modulator: tactile artefact' },
-          ]}
-        />
 
         <a id="next-project" data-section href="/sovrapposizioni" className="next-project reveal">
           <span className="next-project__label">Next project</span>
