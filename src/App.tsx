@@ -361,7 +361,7 @@ function useGrowOnScroll(dependency: unknown) {
         const group = element.closest<HTMLElement>(GROUP_SELECTOR)
         if (group) {
           const index = Array.from(group.querySelectorAll(GROW_SELECTOR)).indexOf(element)
-          return clamp01((viewport * 0.9 - group.getBoundingClientRect().top) / (viewport * 0.45) - index * 0.18)
+          return clamp01((viewport * 0.9 - group.getBoundingClientRect().top) / (viewport * 0.6) - index * 0.3)
         }
         // The forming edge stays near the bottom of the screen, so it is visible even on very tall images
         const rect = element.getBoundingClientRect()
@@ -382,7 +382,7 @@ function useGrowOnScroll(dependency: unknown) {
         const distance = goal[index] - value
         if (Math.abs(distance) < 0.002) return goal[index]
         moving = true
-        return value + distance * 0.12
+        return value + distance * 0.07
       })
       apply(current)
       frame = moving ? window.requestAnimationFrame(tick) : 0
@@ -400,8 +400,8 @@ function useGrowOnScroll(dependency: unknown) {
   }, [dependency])
 }
 
-// Outcome images: the screen holds on one image at a time; scrolling forms it from top to bottom,
-// keeps it complete for a moment, then the next one forms over it
+// Outcome images, one step per scroll: the screen holds on the stage, each scroll snaps to the next
+// image, the previous one clears to white and the new one slowly forms from top to bottom
 function OutcomeSequence({ frames }: { frames: Array<{ caption: string; play?: boolean }> }) {
   const trackRef = useRef<HTMLDivElement>(null)
 
@@ -409,48 +409,37 @@ function OutcomeSequence({ frames }: { frames: Array<{ caption: string; play?: b
     const track = trackRef.current
     if (!track || prefersReducedMotion()) return
     const items = Array.from(track.querySelectorAll<HTMLElement>('.sequence__frame'))
-    const target = () => {
-      const segment = window.innerHeight * 0.6
-      const scrolled = -track.getBoundingClientRect().top + segment * 0.3
-      return items.map((_, index) => clamp01((scrolled - index * segment) / (segment * 0.7)))
-    }
-    const apply = (progress: number[]) => {
-      items.forEach((item, index) => {
-        item.style.setProperty('--reveal', String(easeInOut(progress[index])))
-        // An image stays underneath until the next one has fully drawn over it
-        item.classList.toggle('is-past', (progress[index + 1] ?? 0) >= 1)
-      })
-    }
-    // Progress eases toward the scroll position, so wheel steps turn into a continuous movement
-    let current = target()
-    apply(current)
     let frame = 0
-    const tick = () => {
-      const goal = target()
-      let moving = false
-      current = current.map((value, index) => {
-        const distance = goal[index] - value
-        if (Math.abs(distance) < 0.002) return goal[index]
-        moving = true
-        return value + distance * 0.12
-      })
-      apply(current)
-      frame = moving ? window.requestAnimationFrame(tick) : 0
+    const update = () => {
+      const segment = window.innerHeight * 0.6
+      const scrolled = -track.getBoundingClientRect().top
+      const active = scrolled < -segment * 0.4 ? -1 : Math.min(items.length - 1, Math.floor((scrolled + segment * 0.4) / segment))
+      items.forEach((item, index) => item.classList.toggle('is-active', index === active))
+      // Snap to the images only while inside the sequence, so scrolling can always leave it
+      const inside = scrolled > -segment * 0.4 && scrolled < (items.length - 1) * segment + segment * 0.4
+      document.documentElement.classList.toggle('sequence-snap', inside)
+      frame = 0
     }
     const onScroll = () => {
-      if (!frame) frame = window.requestAnimationFrame(tick)
+      if (!frame) frame = window.requestAnimationFrame(update)
     }
+    update()
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onScroll)
     return () => {
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)
       if (frame) window.cancelAnimationFrame(frame)
+      document.documentElement.classList.remove('sequence-snap')
     }
   }, [])
 
   return (
     <div className="sequence" ref={trackRef} style={{ '--count': frames.length } as React.CSSProperties}>
+      {/* One snap point per image, plus one before and one after: reaching those switches snapping off */}
+      {Array.from({ length: frames.length + 2 }, (_, index) => (
+        <span className="sequence__stop" style={{ '--i': index - 1 } as React.CSSProperties} key={index} aria-hidden="true" />
+      ))}
       <div className="sequence__stage">
         {frames.map(({ caption, play }) => (
           <figure className="sequence__frame" key={caption}>
