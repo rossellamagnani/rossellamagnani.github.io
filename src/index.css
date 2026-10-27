@@ -348,7 +348,7 @@ main:has(> .section-marker) { padding-left: var(--marker-gutter); }
 .section-marker {
   position: fixed; z-index: 10; left: var(--marker-left); top: 50%; translate: 0 -50%;
   writing-mode: vertical-rl; rotate: 180deg; display: flex;
-  font-size: 12px; letter-spacing: .15em; text-transform: uppercase;
+  font-size: 9px; letter-spacing: .15em; text-transform: uppercase;
 }
 .section-marker strong { color: var(--accent); font-weight: 600; }
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s ease; }
@@ -387,7 +387,7 @@ main:has(> .section-marker) { padding-left: var(--marker-gutter); }
   .process-strip .placeholder { min-width: 78vw; }
   .reflection > div { grid-column: 1 / 11; }
   .reflection p { margin-left: 0; }
-  :root { --marker-gutter: 36px; --marker-left: 10px; }
+  :root { --marker-gutter: 32px; --marker-left: 10px; }
   .section { padding-block: 110px; }
   .process { padding-block: 110px; }
   .quick-read { padding-block: 100px; }
@@ -416,9 +416,9 @@ main:has(> .section-marker) { padding-left: var(--marker-gutter); }
   .nav nav { gap: 14px; font-size: 12px; }
   .brand, .nav nav a { font-size: 12px; }
   .brand { font-size: 12px; }
-  :root { --marker-gutter: 30px; --marker-left: 8px; }
+  :root { --marker-gutter: 26px; --marker-left: 8px; }
   .section-marker {
-    display: flex; top: 50%; font-size: 12px;
+    display: flex; top: 50%; font-size: 9px;
     letter-spacing: .12em;
   }
   .hero { padding-top: 18px; }

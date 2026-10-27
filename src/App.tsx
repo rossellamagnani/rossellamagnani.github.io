@@ -645,7 +645,6 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
         <div>
           <a href="mailto:magnanirossella02@gmail.com">Email</a>
           <a href="https://www.linkedin.com/in/rossella-magnani-276219279/">LinkedIn</a>
-          <a href="#">Instagram</a>
         </div>
       </footer>
     </main>
@@ -797,7 +796,9 @@ function About() {
 
         <section className="about-closing shell reveal">
           <p>Here&apos;s my CV.</p>
-          <a href="#" className="about-cv">Download CV</a>
+          <a href="/Rossella_Magnani_CV.pdf" className="about-cv" download>
+            Download CV <span className="sr-only">(PDF, 2 MB)</span>
+          </a>
         </section>
       </article>
 
@@ -806,7 +807,6 @@ function About() {
         <div>
           <a href="mailto:magnanirossella02@gmail.com">Email</a>
           <a href="https://www.linkedin.com/in/rossella-magnani-276219279/">LinkedIn</a>
-          <a href="#">Instagram</a>
         </div>
       </footer>
     </main>
@@ -963,7 +963,7 @@ function Home() {
 
       <footer id="contact" className="home-footer">
         <span>© {new Date().getFullYear()} Rossella Magnani</span>
-        <div><a href="mailto:magnanirossella02@gmail.com">Email</a><a href="https://www.linkedin.com/in/rossella-magnani-276219279/">LinkedIn</a><a href="#">Instagram</a></div>
+        <div><a href="mailto:magnanirossella02@gmail.com">Email</a><a href="https://www.linkedin.com/in/rossella-magnani-276219279/">LinkedIn</a></div>
       </footer>
     </main>
   )
@@ -1204,7 +1204,6 @@ function CaseStudy() {
         <div>
           <a href="mailto:magnanirossella02@gmail.com">Email</a>
           <a href="https://www.linkedin.com/in/rossella-magnani-276219279/">LinkedIn</a>
-          <a href="#">Instagram</a>
         </div>
       </footer>
     </main>
