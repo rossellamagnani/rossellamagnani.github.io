@@ -387,7 +387,7 @@ function OutcomeSequence({ frames }: { frames: Array<{ caption: string; play?: b
     const items = Array.from(track.querySelectorAll<HTMLElement>('.sequence__frame'))
     let frame = 0
     const update = () => {
-      const segment = window.innerHeight
+      const segment = window.innerHeight * 0.6
       const scrolled = -track.getBoundingClientRect().top + segment * 0.3
       const progress = items.map((_, index) => Math.min(1, Math.max(0, (scrolled - index * segment) / (segment * 0.7))))
       items.forEach((item, index) => {
