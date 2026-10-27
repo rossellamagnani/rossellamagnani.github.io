@@ -1136,7 +1136,7 @@ main:has(> .section-marker) .reveal { opacity: 1; transform: none; transition: n
 .sequence__stage { position: sticky; top: 0; height: 100svh; overflow: hidden; }
 .sequence__frame {
   position: absolute; top: 50%; left: 50%; translate: -50% -50%; margin: 0;
-  width: min(100% - 32px, 1200px, 70svh * 16 / 9); aspect-ratio: 16 / 9;
+  width: min(100% - 32px, 1400px, 80svh * 16 / 9); aspect-ratio: 16 / 9;
 }
 .sequence__frame.is-past { visibility: hidden; }
 .sequence__surface {

@@ -385,21 +385,38 @@ function OutcomeSequence({ frames }: { frames: Array<{ caption: string; play?: b
     const track = trackRef.current
     if (!track || prefersReducedMotion()) return
     const items = Array.from(track.querySelectorAll<HTMLElement>('.sequence__frame'))
-    let frame = 0
-    const update = () => {
+    const ease = (value: number) => (value < 0.5 ? 4 * value ** 3 : 1 - (-2 * value + 2) ** 3 / 2)
+    const target = () => {
       const segment = window.innerHeight * 0.6
       const scrolled = -track.getBoundingClientRect().top + segment * 0.3
-      const progress = items.map((_, index) => Math.min(1, Math.max(0, (scrolled - index * segment) / (segment * 0.7))))
+      return items.map((_, index) => Math.min(1, Math.max(0, (scrolled - index * segment) / (segment * 0.7))))
+    }
+    const apply = (progress: number[]) => {
       items.forEach((item, index) => {
-        item.style.setProperty('--reveal', String(progress[index]))
-        item.classList.toggle('is-past', (progress[index + 1] ?? 0) > 0)
+        item.style.setProperty('--reveal', String(ease(progress[index])))
+        // An image stays underneath until the next one has fully drawn over it
+        item.classList.toggle('is-past', (progress[index + 1] ?? 0) >= 1)
       })
-      frame = 0
+    }
+    // Progress eases toward the scroll position, so wheel steps turn into a continuous movement
+    let current = target()
+    apply(current)
+    let frame = 0
+    const tick = () => {
+      const goal = target()
+      let moving = false
+      current = current.map((value, index) => {
+        const distance = goal[index] - value
+        if (Math.abs(distance) < 0.002) return goal[index]
+        moving = true
+        return value + distance * 0.12
+      })
+      apply(current)
+      frame = moving ? window.requestAnimationFrame(tick) : 0
     }
     const onScroll = () => {
-      if (!frame) frame = window.requestAnimationFrame(update)
+      if (!frame) frame = window.requestAnimationFrame(tick)
     }
-    update()
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onScroll)
     return () => {
