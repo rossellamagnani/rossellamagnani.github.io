@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const instruments = [
   {
@@ -277,39 +277,6 @@ const sectionNames: Record<string, string> = {
   outcome: 'Outcome',
   reflection: 'Reflection',
   'next-project': 'Next project',
-}
-
-function CustomCursor() {
-  const cursorRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
-    const cursor = cursorRef.current
-    if (!cursor) return
-
-    const handleMove = (event: MouseEvent) => {
-      cursor.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`
-      cursor.classList.add('visible')
-      const target = event.target as Element | null
-      cursor.classList.toggle('interactive', Boolean(target?.closest('a, button, [role="button"]')))
-    }
-    const handleLeave = () => cursor.classList.remove('visible')
-    const handleDown = () => cursor.classList.add('pressed')
-    const handleUp = () => cursor.classList.remove('pressed')
-
-    window.addEventListener('mousemove', handleMove)
-    document.documentElement.addEventListener('mouseleave', handleLeave)
-    window.addEventListener('mousedown', handleDown)
-    window.addEventListener('mouseup', handleUp)
-    return () => {
-      window.removeEventListener('mousemove', handleMove)
-      document.documentElement.removeEventListener('mouseleave', handleLeave)
-      window.removeEventListener('mousedown', handleDown)
-      window.removeEventListener('mouseup', handleUp)
-    }
-  }, [])
-
-  return <div ref={cursorRef} className="custom-cursor" aria-hidden="true" />
 }
 
 function Placeholder({
@@ -1196,7 +1163,6 @@ export default function App() {
   const project = caseStudies.find(item => item.slug === path)
   return (
     <>
-      <CustomCursor />
       {path === 'about' ? <About /> : path === 'oltre-lascolto' ? <CaseStudy /> : project ? <ProjectCase project={project} /> : <Home />}
     </>
   )

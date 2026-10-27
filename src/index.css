@@ -23,17 +23,9 @@
 
 ::selection { background: var(--accent); color: white; }
 
-.custom-cursor { display: none; }
+/* Larger arrow pointer; links and buttons keep the system hand so clickable elements stay recognisable */
 @media (hover: hover) and (pointer: fine) {
-  .custom-cursor {
-    position: fixed; z-index: 9999; top: 0; left: 0; width: 10px; height: 10px;
-    display: block; border-radius: 50%; background: #1646ff; opacity: 0;
-    pointer-events: none; will-change: transform, width, height, opacity;
-    transition: width .2s ease, height .2s ease, opacity .15s ease;
-  }
-  .custom-cursor.visible { opacity: 1; }
-  .custom-cursor.interactive { width: 24px; height: 24px; }
-  .custom-cursor.pressed { width: 16px; height: 16px; }
+  html { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Cpath d='M4 2 L4 30 L11.5 23 L16.5 34 L21.5 31.8 L16.5 21 L27 21 Z' fill='%23111111' stroke='%23ffffff' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E") 4 2, auto; }
 }
 
 main, article, section, figure, div { min-width: 0; }
