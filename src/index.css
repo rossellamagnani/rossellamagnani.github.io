@@ -1132,3 +1132,8 @@ main:not(.is-deep) .deep-content {
 /* Case studies: text sits still, only images animate */
 main:has(> .section-marker) .reveal { opacity: 1; transform: none; transition: none; }
 
+
+/* Outcome images: smaller and centred, with more air between them */
+.outcome-gallery .placeholder { width: min(100%, 1040px); margin-inline: auto; }
+main .outcome-gallery .outcome-gallery__grid { margin-top: 64px; }
+main .outcome-gallery .outcome-gallery__grid .placeholder + .placeholder { margin-top: 64px; }
