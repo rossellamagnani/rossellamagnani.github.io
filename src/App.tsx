@@ -26,13 +26,14 @@ const process = [
   ['05', 'Tactile prototypes'],
 ]
 
+// `image`: the home gallery picture for each project (shown cropped to a square), e.g. '/assets/projects/oltre.jpg'
 const projects = [
-  { title: "Oltre l'ascolto", type: 'MULTISENSORY DESIGN · ACCESSIBILITY', slug: 'oltre-lascolto', lang: 'it' },
-  { title: 'Sovrapposizioni', type: 'EXHIBITION DESIGN · AI', slug: 'sovrapposizioni', lang: 'it' },
-  { title: 'Marco Magnani Art', type: 'BRAND IDENTITY · ART DIRECTION', slug: 'marco-magnani-art' },
-  { title: 'Crossing Kyiv', type: 'EDITORIAL DESIGN · CULTURAL PROJECT', slug: 'crossing-kyiv' },
-  { title: 'PRO Brera', type: 'SPECULATIVE DESIGN · SPATIAL', slug: 'brera-district' },
-  { title: 'a drop of corruption', type: 'AI VIDEO · ART DIRECTION', slug: 'a-drop-of-corruption' },
+  { title: "Oltre l'ascolto", type: 'MULTISENSORY DESIGN · ACCESSIBILITY', slug: 'oltre-lascolto', lang: 'it', image: '' },
+  { title: 'Sovrapposizioni', type: 'EXHIBITION DESIGN · AI', slug: 'sovrapposizioni', lang: 'it', image: '' },
+  { title: 'Marco Magnani Art', type: 'BRAND IDENTITY · ART DIRECTION', slug: 'marco-magnani-art', image: '' },
+  { title: 'Crossing Kyiv', type: 'EDITORIAL DESIGN · CULTURAL PROJECT', slug: 'crossing-kyiv', image: '' },
+  { title: 'PRO Brera', type: 'SPECULATIVE DESIGN · SPATIAL', slug: 'brera-district', image: '' },
+  { title: 'a drop of corruption', type: 'AI VIDEO · ART DIRECTION', slug: 'a-drop-of-corruption', image: '' },
 ]
 
 const caseStudies = [
@@ -320,23 +321,40 @@ function CustomCursor() {
   )
 }
 
+// Pass `src` (and `alt`) to show a real image or video; the frame then takes the file's own proportions.
+// Without `src` a grey placeholder is shown.
 function Placeholder({
   caption,
   className = '',
   play = false,
+  src,
+  alt = '',
 }: {
   caption: string
   className?: string
   play?: boolean
+  src?: string
+  alt?: string
 }) {
+  const isVideo = Boolean(src && /\.(mp4|webm|mov)$/i.test(src))
   return (
     <figure className={`placeholder ${className}`}>
       <div className="placeholder__surface">
-        <span className="placeholder__index" aria-hidden="true">IMAGE / VIDEO</span>
-        {play && (
-          <span className="play" aria-hidden="true">
-            <span />
-          </span>
+        {src ? (
+          isVideo ? (
+            <video src={src} controls playsInline preload="metadata" aria-label={alt || caption} />
+          ) : (
+            <img src={src} alt={alt} loading="lazy" />
+          )
+        ) : (
+          <>
+            <span className="placeholder__index" aria-hidden="true">IMAGE / VIDEO</span>
+            {play && (
+              <span className="play" aria-hidden="true">
+                <span />
+              </span>
+            )}
+          </>
         )}
       </div>
       <figcaption>{caption}</figcaption>
@@ -856,7 +874,6 @@ const projectYear = (slug: string) => caseStudies.find(item => item.slug === slu
 
 function Home() {
   const [activeProject, setActiveProject] = useState(0)
-  const [view, setView] = useState<'gallery' | 'list'>('gallery')
   const [galleryInView, setGalleryInView] = useState(false)
 
   useEffect(() => {
@@ -865,7 +882,6 @@ function Home() {
   }, [])
 
   useEffect(() => {
-    if (view !== 'gallery') return
     let frame = 0
     const update = () => {
       const items = Array.from(document.querySelectorAll<HTMLElement>('.hm-item'))
@@ -895,31 +911,17 @@ function Home() {
       window.removeEventListener('resize', onScroll)
       if (frame) window.cancelAnimationFrame(frame)
     }
-  }, [view])
+  }, [])
 
   const scrollToProject = (index: number) => {
     document.getElementById(`project-${index}`)?.scrollIntoView({ behavior: scrollBehavior(), block: 'center' })
-  }
-  const changeView = (nextView: 'gallery' | 'list') => {
-    setView(nextView)
-    window.scrollTo(0, 0)
   }
   const active = projects[activeProject]
   const [primaryType, secondaryType] = active.type.split(' · ')
 
   return (
-    <main className={`hm hm--${view}`}>
+    <main className="hm">
       <SiteHeader skipTo="work" />
-
-      <div className="hm-view" role="group" aria-label="View">
-        <button type="button" className={view === 'gallery' ? 'active' : ''} aria-pressed={view === 'gallery'} onClick={() => changeView('gallery')}>
-          Gallery
-        </button>
-        <span aria-hidden="true">/</span>
-        <button type="button" className={view === 'list' ? 'active' : ''} aria-pressed={view === 'list'} onClick={() => changeView('list')}>
-          List
-        </button>
-      </div>
 
       <section className="hm-intro" aria-label="Introduction">
         <h1>
@@ -929,58 +931,43 @@ function Home() {
         <p>Based in Milan. MSc Communication Design, Politecnico di Milano.</p>
       </section>
 
-      {view === 'gallery' ? (
-        <>
-          <nav className="hm-index" aria-label="Projects">
-            {projects.map((project, index) => (
-              <button
-                type="button"
-                className={activeProject === index ? 'active' : ''}
-                aria-current={activeProject === index ? 'true' : undefined}
-                onClick={() => scrollToProject(index)}
-                key={project.title}
-              >
-                <span lang={project.lang}>{project.title}</span>
-              </button>
-            ))}
-          </nav>
+      <nav className="hm-index" aria-label="Projects">
+        {projects.map((project, index) => (
+          <button
+            type="button"
+            className={activeProject === index ? 'active' : ''}
+            aria-current={activeProject === index ? 'true' : undefined}
+            onClick={() => scrollToProject(index)}
+            key={project.title}
+          >
+            <span lang={project.lang}>{project.title}</span>
+          </button>
+        ))}
+      </nav>
 
-          <div className="hm-line" aria-hidden="true">
-            <span>{primaryType}</span>
-            <span>{secondaryType}</span>
-            <span>{projectYear(active.slug)}</span>
-          </div>
+      <div className="hm-line" aria-hidden="true">
+        <span>{primaryType}</span>
+        <span>{secondaryType}</span>
+        <span>{projectYear(active.slug)}</span>
+      </div>
 
-          <div className={`hm-current ${galleryInView ? 'visible' : ''}`} aria-hidden="true">
-            <span>({String(activeProject + 1).padStart(2, '0')})</span>
-            <strong lang={active.lang}>{active.title}</strong>
-          </div>
+      <div className={`hm-current ${galleryInView ? 'visible' : ''}`} aria-hidden="true">
+        <span>({String(activeProject + 1).padStart(2, '0')})</span>
+        <strong lang={active.lang}>{active.title}</strong>
+      </div>
 
-          <section id="work" className="hm-gallery" tabIndex={-1} aria-label="Projects">
-            {projects.map((project, index) => (
-              <a id={`project-${index}`} className="hm-item" href={`/${project.slug}`} data-cursor-label key={project.title}>
-                <span className="sr-only">
-                  <span lang={project.lang}>{project.title}</span>, {project.type.toLowerCase()}
-                </span>
-                <span className="hm-image" aria-hidden="true">
-                  <span>PROJECT IMAGE</span>
-                </span>
-              </a>
-            ))}
-          </section>
-        </>
-      ) : (
-        <section id="work" className="hm-list" tabIndex={-1} aria-label="Projects">
-          {projects.map((project, index) => (
-            <a href={`/${project.slug}`} key={project.title}>
-              <span className="hm-list__number">{String(index + 1).padStart(2, '0')}</span>
-              <strong lang={project.lang}>{project.title}</strong>
-              <span>{project.type}</span>
-              <span>{projectYear(project.slug)}</span>
-            </a>
-          ))}
-        </section>
-      )}
+      <section id="work" className="hm-gallery" tabIndex={-1} aria-label="Projects">
+        {projects.map((project, index) => (
+          <a id={`project-${index}`} className="hm-item" href={`/${project.slug}`} data-cursor-label key={project.title}>
+            <span className="sr-only">
+              <span lang={project.lang}>{project.title}</span>, {project.type.toLowerCase()}
+            </span>
+            <span className="hm-image" aria-hidden="true">
+              {project.image ? <img src={project.image} alt="" /> : <span>PROJECT IMAGE</span>}
+            </span>
+          </a>
+        ))}
+      </section>
 
       <footer id="contact" className="hm-footer">
         <div>
