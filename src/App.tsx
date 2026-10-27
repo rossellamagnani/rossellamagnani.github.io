@@ -295,6 +295,7 @@ function CustomCursor() {
       cursor.classList.add('visible')
       const target = event.target as Element | null
       cursor.classList.toggle('interactive', Boolean(target?.closest('a, button, [role="button"]')))
+      cursor.classList.toggle('labelled', Boolean(target?.closest('[data-cursor-label]')))
     }
     const handleLeave = () => cursor.classList.remove('visible')
     const handleDown = () => cursor.classList.add('pressed')
@@ -312,7 +313,11 @@ function CustomCursor() {
     }
   }, [])
 
-  return <div ref={cursorRef} className="custom-cursor" aria-hidden="true" />
+  return (
+    <div ref={cursorRef} className="custom-cursor" aria-hidden="true">
+      <span className="custom-cursor__label">Open project</span>
+    </div>
+  )
 }
 
 function Placeholder({
@@ -873,6 +878,7 @@ const projectYear = (slug: string) => caseStudies.find(item => item.slug === slu
 function Home() {
   const [activeProject, setActiveProject] = useState(0)
   const [view, setView] = useState<'gallery' | 'list'>('gallery')
+  const [galleryInView, setGalleryInView] = useState(false)
 
   useEffect(() => {
     if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual'
@@ -896,6 +902,7 @@ function Home() {
         }
       })
       setActiveProject(closest)
+      setGalleryInView(items.length > 0 && items[0].getBoundingClientRect().top < 80)
       frame = 0
     }
     const onScroll = () => {
@@ -963,21 +970,19 @@ function Home() {
             <span>{String(activeProject + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}</span>
           </div>
 
+          <div className={`hm-current ${galleryInView ? 'visible' : ''}`} aria-hidden="true">
+            <span>({String(activeProject + 1).padStart(2, '0')})</span>
+            <strong lang={active.lang}>{active.title}</strong>
+          </div>
+
           <section id="work" className="hm-gallery" tabIndex={-1} aria-label="Projects">
             {projects.map((project, index) => (
-              <a id={`project-${index}`} className="hm-item" href={`/${project.slug}`} key={project.title}>
+              <a id={`project-${index}`} className="hm-item" href={`/${project.slug}`} data-cursor-label key={project.title}>
                 <span className="sr-only">
                   <span lang={project.lang}>{project.title}</span>, {project.type.toLowerCase()}
                 </span>
                 <span className="hm-image" aria-hidden="true">
                   <span>PROJECT IMAGE</span>
-                </span>
-                <span className="hm-open" aria-hidden="true">
-                  <i /> Open project
-                </span>
-                <span className="hm-caption" aria-hidden="true">
-                  <strong lang={project.lang}>{project.title}</strong>
-                  <span>{project.type}</span>
                 </span>
               </a>
             ))}
@@ -996,12 +1001,11 @@ function Home() {
         </section>
       )}
 
-      <a className="hm-talk" href="mailto:magnanirossella02@gmail.com">
-        Let&apos;s talk? <i aria-hidden="true" />
-      </a>
-
       <footer id="contact" className="hm-footer">
-        <a href="https://www.linkedin.com/in/rossella-magnani-276219279/">LinkedIn</a>
+        <div>
+          <a href="mailto:magnanirossella02@gmail.com">magnanirossella02@gmail.com</a>
+          <a href="https://www.linkedin.com/in/rossella-magnani-276219279/">LinkedIn</a>
+        </div>
         <span>© {new Date().getFullYear()} Rossella Magnani</span>
       </footer>
     </main>
