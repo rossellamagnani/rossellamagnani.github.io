@@ -1,0 +1,10 @@
+{
+  "description": "Explore a communication designer’s case study on accessible exhibition design, showcasing research, creative process, video, and tactile sound-inspired artefacts.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
