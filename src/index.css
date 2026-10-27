@@ -342,8 +342,11 @@ main:not(.is-deep) .outcome-gallery__grid .placeholder__surface { aspect-ratio: 
 .footer div { display: flex; justify-content: flex-end; gap: 30px; font-size: 12px; }
 .footer > span { color: var(--muted); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
 
+/* Case study pages reserve a left gutter for the vertical section marker so it never overlaps content */
+:root { --marker-gutter: 40px; --marker-left: 14px; }
+main:has(> .section-marker) { padding-left: var(--marker-gutter); }
 .section-marker {
-  position: fixed; z-index: 10; left: 12px; top: 50%; translate: 0 -50%;
+  position: fixed; z-index: 10; left: var(--marker-left); top: 50%; translate: 0 -50%;
   writing-mode: vertical-rl; rotate: 180deg; display: flex;
   font-size: 8px; letter-spacing: .15em; text-transform: uppercase;
 }
@@ -373,7 +376,7 @@ main:not(.is-deep) .outcome-gallery__grid .placeholder__surface { aspect-ratio: 
   .process-strip .placeholder { min-width: 78vw; }
   .reflection > div { grid-column: 1 / 11; }
   .reflection p { margin-left: 0; }
-  .section-marker { left: 7px; }
+  :root { --marker-gutter: 30px; --marker-left: 9px; }
   .section { padding-block: 110px; }
   .process { padding-block: 110px; }
   .quick-read { padding-block: 100px; }
@@ -402,8 +405,9 @@ main:not(.is-deep) .outcome-gallery__grid .placeholder__surface { aspect-ratio: 
   .nav nav { gap: 14px; font-size: 10px; }
   .brand, .nav nav a { font-size: 10px; }
   .brand { font-size: 12px; }
+  :root { --marker-gutter: 22px; --marker-left: 6px; }
   .section-marker {
-    display: flex; left: 3px; top: 50%; font-size: 7px;
+    display: flex; top: 50%; font-size: 7px;
     letter-spacing: .12em;
   }
   .hero { padding-top: 18px; }
