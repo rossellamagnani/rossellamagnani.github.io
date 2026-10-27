@@ -1208,3 +1208,27 @@ figure.placeholder .placeholder__surface:has(> img, > video) {
 .placeholder__surface > img, .placeholder__surface > video { display: block; width: 100%; height: auto; }
 /* Home gallery pictures are cropped to the square frame */
 .hm-image > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* Case study opening: title, subtitle and project details on the left half, image on the right half */
+.hero {
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px;
+  align-items: start; padding-bottom: clamp(64px, 7vw, 112px);
+}
+.hero__text { grid-column: 1 / 7; display: flex; flex-direction: column; gap: clamp(40px, 5vw, 72px); padding-top: clamp(24px, 3vw, 48px); }
+.hero .hero__head { margin-top: 0; }
+.hero .hero__head h1 { font-size: clamp(40px, 5.2vw, 80px); }
+.hero .hero__media { grid-column: 7 / 13; margin-top: 0; }
+.hero__media .placeholder__surface { aspect-ratio: 4 / 5; max-height: 82svh; }
+.hero .facts {
+  margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px;
+}
+.hero .facts .fact { margin-top: 0; grid-column: auto; }
+.hero .facts .fact p { max-width: none; }
+
+@media (max-width: 760px) {
+  .hero { display: flex; flex-direction: column; gap: 32px; padding-bottom: 56px; }
+  .hero .hero__media { order: -1; width: 100%; }
+  .hero__media .placeholder__surface { aspect-ratio: 4 / 5; max-height: 70svh; }
+  .hero__text { padding-top: 0; gap: 36px; }
+  .hero .hero__head h1 { font-size: min(64px, calc((100vw - 60px) / 7.4)); }
+}

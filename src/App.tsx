@@ -488,31 +488,32 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
 
       <article id="content" tabIndex={-1}>
         <section className="hero shell reveal">
+          <div className="hero__text">
+            <div className="hero__head">
+              <h1 lang={projects[projectIndex]?.lang}>{project.title}</h1>
+              <p className="hero__subtitle">
+                {project.slug === 'crossing-kyiv' ? 'Ukrainian creativity beyond the narratives of war.' : project.lead}
+              </p>
+            </div>
+            <div className="facts" role="group" aria-label="Project details">
+              {[
+                ['Type', project.type],
+                ['Context', project.context],
+                ['Year', project.year],
+                ['Role', project.slug === 'sovrapposizioni' ? 'Concept, exhibition and editorial design' : project.slug === 'marco-magnani-art' ? 'Positioning, brand identity, art direction' : project.slug === 'crossing-kyiv' ? 'Editorial design, layout and typography' : project.slug === 'brera-district' ? 'Research, concept and visual identity' : project.slug === 'a-drop-of-corruption' ? 'Concept, art direction and AI video production' : 'Designer, researcher'],
+                ['Tools', project.slug === 'sovrapposizioni' ? 'Midjourney, Illustrator, Indesign, Photoshop' : project.slug === 'marco-magnani-art' ? 'Illustrator, Photoshop, Figma, Framer, Indesign' : project.slug === 'crossing-kyiv' ? 'Indesign, Illustrator, Photoshop' : project.slug === 'brera-district' ? 'Illustrator, Photoshop, Indesign' : project.slug === 'a-drop-of-corruption' ? 'Midjourney, Premiere' : 'Replace with project tools'],
+              ].map(([label, value]) => (
+                <div className="fact" key={label}>
+                  <span>{label}</span>
+                  <p>{value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
           <Placeholder
             className="hero__media"
             caption={`${project.title}: main project visual`}
           />
-          <div className="hero__head">
-            <h1 lang={projects[projectIndex]?.lang}>{project.title}</h1>
-            <p className="hero__subtitle">
-              {project.slug === 'crossing-kyiv' ? 'Ukrainian creativity beyond the narratives of war.' : project.lead}
-            </p>
-          </div>
-        </section>
-
-        <section className="facts shell reveal" aria-label="Project details">
-          {[
-            ['Type', project.type],
-            ['Context', project.context],
-            ['Year', project.year],
-            ['Role', project.slug === 'sovrapposizioni' ? 'Concept, exhibition and editorial design' : project.slug === 'marco-magnani-art' ? 'Positioning, brand identity, art direction' : project.slug === 'crossing-kyiv' ? 'Editorial design, layout and typography' : project.slug === 'brera-district' ? 'Research, concept and visual identity' : project.slug === 'a-drop-of-corruption' ? 'Concept, art direction and AI video production' : 'Designer, researcher'],
-            ['Tools', project.slug === 'sovrapposizioni' ? 'Midjourney, Illustrator, Indesign, Photoshop' : project.slug === 'marco-magnani-art' ? 'Illustrator, Photoshop, Figma, Framer, Indesign' : project.slug === 'crossing-kyiv' ? 'Indesign, Illustrator, Photoshop' : project.slug === 'brera-district' ? 'Illustrator, Photoshop, Indesign' : project.slug === 'a-drop-of-corruption' ? 'Midjourney, Premiere' : 'Replace with project tools'],
-          ].map(([label, value]) => (
-            <div className="fact" key={label}>
-              <span>{label}</span>
-              <p>{value}</p>
-            </div>
-          ))}
         </section>
 
         <section className="quick-read shell reveal">
@@ -1031,31 +1032,32 @@ function CaseStudy() {
 
       <article id="content" tabIndex={-1}>
         <section className="hero shell reveal">
+          <div className="hero__text">
+            <div className="hero__head">
+              <h1 lang="it">Oltre<br />l’ascolto</h1>
+              <p className="hero__subtitle hero__subtitle--ink">
+                Making sound accessible beyond hearing
+              </p>
+            </div>
+            <div className="facts" role="group" aria-label="Project details">
+              {[
+                ['Type', 'Animated video, tactile artefacts'],
+                ['Context', 'Academic project, Politecnico di Milano'],
+                ['Year', '2025'],
+                ['Role', 'Research, concept, motion and tactile design'],
+                ['Tools', 'After Effects, Illustrator, Rhino'],
+              ].map(([label, value]) => (
+                <div className="fact" key={label}>
+                  <span>{label}</span>
+                  <p>{value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
           <Placeholder
             className="hero__media"
             caption="Main video still: abstract visualisation of electronic sound"
           />
-          <div className="hero__head">
-            <h1 lang="it">Oltre<br />l’ascolto</h1>
-            <p className="hero__subtitle hero__subtitle--ink">
-              Making sound accessible beyond hearing
-            </p>
-          </div>
-        </section>
-
-        <section className="facts shell reveal" aria-label="Project details">
-          {[
-            ['Type', 'Animated video, tactile artefacts'],
-            ['Context', 'Academic project, Politecnico di Milano'],
-            ['Year', '2025'],
-            ['Role', 'Research, concept, motion and tactile design'],
-            ['Tools', 'After Effects, Illustrator, Rhino'],
-          ].map(([label, value]) => (
-            <div className="fact" key={label}>
-              <span>{label}</span>
-              <p>{value}</p>
-            </div>
-          ))}
         </section>
 
         <section className="quick-read shell reveal">
