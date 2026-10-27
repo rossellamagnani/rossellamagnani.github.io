@@ -344,8 +344,8 @@ function Placeholder({
   )
 }
 
-// Case study images open as you scroll: a single image widens from a narrow band in the centre,
-// grouped images (cards, pairs, process strip) grow downwards one after another
+// Case study images form from top to bottom as you scroll; grouped images (cards, pairs,
+// process strip) do it one after another, left to right
 const GROW_SELECTOR = '.placeholder__surface:not(.hero__media .placeholder__surface)'
 const GROUP_SELECTOR = '.instrument-grid, .paired-media, .process-strip'
 const easeInOut = (value: number) => (value < 0.5 ? 4 * value ** 3 : 1 - (-2 * value + 2) ** 3 / 2)
@@ -363,8 +363,9 @@ function useGrowOnScroll(dependency: unknown) {
           const index = Array.from(group.querySelectorAll(GROW_SELECTOR)).indexOf(element)
           return clamp01((viewport * 0.9 - group.getBoundingClientRect().top) / (viewport * 0.45) - index * 0.18)
         }
+        // The forming edge stays near the bottom of the screen, so it is visible even on very tall images
         const rect = element.getBoundingClientRect()
-        return clamp01((viewport * 0.9 - rect.top) / Math.min(rect.height, viewport * 0.6))
+        return clamp01((viewport * 0.85 - rect.top) / rect.height)
       })
     }
     const apply = (progress: number[]) => {
@@ -399,8 +400,8 @@ function useGrowOnScroll(dependency: unknown) {
   }, [dependency])
 }
 
-// Outcome images: the screen holds on one image at a time; scrolling opens it from a narrow band
-// in the centre, keeps it complete for a moment, then the next one opens over it
+// Outcome images: the screen holds on one image at a time; scrolling forms it from top to bottom,
+// keeps it complete for a moment, then the next one forms over it
 function OutcomeSequence({ frames }: { frames: Array<{ caption: string; play?: boolean }> }) {
   const trackRef = useRef<HTMLDivElement>(null)
 
