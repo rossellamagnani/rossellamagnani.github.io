@@ -930,14 +930,17 @@ function Home() {
 
   return (
     <main className={`hm hm--${view}`}>
-      <SiteHeader skipTo="work">
+      <SiteHeader skipTo="work" />
+
+      <div className="hm-view" role="group" aria-label="View">
         <button type="button" className={view === 'gallery' ? 'active' : ''} aria-pressed={view === 'gallery'} onClick={() => changeView('gallery')}>
           Gallery
         </button>
+        <span aria-hidden="true">/</span>
         <button type="button" className={view === 'list' ? 'active' : ''} aria-pressed={view === 'list'} onClick={() => changeView('list')}>
           List
         </button>
-      </SiteHeader>
+      </div>
 
       <section className="hm-intro" aria-label="Introduction">
         <h1>
@@ -967,7 +970,6 @@ function Home() {
             <span>{primaryType}</span>
             <span>{secondaryType}</span>
             <span>{projectYear(active.slug)}</span>
-            <span>{String(activeProject + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}</span>
           </div>
 
           <div className={`hm-current ${galleryInView ? 'visible' : ''}`} aria-hidden="true">
