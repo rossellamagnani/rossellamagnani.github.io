@@ -1,6 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 
+/* Suisse Int'l (Swiss Typefaces, licensed font): place the licensed web files in public/fonts/ with these
+   names. Until they are there, the site falls back to Inter. */
+@font-face { font-family: 'Suisse Intl'; src: url('/fonts/SuisseIntl-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Suisse Intl'; src: url('/fonts/SuisseIntl-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Suisse Intl'; src: url('/fonts/SuisseIntl-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+
 :root {
   --paper: #ffffff;
   --ink: #111111;
@@ -15,7 +21,7 @@
   body {
     background: var(--paper);
     color: var(--ink);
-    font-family: 'Inter', Helvetica, sans-serif;
+    font-family: 'Suisse Intl', 'Inter', Helvetica, sans-serif;
     overflow-x: hidden;
   }
   a { color: inherit; text-decoration: none; }
@@ -72,12 +78,12 @@ img, video, svg { display: block; max-width: 100%; height: auto; }
 }
 article .section-label { display: none; }
 .hero h1 {
-  margin: clamp(46px, 6vw, 88px) 0 0; font: 500 clamp(68px, 12.8vw, 200px)/.8 'Inter', Helvetica, sans-serif;
+  margin: clamp(46px, 6vw, 88px) 0 0; font: 500 clamp(68px, 12.8vw, 200px)/.8 'Suisse Intl', 'Inter', Helvetica, sans-serif;
   letter-spacing: -.075em;
 }
 .hero__subtitle {
   position: relative; z-index: 1; display: block; margin: clamp(40px, 4vw, 64px) 0 0;
-  font: 500 clamp(20px, 2.2vw, 34px)/1.2 'Inter', Helvetica, sans-serif; letter-spacing: -.05em;
+  font: 500 clamp(20px, 2.2vw, 34px)/1.2 'Suisse Intl', 'Inter', Helvetica, sans-serif; letter-spacing: -.05em;
 }
 .hero__subtitle span { color: var(--accent); }
 .hero__subtitle--ink,
@@ -150,7 +156,7 @@ article .section-label { display: none; }
 .quick-read > .section-label { grid-column: 1 / 3; }
 .quick-read__title { grid-column: 1 / 11; }
 .quick-read__title h2 {
-  max-width: 1250px; font: 500 clamp(48px, 7vw, 108px)/.9 'Inter', Helvetica, sans-serif;
+  max-width: 1250px; font: 500 clamp(48px, 7vw, 108px)/.9 'Suisse Intl', 'Inter', Helvetica, sans-serif;
   letter-spacing: -.075em;
 }
 .quick-read__title > p { margin: 48px 0 0; max-width: 500px; font-size: 14px; line-height: 1.7; }
@@ -188,7 +194,7 @@ article .section-label { display: none; }
 .challenge__copy { grid-column: 1 / 5; font-size: 14px; line-height: 1.75; }
 .challenge blockquote {
   grid-column: 1 / 11; margin: 110px 0 0; max-width: 1150px;
-  font: 500 clamp(48px, 7.4vw, 112px)/.88 'Inter', Helvetica, sans-serif; letter-spacing: -.07em;
+  font: 500 clamp(48px, 7.4vw, 112px)/.88 'Suisse Intl', 'Inter', Helvetica, sans-serif; letter-spacing: -.07em;
 }
 .challenge blockquote span { color: var(--accent); }
 
@@ -203,7 +209,7 @@ article .section-label { display: none; }
 .research-row > .placeholder .placeholder__surface { aspect-ratio: 16 / 9; }
 .section-heading span { color: var(--accent); font-size: 12px; letter-spacing: .15em; }
 .section-heading h2, .process h2, .reflection h2 {
-  margin-top: 18px; font: 500 clamp(42px, 5.2vw, 82px)/.94 'Inter', Helvetica, sans-serif; letter-spacing: -.065em;
+  margin-top: 18px; font: 500 clamp(42px, 5.2vw, 82px)/.94 'Suisse Intl', 'Inter', Helvetica, sans-serif; letter-spacing: -.065em;
 }
 .research-copy > p, .intro, .reflection p {
   margin-top: 32px; font-size: 14px; line-height: 1.75; max-width: 500px;
@@ -213,7 +219,7 @@ article .section-label { display: none; }
 .timeline i { position: absolute; width: 5px; height: 5px; top: -3px; background: var(--ink); border-radius: 50%; }
 .timeline div:nth-child(2) i { width: 9px; height: 9px; top: -5px; background: var(--accent); }
 .timeline b { font-size: 12px; font-weight: 600; }
-.timeline span { font: 500 14px 'Inter', Helvetica, sans-serif; letter-spacing: -.025em; }
+.timeline span { font: 500 14px 'Suisse Intl', 'Inter', Helvetica, sans-serif; letter-spacing: -.025em; }
 .research-block .section-heading { width: 50%; margin-left: 0; }
 .research-block > .intro { margin-left: 0; }
 .instrument-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 70px; }
@@ -228,7 +234,7 @@ article .section-label { display: none; }
 .instrument-card__body {
   width: 100%; display: block; padding-top: 18px;
 }
-.instrument-card h3 { font: 500 clamp(25px, 2.7vw, 40px)/1 'Inter', Helvetica, sans-serif; letter-spacing: -.055em; }
+.instrument-card h3 { font: 500 clamp(25px, 2.7vw, 40px)/1 'Suisse Intl', 'Inter', Helvetica, sans-serif; letter-spacing: -.055em; }
 .instrument-card p { margin-top: 20px; max-width: 340px; font-size: 14px; line-height: 1.65; }
 .instrument-card strong { display: block; margin-top: 7px; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; }
 .paired-media { display: block; }
@@ -248,7 +254,7 @@ main:not(.is-deep) .insight { margin-top: 0; }
 }
 .insight .section-label { grid-column: 1 / 3; align-self: start; }
 .insight p {
-  grid-column: 1 / 11; font: 500 clamp(45px, 6.6vw, 100px)/.9 'Inter', Helvetica, sans-serif; letter-spacing: -.07em;
+  grid-column: 1 / 11; font: 500 clamp(45px, 6.6vw, 100px)/.9 'Suisse Intl', 'Inter', Helvetica, sans-serif; letter-spacing: -.07em;
 }
 .insight em { color: var(--accent); font-style: normal; }
 
@@ -332,7 +338,7 @@ main:not(.is-deep) .outcome-gallery__grid .placeholder__surface { aspect-ratio: 
   display: grid; grid-template-columns: 1fr auto; align-content: center; position: relative; overflow: hidden;
   border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
 }
-.next-project strong { margin-top: 0; align-self: center; font: 500 clamp(48px, 8vw, 120px)/.86 'Inter', Helvetica, sans-serif; letter-spacing: -.07em; }
+.next-project strong { margin-top: 0; align-self: center; font: 500 clamp(48px, 8vw, 120px)/.86 'Suisse Intl', 'Inter', Helvetica, sans-serif; letter-spacing: -.07em; }
 .next-project__label { display: none; }
 .next-project i {
   width: clamp(110px, 14vw, 210px); align-self: center; color: var(--ink);
@@ -748,7 +754,7 @@ main:not(.is-deep) .deep-content {
 }
 .about-hero h1 {
   max-width: 1380px;
-  font: 500 clamp(58px, 8vw, 124px)/.92 'Inter', Helvetica, sans-serif;
+  font: 500 clamp(58px, 8vw, 124px)/.92 'Suisse Intl', 'Inter', Helvetica, sans-serif;
   letter-spacing: -.07em;
 }
 .about-hero__bio {
@@ -865,7 +871,7 @@ main:not(.is-deep) .deep-content {
   gap: var(--space-content);
 }
 .about-closing > p {
-  font: 500 clamp(38px, 5vw, 72px)/.95 'Inter', Helvetica, sans-serif;
+  font: 500 clamp(38px, 5vw, 72px)/.95 'Suisse Intl', 'Inter', Helvetica, sans-serif;
   letter-spacing: -.06em;
 }
 .about-cv {
@@ -1268,14 +1274,4 @@ figure.placeholder .placeholder__surface:has(> img, > video) {
 main { animation: page-in .45s ease-out both; }
 @media (prefers-reduced-motion: reduce) { main { animation: none; } }
 
-/* "Email me": opens a new email addressed to Rossella */
-.mail-button {
-  display: inline-flex; align-items: center; min-height: 32px; padding: 0 14px;
-  border: 1px solid var(--ink); border-radius: 999px; color: var(--ink);
-  font-size: 12px; letter-spacing: .04em; text-transform: uppercase;
-  transition: background-color .2s ease, color .2s ease;
-}
-.mail-button:hover, .mail-button:focus-visible { background: var(--ink); color: var(--paper); }
-.footer a.mail-button::after { display: none; }
-.hm-footer a.mail-button:hover { text-decoration: none; }
 .footer, .footer div, .hm-footer, .hm-footer div { align-items: center; }
