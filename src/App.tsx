@@ -660,7 +660,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
 
       <footer id="contact" className="footer shell">
         <div>
-          <a href="mailto:magnanirossella02@gmail.com">magnanirossella02@gmail.com</a>
+          <a className="mail-button" href="mailto:magnanirossella02@gmail.com">Email me</a>
           <a href="https://www.linkedin.com/in/rossella-magnani-276219279/">LinkedIn</a>
         </div>
         <span>© {new Date().getFullYear()} Rossella Magnani</span>
@@ -822,7 +822,7 @@ function About() {
 
       <footer id="contact" className="footer shell">
         <div>
-          <a href="mailto:magnanirossella02@gmail.com">magnanirossella02@gmail.com</a>
+          <a className="mail-button" href="mailto:magnanirossella02@gmail.com">Email me</a>
           <a href="https://www.linkedin.com/in/rossella-magnani-276219279/">LinkedIn</a>
         </div>
         <span>© {new Date().getFullYear()} Rossella Magnani</span>
@@ -932,7 +932,7 @@ function Home() {
 
       <footer id="contact" className="hm-footer">
         <div>
-          <a href="mailto:magnanirossella02@gmail.com">magnanirossella02@gmail.com</a>
+          <a className="mail-button" href="mailto:magnanirossella02@gmail.com">Email me</a>
           <a href="https://www.linkedin.com/in/rossella-magnani-276219279/">LinkedIn</a>
         </div>
         <span>© {new Date().getFullYear()} Rossella Magnani</span>
@@ -1146,7 +1146,7 @@ function CaseStudy() {
 
       <footer id="contact" className="footer shell">
         <div>
-          <a href="mailto:magnanirossella02@gmail.com">magnanirossella02@gmail.com</a>
+          <a className="mail-button" href="mailto:magnanirossella02@gmail.com">Email me</a>
           <a href="https://www.linkedin.com/in/rossella-magnani-276219279/">LinkedIn</a>
         </div>
         <span>© {new Date().getFullYear()} Rossella Magnani</span>

@@ -1243,3 +1243,39 @@ figure.placeholder .placeholder__surface:has(> img, > video) {
   .hero .hero__media .placeholder__surface { height: calc(100svh - 72px - 16px); }
   .hero__text { padding-top: 0; padding-bottom: 0; justify-content: flex-end; gap: clamp(32px, 4vw, 56px); }
 }
+
+/* ------------------------------------------------------------------
+   Same page margins and header on every page as on the home page
+------------------------------------------------------------------- */
+:root { --page-margin: 20px; }
+.shell { width: calc(100% - 2 * var(--page-margin)); max-width: none; }
+.site-header.nav { height: 64px; min-height: 0; padding-top: 0; }
+.hero__text { padding-left: var(--page-margin); }
+@media (min-width: 761px) {
+  .hero .hero__media { margin-right: var(--page-margin); }
+  .hero .hero__media .placeholder__surface { height: calc(100svh - 64px - var(--page-margin)); }
+}
+.next-project { padding-inline: var(--page-margin); }
+.process-strip { padding-inline: var(--page-margin); }
+@media (max-width: 760px) {
+  :root { --page-margin: 16px; }
+  .site-header.nav { height: auto; padding-top: 20px; }
+  .hero__text { padding-inline: var(--page-margin); }
+}
+
+/* A very light fade on the content each time a page opens */
+@keyframes page-in { from { opacity: 0; } to { opacity: 1; } }
+main { animation: page-in .45s ease-out both; }
+@media (prefers-reduced-motion: reduce) { main { animation: none; } }
+
+/* "Email me": opens a new email addressed to Rossella */
+.mail-button {
+  display: inline-flex; align-items: center; min-height: 32px; padding: 0 14px;
+  border: 1px solid var(--ink); border-radius: 999px; color: var(--ink);
+  font-size: 12px; letter-spacing: .04em; text-transform: uppercase;
+  transition: background-color .2s ease, color .2s ease;
+}
+.mail-button:hover, .mail-button:focus-visible { background: var(--ink); color: var(--paper); }
+.footer a.mail-button::after { display: none; }
+.hm-footer a.mail-button:hover { text-decoration: none; }
+.footer, .footer div, .hm-footer, .hm-footer div { align-items: center; }
