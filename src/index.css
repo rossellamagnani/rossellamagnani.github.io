@@ -348,15 +348,6 @@ main:not(.is-deep) .outcome-gallery__grid .placeholder__surface { aspect-ratio: 
 .footer div { display: flex; justify-content: flex-end; gap: 30px; font-size: 12px; }
 .footer > span { color: var(--muted); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
 
-/* Case study pages reserve a left gutter for the vertical section marker so it never overlaps content */
-:root { --marker-gutter: 40px; --marker-left: 14px; }
-main:has(> .section-marker) { padding-left: var(--marker-gutter); }
-.section-marker {
-  position: fixed; z-index: 10; left: var(--marker-left); top: 50%; translate: 0 -50%;
-  writing-mode: vertical-rl; rotate: 180deg; display: flex;
-  font-size: 9px; letter-spacing: .15em; text-transform: uppercase;
-}
-.section-marker strong { color: var(--accent); font-weight: 600; }
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s ease; }
 .reveal.is-visible { opacity: 1; transform: none; }
 
@@ -393,7 +384,6 @@ main:has(> .section-marker) { padding-left: var(--marker-gutter); }
   .process-strip .placeholder { min-width: 78vw; }
   .reflection > div { grid-column: 1 / 11; }
   .reflection p { margin-left: 0; }
-  :root { --marker-gutter: 32px; --marker-left: 10px; }
   .section { padding-block: 110px; }
   .process { padding-block: 110px; }
   .quick-read { padding-block: 100px; }
@@ -422,11 +412,6 @@ main:has(> .section-marker) { padding-left: var(--marker-gutter); }
   .nav nav { gap: 14px; font-size: 12px; }
   .brand, .nav nav a { font-size: 12px; }
   .brand { font-size: 12px; }
-  :root { --marker-gutter: 26px; --marker-left: 8px; }
-  .section-marker {
-    display: flex; top: 50%; font-size: 9px;
-    letter-spacing: .12em;
-  }
   .hero { padding-top: 18px; }
   .hero h1 { margin-top: 42px; font-size: clamp(62px, 21vw, 88px); }
   .hero__subtitle { margin: 36px 0 0; max-width: 280px; }
@@ -1079,8 +1064,6 @@ main:not(.is-deep) .deep-content {
 .will-form > img, .will-form > video { scale: 1.12; transition: scale 1.3s cubic-bezier(.65, 0, .35, 1) var(--form-delay, 0s); }
 .will-form.is-formed > img, .will-form.is-formed > video { scale: 1; }
 
-/* The grey deep-dive band also runs under the vertical section label */
-.expanded-research { margin-left: calc(-1 * var(--marker-gutter)); padding-left: var(--marker-gutter); }
 
 @media (max-width: 760px) {
   .hero .hero__head { display: block; }
@@ -1105,7 +1088,7 @@ main:not(.is-deep) .deep-content {
 .next-project strong { font-weight: 400; letter-spacing: -.03em; }
 
 /* Case studies: text sits still, only images animate */
-main:has(> .section-marker) .reveal { opacity: 1; transform: none; transition: none; }
+main.case .reveal { opacity: 1; transform: none; transition: none; }
 
 
 /* Outcome images: smaller and centred, with more air between them */
@@ -1231,4 +1214,23 @@ figure.placeholder .placeholder__surface:has(> img, > video) {
   .hero__media .placeholder__surface { aspect-ratio: 4 / 5; max-height: 70svh; }
   .hero__text { padding-top: 0; gap: 36px; }
   .hero .hero__head h1 { font-size: min(64px, calc((100vw - 60px) / 7.4)); }
+}
+
+/* Opening image fills the right half of the screen, from the header to the bottom edge */
+.hero.shell {
+  width: 100%; margin: 0; padding: 0 0 clamp(64px, 7vw, 112px);
+  grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 0;
+}
+.hero__text {
+  grid-column: 1; padding: clamp(32px, 4vw, 64px) clamp(24px, 4vw, 64px) 0 max(16px, calc((100vw - 1600px) / 2));
+}
+.hero .hero__media { grid-column: 2; width: 100%; }
+.hero .hero__media .placeholder__surface { aspect-ratio: auto; height: calc(100svh - 72px); max-height: none; }
+.hero .hero__media .placeholder__surface > img,
+.hero .hero__media .placeholder__surface > video { height: 100%; object-fit: cover; }
+
+@media (max-width: 760px) {
+  .hero.shell { display: flex; flex-direction: column; gap: 32px; padding: 0 0 56px; }
+  .hero__text { padding: 0 16px; }
+  .hero .hero__media .placeholder__surface { height: auto; aspect-ratio: 4 / 5; max-height: 70svh; }
 }

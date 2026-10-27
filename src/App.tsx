@@ -270,16 +270,6 @@ const caseStudies = [
   },
 ]
 
-const sectionNames: Record<string, string> = {
-  challenge: 'Challenge',
-  research: 'Research',
-  insight: 'Insight',
-  process: 'Process',
-  outcome: 'Outcome',
-  reflection: 'Reflection',
-  'next-project': 'Next project',
-}
-
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 const scrollBehavior = (): ScrollBehavior => (prefersReducedMotion() ? 'auto' : 'smooth')
 
@@ -427,7 +417,6 @@ function SiteHeader({ skipTo = 'content', children }: { skipTo?: string; childre
 }
 
 function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
-  const [activeSection, setActiveSection] = useState('challenge')
   const [deepView, setDeepView] = useState(false)
   const projectIndex = projects.findIndex(item => item.slug === project.slug)
   const nextProject = projects[(projectIndex + 1) % projects.length]
@@ -449,42 +438,13 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
     )
 
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el))
-    const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-section]')).filter(
-      section => section.offsetHeight > 0,
-    )
-    let frame = 0
-    const updateActiveSection = () => {
-      const readingLine = window.innerHeight * 0.42
-      let current: HTMLElement | undefined
-      for (const section of sections) {
-        if (section.getBoundingClientRect().top <= readingLine) current = section
-        else break
-      }
-      setActiveSection(current?.id || 'challenge')
-      frame = 0
-    }
-    const handleScroll = () => {
-      if (!frame) frame = window.requestAnimationFrame(updateActiveSection)
-    }
-    updateActiveSection()
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    window.addEventListener('resize', handleScroll)
-    return () => {
-      revealObserver.disconnect()
-      window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('resize', handleScroll)
-      if (frame) window.cancelAnimationFrame(frame)
-    }
+    return () => revealObserver.disconnect()
   }, [deepView])
   useGrowOnScroll(deepView)
 
   return (
-    <main className={deepView || project.slug === 'crossing-kyiv' || project.slug === 'a-drop-of-corruption' ? 'is-deep' : ''}>
+    <main className={`case ${deepView || project.slug === 'crossing-kyiv' || project.slug === 'a-drop-of-corruption' ? 'is-deep' : ''}`}>
       <SiteHeader />
-
-      <aside className="section-marker" aria-hidden="true">
-        <strong>{sectionNames[activeSection]}</strong>
-      </aside>
 
       <article id="content" tabIndex={-1}>
         <section className="hero shell reveal">
@@ -565,7 +525,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
 
         {project.slug !== 'crossing-kyiv' && project.slug !== 'a-drop-of-corruption' && (
         <div className="expanded-research deep-content">
-          <section id="challenge" data-section className="section shell challenge reveal">
+          <section id="challenge" className="section shell challenge reveal">
             <div className="section-label">Challenge</div>
             <div className="challenge__copy">
               <p>{project.challenge}</p>
@@ -579,7 +539,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
             </blockquote>
           </section>
 
-          <section id="research" data-section className="section shell research">
+          <section id="research" className="section shell research">
             <div className="section-label reveal">Research</div>
 
             <div className="research-row reveal">
@@ -646,14 +606,14 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
             </div>
           </section>
 
-          <section id="insight" data-section className="insight reveal">
+          <section id="insight" className="insight reveal">
             <div className="shell insight__inner">
               <div className="section-label">Key insight</div>
               <p>{project.insight}</p>
             </div>
           </section>
 
-          <section id="process" data-section className="section process reveal">
+          <section id="process" className="section process reveal">
             <div className="process-sticky">
               <div className="shell process__head">
                 <div className="section-label">Process</div>
@@ -673,7 +633,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
         </div>
         )}
 
-        <section id="outcome" data-section className="section shell outcome">
+        <section id="outcome" className="section shell outcome">
           <div className="outcome-gallery reveal">
             <span className="outcome-gallery__number">03</span>
             <h2>{project.summary}</h2>
@@ -686,7 +646,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
           </div>
         </section>
 
-        <a id="next-project" data-section className="next-project reveal" href={`/${nextProject.slug}`}>
+        <a id="next-project" className="next-project reveal" href={`/${nextProject.slug}`}>
           <span className="next-project__label">Next project</span>
           <strong lang={nextProject.lang}>{nextProject.title}</strong>
           <i aria-hidden="true">
@@ -982,7 +942,6 @@ function Home() {
 }
 
 function CaseStudy() {
-  const [activeSection, setActiveSection] = useState('challenge')
   const [deepView, setDeepView] = useState(false)
 
   useEffect(() => {
@@ -992,43 +951,13 @@ function CaseStudy() {
     )
 
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el))
-    const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-section]')).filter(
-      section => section.offsetHeight > 0,
-    )
-    let frame = 0
-    const updateActiveSection = () => {
-      const readingLine = window.innerHeight * 0.42
-      let current: HTMLElement | undefined
-      for (const section of sections) {
-        if (section.getBoundingClientRect().top <= readingLine) current = section
-        else break
-      }
-      setActiveSection(current?.id || 'challenge')
-      frame = 0
-    }
-    const handleScroll = () => {
-      if (!frame) frame = window.requestAnimationFrame(updateActiveSection)
-    }
-    updateActiveSection()
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    window.addEventListener('resize', handleScroll)
-
-    return () => {
-      revealObserver.disconnect()
-      window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('resize', handleScroll)
-      if (frame) window.cancelAnimationFrame(frame)
-    }
+    return () => revealObserver.disconnect()
   }, [deepView])
   useGrowOnScroll(deepView)
 
   return (
-    <main className={deepView ? 'is-deep' : ''}>
+    <main className={`case ${deepView ? 'is-deep' : ''}`}>
       <SiteHeader />
-
-      <aside className="section-marker" aria-hidden="true">
-        <strong>{sectionNames[activeSection]}</strong>
-      </aside>
 
       <article id="content" tabIndex={-1}>
         <section className="hero shell reveal">
@@ -1101,7 +1030,7 @@ function CaseStudy() {
         </section>
 
         <div className="expanded-research deep-content">
-        <section id="challenge" data-section className="section shell challenge reveal">
+        <section id="challenge" className="section shell challenge reveal">
           <div className="section-label">Challenge</div>
           <div className="challenge__copy">
             <p>
@@ -1113,7 +1042,7 @@ function CaseStudy() {
           <blockquote>“A sound is not only heard. It can be <span>seen and held</span>.”</blockquote>
         </section>
 
-        <section id="research" data-section className="section shell research">
+        <section id="research" className="section shell research">
           <div className="section-label reveal">Research</div>
 
           <div className="research-row reveal">
@@ -1164,7 +1093,7 @@ function CaseStudy() {
           </div>
         </section>
 
-        <section id="insight" data-section className="insight reveal">
+        <section id="insight" className="insight reveal">
           <div className="shell insight__inner">
             <div className="section-label">Key insight</div>
             <p>
@@ -1174,7 +1103,7 @@ function CaseStudy() {
           </div>
         </section>
 
-        <section id="process" data-section className="section process reveal">
+        <section id="process" className="section process reveal">
           <div className="process-sticky">
             <div className="shell process__head">
               <div className="section-label">Process</div>
@@ -1190,7 +1119,7 @@ function CaseStudy() {
         </section>
         </div>
 
-        <section id="outcome" data-section className="section shell outcome">
+        <section id="outcome" className="section shell outcome">
           <div className="outcome-gallery reveal">
             <span className="outcome-gallery__number">03</span>
             <h2>Designing with, not only for, the senses.</h2>
@@ -1203,7 +1132,7 @@ function CaseStudy() {
           </div>
         </section>
 
-        <a id="next-project" data-section href="/sovrapposizioni" className="next-project reveal">
+        <a id="next-project" href="/sovrapposizioni" className="next-project reveal">
           <span className="next-project__label">Next project</span>
           <strong lang="it">Sovrapposizioni</strong>
           <i aria-hidden="true">
