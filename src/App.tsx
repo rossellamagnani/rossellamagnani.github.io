@@ -355,7 +355,9 @@ function useGrowOnScroll(dependency: unknown) {
     const update = () => {
       const viewport = window.innerHeight
       elements.forEach(element => {
-        const progress = (viewport * 0.92 - element.getBoundingClientRect().top) / (viewport * 0.6)
+        // The uncovered edge stays near the bottom of the screen, so the reveal is visible even on very tall images
+        const rect = element.getBoundingClientRect()
+        const progress = (viewport * 0.85 - rect.top) / rect.height
         element.style.setProperty('--grow', String(Math.min(1, Math.max(0, progress))))
       })
       frame = 0
