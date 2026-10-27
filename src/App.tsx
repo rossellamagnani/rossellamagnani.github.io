@@ -1244,6 +1244,11 @@ export default function App() {
   useEffect(() => {
     document.title = pageName ? `${pageName} · Rossella Magnani` : 'Rossella Magnani · Exhibition and experiential designer'
   }, [pageName])
+  // Every page opens at the top, also when arriving from "Next project" at the bottom of another one
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual'
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  }, [path])
   return (
     <>
       <CustomCursor />
