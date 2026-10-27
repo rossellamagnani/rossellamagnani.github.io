@@ -1234,3 +1234,13 @@ figure.placeholder .placeholder__surface:has(> img, > video) {
   .hero__text { padding: 0 16px; }
   .hero .hero__media .placeholder__surface { height: auto; aspect-ratio: 4 / 5; max-height: 70svh; }
 }
+
+/* Opening: the image keeps the page margin on the right; the text column is as tall as the image,
+   title and subtitle at its top edge, project details at its bottom edge */
+@media (min-width: 761px) {
+  .hero.shell { align-items: stretch; }
+  .hero .hero__media { width: auto; margin-right: max(16px, calc((100vw - 1600px) / 2)); }
+  .hero .hero__media .placeholder__surface { height: calc(100svh - 72px - 16px); }
+  .hero__text { padding-top: 0; padding-bottom: 0; justify-content: space-between; }
+  .hero .hero__head h1 { margin-top: -.12em; }
+}
