@@ -1140,3 +1140,77 @@ main:has(> .section-marker) .reveal { opacity: 1; transform: none; transition: n
 .outcome-gallery .placeholder { width: min(100%, 1040px); margin-inline: auto; }
 main .outcome-gallery .outcome-gallery__grid { margin-top: 64px; }
 main .outcome-gallery .outcome-gallery__grid .placeholder + .placeholder { margin-top: 64px; }
+
+/* ------------------------------------------------------------------
+   One language across the site, taken from the home page:
+   small uppercase grey labels, mid-size statements, plain text controls.
+   The project title in the case study opening stays the only large moment.
+------------------------------------------------------------------- */
+.fact span,
+.quick-read__steps span,
+.section-heading span,
+.reading-action small,
+.outcome-gallery__number,
+.about-table__head span,
+.about article .section-label,
+.instrument-card strong {
+  color: var(--muted); font-size: 13px; font-weight: 400; letter-spacing: .04em; text-transform: uppercase;
+}
+
+.quick-read__title h2,
+.outcome-gallery h2,
+.process h2,
+.insight p,
+.challenge blockquote,
+.section-heading h2,
+.reading-action strong,
+.about-hero h1,
+.about-closing > p {
+  font-size: clamp(24px, 2.4vw, 36px); font-weight: 400; line-height: 1.2; letter-spacing: -.015em;
+}
+.instrument-card h3,
+.about-approach__grid strong { font-size: 20px; font-weight: 400; line-height: 1.25; letter-spacing: -.01em; }
+
+/* "Got more time?": a text control like Gallery / List, no filled circle */
+.reading-action { min-height: 0; padding-block: 18px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.reading-action i {
+  width: auto; height: auto; background: none; color: var(--ink); border-radius: 0;
+  font-size: 28px; font-weight: 300;
+}
+.reading-action:hover { color: var(--ink); }
+.reading-action:hover strong { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
+.reading-action:hover i { transform: rotate(90deg); scale: 1; }
+
+/* Next project: label + title on a thin rule, like a row of the home list */
+.next-project {
+  min-height: 0; padding-block: 40px 56px; grid-template-columns: 1fr auto; row-gap: 14px;
+  border-top: 1px solid var(--line); border-bottom: 0;
+}
+.next-project__label {
+  display: block; grid-column: 1 / -1; color: var(--muted);
+  font-size: 13px; letter-spacing: .04em; text-transform: uppercase;
+}
+.next-project strong { font-size: clamp(28px, 3.2vw, 48px); font-weight: 400; line-height: 1.1; letter-spacing: -.02em; }
+.next-project i { width: clamp(36px, 3.4vw, 52px); }
+
+/* Footer: email and LinkedIn on the left, licence on the right, as on the home page */
+.footer { min-height: 0; padding-block: 64px 24px; align-items: baseline; font-size: 12px; letter-spacing: .04em; }
+.footer div { justify-content: flex-start; gap: 24px; }
+.footer > span { color: var(--muted); }
+
+/* CV: a text link instead of a filled pill */
+.about-cv {
+  padding: 0; color: var(--ink); background: none; border-radius: 0;
+  font-size: 13px; font-weight: 400; letter-spacing: .04em;
+  text-decoration: underline; text-underline-offset: 4px;
+}
+.about-cv:hover { transform: none; text-decoration-thickness: 2px; }
+
+@media (max-width: 760px) {
+  .next-project { padding: 32px 16px 40px; }
+  .footer { flex-direction: column; align-items: flex-start; gap: 16px; text-align: left; }
+  .footer div { width: 100%; flex-direction: row; flex-wrap: wrap; align-items: baseline; justify-content: flex-start; gap: 8px 24px; }
+}
+.quick-read__steps article { border-top-color: var(--line); }
+.about-hero__bio p { font-size: 16px; line-height: 1.6; }
+.about-closing { border-top-color: var(--line); }

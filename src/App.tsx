@@ -680,11 +680,11 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
       </article>
 
       <footer id="contact" className="footer shell">
-        <span>© {new Date().getFullYear()} Rossella Magnani</span>
         <div>
-          <a href="mailto:magnanirossella02@gmail.com">Email</a>
+          <a href="mailto:magnanirossella02@gmail.com">magnanirossella02@gmail.com</a>
           <a href="https://www.linkedin.com/in/rossella-magnani-276219279/">LinkedIn</a>
         </div>
+        <span>© {new Date().getFullYear()} Rossella Magnani</span>
       </footer>
     </main>
   )
@@ -842,11 +842,11 @@ function About() {
       </article>
 
       <footer id="contact" className="footer shell">
-        <span>© {new Date().getFullYear()} Rossella Magnani</span>
         <div>
-          <a href="mailto:magnanirossella02@gmail.com">Email</a>
+          <a href="mailto:magnanirossella02@gmail.com">magnanirossella02@gmail.com</a>
           <a href="https://www.linkedin.com/in/rossella-magnani-276219279/">LinkedIn</a>
         </div>
+        <span>© {new Date().getFullYear()} Rossella Magnani</span>
       </footer>
     </main>
   )
@@ -1227,11 +1227,11 @@ function CaseStudy() {
       </article>
 
       <footer id="contact" className="footer shell">
-        <span>© {new Date().getFullYear()} Rossella Magnani</span>
         <div>
-          <a href="mailto:magnanirossella02@gmail.com">Email</a>
+          <a href="mailto:magnanirossella02@gmail.com">magnanirossella02@gmail.com</a>
           <a href="https://www.linkedin.com/in/rossella-magnani-276219279/">LinkedIn</a>
         </div>
+        <span>© {new Date().getFullYear()} Rossella Magnani</span>
       </footer>
     </main>
   )
