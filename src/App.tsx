@@ -344,8 +344,8 @@ function Placeholder({
   )
 }
 
-// Every image except the opening one (which draws in on load) is uncovered from top to bottom as it scrolls into view
-const GROW_SELECTOR = '.placeholder__surface:not(.hero__media .placeholder__surface), .hm-image'
+// Every case study image except the opening one (which draws in on load) is uncovered from top to bottom as it scrolls into view
+const GROW_SELECTOR = '.placeholder__surface:not(.hero__media .placeholder__surface)'
 
 function useGrowOnScroll(dependency: unknown) {
   useEffect(() => {
@@ -894,7 +894,6 @@ function Home() {
       if (frame) window.cancelAnimationFrame(frame)
     }
   }, [view])
-  useGrowOnScroll(view)
 
   const scrollToProject = (index: number) => {
     document.getElementById(`project-${index}`)?.scrollIntoView({ behavior: scrollBehavior(), block: 'center' })

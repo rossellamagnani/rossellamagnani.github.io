@@ -1098,8 +1098,7 @@ main:not(.is-deep) .deep-content {
 /* Opening image draws in from the top when the page loads; the others follow the scroll */
 @keyframes uncover { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0); } }
 .hero__media .placeholder__surface { animation: uncover 1.4s cubic-bezier(.4, 0, .2, 1) .15s both; }
-.placeholder__surface,
-.hm-image {
+.placeholder__surface {
   clip-path: inset(0 0 calc((1 - var(--grow, 1)) * 100%) 0);
 }
 
@@ -1114,7 +1113,7 @@ main:not(.is-deep) .deep-content {
 
 @media (prefers-reduced-motion: reduce) {
   .hero__media .placeholder__surface { animation: none; }
-  .placeholder__surface, .hm-image { clip-path: none; }
+  .placeholder__surface { clip-path: none; }
 }
 
 /* Quieter scale for the large statements inside case studies */
