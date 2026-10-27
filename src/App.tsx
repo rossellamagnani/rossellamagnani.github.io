@@ -42,7 +42,7 @@ const caseStudies = [
     lead: 'What makes a work of art authentic?',
     type: 'Exhibition design, editorial design, AI',
     year: '2024',
-    context: 'Academic project · Politecnico di Milano',
+    context: 'Academic project · Politecnico di Milano · MEET Digital Culture Center',
     summary:
       'A generative exhibition and editorial system that questions where authorship ends and artificial intelligence begins.',
     quickSteps: [
@@ -419,16 +419,16 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
 
       <article>
         <section className="hero shell reveal">
+          <Placeholder
+            className="hero__media"
+            caption={`${project.title}: main project visual`}
+          />
           <h1>{project.title}</h1>
           <p className="hero__subtitle">
             {project.slug === 'crossing-kyiv'
               ? 'Ukrainian creativity beyond the narratives of war.'
               : project.lead}
           </p>
-          <Placeholder
-            className="hero__media"
-            caption={`${project.title}: main project visual`}
-          />
         </section>
 
         <section className="facts shell reveal" aria-label="Project details">
@@ -999,14 +999,14 @@ function CaseStudy() {
 
       <article>
         <section className="hero shell reveal">
-          <h1>Oltre<br />l’ascolto</h1>
-          <p className="hero__subtitle hero__subtitle--ink">
-            Making sound accessible <span>beyond hearing</span>
-          </p>
           <Placeholder
             className="hero__media"
             caption="Main video still: abstract visualisation of electronic sound"
           />
+          <h1>Oltre<br />l’ascolto</h1>
+          <p className="hero__subtitle hero__subtitle--ink">
+            Making sound accessible <span>beyond hearing</span>
+          </p>
         </section>
 
         <section className="facts shell reveal" aria-label="Project details">
