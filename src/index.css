@@ -1321,3 +1321,21 @@ main { animation: page-in .45s ease-out both; }
 .outcome-part > .intro { margin-top: 14px; }
 .instrument-card .instrument-card__body p { margin-top: 10px; }
 .section-heading h2 { margin-top: 8px; }
+
+/* "Got more time?": once opened, the button row and the deep dive form one near-black band */
+main.is-deep .reading-mode,
+.expanded-research {
+  --ink: #f2f1ee; --muted: #a8a7a2; --line: rgba(242, 241, 238, .2); --accent: #f2f1ee;
+  background: #161616; color: var(--ink);
+}
+main.is-deep .reading-mode {
+  padding-bottom: 0; box-shadow: 0 0 0 100vmax #161616; clip-path: inset(0 -100vmax);
+}
+main.is-deep .reading-action,
+main.is-deep .reading-action i { color: var(--ink); }
+.expanded-research #challenge { padding-top: clamp(48px, 5vw, 72px); }
+
+/* Image placeholders read as frames on the dark band */
+.expanded-research .placeholder__surface { background-color: #262625; background-image: linear-gradient(135deg, transparent 49.8%, rgba(242,241,238,.1) 50%, transparent 50.2%); }
+.expanded-research .placeholder__surface::after { border-color: rgba(242, 241, 238, .14); }
+.expanded-research .placeholder__index { color: var(--muted); }
