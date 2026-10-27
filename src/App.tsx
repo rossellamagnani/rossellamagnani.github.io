@@ -355,7 +355,7 @@ function useGrowOnScroll(dependency: unknown) {
     const update = () => {
       const viewport = window.innerHeight
       elements.forEach(element => {
-        const progress = (viewport - element.getBoundingClientRect().top) / (viewport * 0.6)
+        const progress = (viewport * 0.92 - element.getBoundingClientRect().top) / (viewport * 0.6)
         element.style.setProperty('--grow', String(Math.min(1, Math.max(0, progress))))
       })
       frame = 0
@@ -425,7 +425,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
   useEffect(() => {
     const revealObserver = new IntersectionObserver(
       entries => entries.forEach(entry => entry.isIntersecting && entry.target.classList.add('is-visible')),
-      { threshold: 0.12 },
+      { threshold: 0, rootMargin: '0px 0px -8% 0px' },
     )
 
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el))
@@ -750,7 +750,7 @@ function About() {
   useEffect(() => {
     const revealObserver = new IntersectionObserver(
       entries => entries.forEach(entry => entry.isIntersecting && entry.target.classList.add('is-visible')),
-      { threshold: 0.12 },
+      { threshold: 0, rootMargin: '0px 0px -8% 0px' },
     )
     document.querySelectorAll('.about .reveal').forEach(element => revealObserver.observe(element))
     return () => revealObserver.disconnect()
@@ -999,7 +999,7 @@ function CaseStudy() {
   useEffect(() => {
     const revealObserver = new IntersectionObserver(
       entries => entries.forEach(entry => entry.isIntersecting && entry.target.classList.add('is-visible')),
-      { threshold: 0.12 },
+      { threshold: 0, rootMargin: '0px 0px -8% 0px' },
     )
 
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el))
