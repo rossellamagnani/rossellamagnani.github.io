@@ -348,7 +348,7 @@ function Placeholder({
 // process strip) do it one after another, left to right
 const GROW_SELECTOR = '.placeholder__surface:not(.hero__media .placeholder__surface)'
 const GROUP_SELECTOR = '.instrument-grid, .paired-media, .process-strip'
-const easeInOut = (value: number) => (value < 0.5 ? 4 * value ** 3 : 1 - (-2 * value + 2) ** 3 / 2)
+const easeInOut = (value: number) => 0.5 - Math.cos(Math.PI * value) / 2
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value))
 
 function useGrowOnScroll(dependency: unknown) {
@@ -361,31 +361,40 @@ function useGrowOnScroll(dependency: unknown) {
         const group = element.closest<HTMLElement>(GROUP_SELECTOR)
         if (group) {
           const index = Array.from(group.querySelectorAll(GROW_SELECTOR)).indexOf(element)
-          return clamp01((viewport * 0.9 - group.getBoundingClientRect().top) / (viewport * 0.6) - index * 0.3)
+          return clamp01((viewport * 0.95 - group.getBoundingClientRect().top) / (viewport * 0.75) - index * 0.3)
         }
-        // The forming edge stays near the bottom of the screen, so it is visible even on very tall images
+        // The forming edge never passes the bottom of the screen, so it stays visible even on very tall
+        // images; the image is complete by the time its bottom reaches 60% of the screen
         const rect = element.getBoundingClientRect()
-        return clamp01((viewport * 0.85 - rect.top) / rect.height)
+        return clamp01((viewport * 0.95 - rect.top) / (rect.height + viewport * 0.35))
       })
     }
     const apply = (progress: number[]) => {
       elements.forEach((element, index) => element.style.setProperty('--grow', String(easeInOut(progress[index]))))
     }
-    // Progress glides toward the scroll position, so wheel steps turn into a continuous movement
+    // Progress glides toward the scroll position at the same pace on any screen refresh rate,
+    // so wheel steps turn into one continuous movement
     let current = target()
     apply(current)
     let frame = 0
-    const tick = () => {
+    let last = 0
+    const tick = (now: number) => {
+      const blend = last ? 1 - Math.exp(-(now - last) / 160) : 0.1
+      last = now
       const goal = target()
       let moving = false
       current = current.map((value, index) => {
         const distance = goal[index] - value
-        if (Math.abs(distance) < 0.002) return goal[index]
+        if (Math.abs(distance) < 0.001) return goal[index]
         moving = true
-        return value + distance * 0.07
+        return value + distance * blend
       })
       apply(current)
-      frame = moving ? window.requestAnimationFrame(tick) : 0
+      if (moving) frame = window.requestAnimationFrame(tick)
+      else {
+        frame = 0
+        last = 0
+      }
     }
     const onScroll = () => {
       if (!frame) frame = window.requestAnimationFrame(tick)

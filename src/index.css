@@ -1100,6 +1100,7 @@ main:not(.is-deep) .deep-content {
 .hero__media .placeholder__surface { animation: form-down 1.4s cubic-bezier(.65, 0, .35, 1) .15s both; }
 .placeholder__surface {
   clip-path: inset(0 0 calc((1 - var(--grow, 1)) * 100%) 0);
+  will-change: clip-path;
 }
 /* The picture inside settles from a slight zoom while its frame opens */
 .placeholder__surface > img, .placeholder__surface > video { scale: calc(1 + (1 - var(--grow, 1)) * .12); }
