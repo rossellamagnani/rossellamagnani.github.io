@@ -1345,3 +1345,48 @@ main.is-deep .reading-mode { padding-bottom: 0; }
 .expanded-research .placeholder__surface::after { border-color: rgba(242, 241, 238, .14); }
 .expanded-research .placeholder__index { color: var(--muted); }
 .reading-action[aria-expanded="true"]:hover i { transform: none; }
+
+/* ------------------------------------------------------------------
+   Outcome compositions, one per project, on the four-column grid (8px gutters).
+   --start / --span place the main image; grid-column places the three details.
+------------------------------------------------------------------- */
+@media (min-width: 761px) {
+  .outcome-gallery { --col: calc((100% - 24px) / 4); }
+  .outcome-gallery .outcome-gallery__hero {
+    --start: 0; --span: 3;
+    width: calc(var(--span) * var(--col) + (var(--span) - 1) * 8px);
+    margin: 0 0 0 calc(var(--start) * (var(--col) + 8px));
+  }
+
+  /* Sovrapposizioni: wide left, then right, centre, left */
+  .outcome-gallery--sovrapposizioni .outcome-gallery__grid .placeholder:nth-child(1) { grid-column: 4; }
+  .outcome-gallery--sovrapposizioni .outcome-gallery__grid .placeholder:nth-child(2) { grid-column: 2 / 4; }
+  .outcome-gallery--sovrapposizioni .outcome-gallery__grid .placeholder:nth-child(3) { grid-column: 1 / 3; }
+
+  /* Oltre l'ascolto: wide right, then left, right pair, centre */
+  .outcome-gallery--oltre-lascolto .outcome-gallery__hero { --start: 1; }
+  .outcome-gallery--oltre-lascolto .outcome-gallery__grid .placeholder:nth-child(1) { grid-column: 1; }
+  .outcome-gallery--oltre-lascolto .outcome-gallery__grid .placeholder:nth-child(2) { grid-column: 3 / 5; }
+  .outcome-gallery--oltre-lascolto .outcome-gallery__grid .placeholder:nth-child(3) { grid-column: 2 / 4; }
+
+  /* Marco Magnani Art: full width, then a pair side by side, then centre */
+  .outcome-gallery--marco-magnani-art .outcome-gallery__hero { --span: 4; }
+  .outcome-gallery--marco-magnani-art .outcome-gallery__grid .placeholder:nth-child(1) { grid-column: 1 / 3; }
+  .outcome-gallery--marco-magnani-art .outcome-gallery__grid .placeholder:nth-child(2) { grid-column: 3 / 5; }
+  .outcome-gallery--marco-magnani-art .outcome-gallery__grid .placeholder:nth-child(3) { grid-column: 2 / 4; }
+
+  /* Crossing Kyiv: centred, then left pair, single right, wide right */
+  .outcome-gallery--crossing-kyiv .outcome-gallery__hero { --start: 1; --span: 2; }
+  .outcome-gallery--crossing-kyiv .outcome-gallery__grid .placeholder:nth-child(1) { grid-column: 1 / 3; }
+  .outcome-gallery--crossing-kyiv .outcome-gallery__grid .placeholder:nth-child(2) { grid-column: 4; }
+  .outcome-gallery--crossing-kyiv .outcome-gallery__grid .placeholder:nth-child(3) { grid-column: 2 / 5; }
+
+  /* PRO Brera: right half, then a staircase from left to right */
+  .outcome-gallery--brera-district .outcome-gallery__hero { --start: 2; --span: 2; }
+  .outcome-gallery--brera-district .outcome-gallery__grid .placeholder:nth-child(1) { grid-column: 1; }
+  .outcome-gallery--brera-district .outcome-gallery__grid .placeholder:nth-child(2) { grid-column: 2 / 4; }
+  .outcome-gallery--brera-district .outcome-gallery__grid .placeholder:nth-child(3) { grid-column: 3 / 5; }
+
+  /* a drop of corruption: a single video in the centre */
+  .outcome-gallery--a-drop-of-corruption .outcome-gallery__hero { width: min(100%, 1040px); margin-inline: auto; }
+}

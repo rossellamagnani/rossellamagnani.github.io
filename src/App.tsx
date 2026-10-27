@@ -699,15 +699,22 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
         )}
 
         <section id="outcome" className="section shell outcome">
-          <div className="outcome-gallery reveal">
+          {/* Each project composes its outcome images differently on the four-column grid */}
+          <div className={`outcome-gallery outcome-gallery--${project.slug} reveal`}>
             <span className="outcome-gallery__number">03</span>
             <h2><Lines text={project.summary} /></h2>
-            <Placeholder className="outcome-gallery__hero" play caption={`${project.title}: main outcome`} />
-            <div className="outcome-gallery__grid">
-              <Placeholder caption={`${project.title}: outcome detail 01`} />
-              <Placeholder caption={`${project.title}: outcome detail 02`} />
-              <Placeholder caption={`${project.title}: outcome detail 03`} />
-            </div>
+            <Placeholder
+              className="outcome-gallery__hero"
+              play
+              caption={project.slug === 'a-drop-of-corruption' ? `${project.title}: video` : `${project.title}: main outcome`}
+            />
+            {project.slug !== 'a-drop-of-corruption' && (
+              <div className="outcome-gallery__grid">
+                <Placeholder caption={`${project.title}: outcome detail 01`} />
+                <Placeholder caption={`${project.title}: outcome detail 02`} />
+                <Placeholder caption={`${project.title}: outcome detail 03`} />
+              </div>
+            )}
           </div>
         </section>
 
@@ -1184,7 +1191,7 @@ function CaseStudy() {
         </div>
 
         <section id="outcome" className="section shell outcome">
-          <div className="outcome-gallery reveal">
+          <div className="outcome-gallery outcome-gallery--oltre-lascolto reveal">
             <span className="outcome-gallery__number">03</span>
             <h2><Lines text="Designing with, not only for, the senses." /></h2>
             <Placeholder className="outcome-gallery__hero" play caption="Final video, 04:12" />
