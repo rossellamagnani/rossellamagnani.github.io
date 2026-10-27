@@ -344,49 +344,9 @@ function Placeholder({
   )
 }
 
-function SplitWords({ text }: { text: string }) {
-  const ref = useRef<HTMLSpanElement>(null)
+// Every image except the opening one (which draws in on load) is uncovered from top to bottom as it scrolls into view
+const GROW_SELECTOR = '.placeholder__surface:not(.hero__media .placeholder__surface), .hm-image'
 
-  // Number the visual lines so they can be revealed one after another, top to bottom
-  useEffect(() => {
-    const element = ref.current
-    if (!element) return
-    const markLines = () => {
-      let line = -1
-      let lastTop = Number.NEGATIVE_INFINITY
-      element.querySelectorAll<HTMLElement>('.split__w').forEach(word => {
-        if (word.offsetTop > lastTop + 2) {
-          line += 1
-          lastTop = word.offsetTop
-        }
-        word.style.setProperty('--line', String(line))
-      })
-    }
-    markLines()
-    const observer = new ResizeObserver(markLines)
-    observer.observe(element)
-    return () => observer.disconnect()
-  }, [text])
-
-  return (
-    <>
-      <span className="sr-only">{text}</span>
-      <span className="split" aria-hidden="true" ref={ref}>
-        {text.split(' ').map((word, index) => (
-          <span key={index}>
-            <span className="split__w">
-              <span>{word}</span>
-            </span>{' '}
-          </span>
-        ))}
-      </span>
-    </>
-  )
-}
-
-const GROW_SELECTOR = '.research-row .placeholder__surface, .outcome-gallery .placeholder__surface'
-
-// Case study images are uncovered from top to bottom as they scroll into view
 function useGrowOnScroll(dependency: unknown) {
   useEffect(() => {
     if (prefersReducedMotion()) return
@@ -515,9 +475,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
           <div className="hero__head">
             <h1 lang={projects[projectIndex]?.lang}>{project.title}</h1>
             <p className="hero__subtitle">
-              <SplitWords
-                text={project.slug === 'crossing-kyiv' ? 'Ukrainian creativity beyond the narratives of war.' : project.lead}
-              />
+              {project.slug === 'crossing-kyiv' ? 'Ukrainian creativity beyond the narratives of war.' : project.lead}
             </p>
           </div>
         </section>
@@ -541,13 +499,11 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
           <div className="section-label">In short</div>
           <div className="quick-read__title">
             <h2>
-              <SplitWords
-                text={project.slug === 'sovrapposizioni'
+              {project.slug === 'sovrapposizioni'
                 ? 'Four masters, one algorithm, twenty new images.'
                 : project.slug === 'marco-magnani-art'
                   ? 'Paintings that hold a room like sculpture.' : project.slug === 'brera-district' ? "What if Brera's students reclaimed the district from below?" : project.slug === 'a-drop-of-corruption' ? 'Error as a way of telling a story.' : project.slug === 'crossing-kyiv' ? 'A country told through the people who make its culture.'
                 : project.lead}
-              />
             </h2>
             <p>
               {project.slug === 'sovrapposizioni'
@@ -672,7 +628,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
           <section id="insight" data-section className="insight reveal">
             <div className="shell insight__inner">
               <div className="section-label">Key insight</div>
-              <p><SplitWords text={project.insight} /></p>
+              <p>{project.insight}</p>
             </div>
           </section>
 
@@ -680,7 +636,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
             <div className="process-sticky">
               <div className="shell process__head">
                 <div className="section-label">Process</div>
-                <h2><SplitWords text={project.processTitle} /></h2>
+                <h2>{project.processTitle}</h2>
                 <p>{project.processDescription} →</p>
               </div>
               <div className="process-strip" tabIndex={0} role="region" aria-label="Process images, scroll sideways">
@@ -699,7 +655,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
         <section id="outcome" data-section className="section shell outcome">
           <div className="outcome-gallery reveal">
             <span className="outcome-gallery__number">03</span>
-            <h2><SplitWords text={project.summary} /></h2>
+            <h2>{project.summary}</h2>
             <Placeholder className="outcome-gallery__hero" play caption={`${project.title}: main outcome`} />
             <div className="outcome-gallery__grid">
               <Placeholder caption={`${project.title}: outcome detail 01`} />
@@ -938,6 +894,7 @@ function Home() {
       if (frame) window.cancelAnimationFrame(frame)
     }
   }, [view])
+  useGrowOnScroll(view)
 
   const scrollToProject = (index: number) => {
     document.getElementById(`project-${index}`)?.scrollIntoView({ behavior: scrollBehavior(), block: 'center' })
@@ -1093,7 +1050,7 @@ function CaseStudy() {
           <div className="hero__head">
             <h1 lang="it">Oltre<br />l’ascolto</h1>
             <p className="hero__subtitle hero__subtitle--ink">
-              <SplitWords text="Making sound accessible beyond hearing" />
+              Making sound accessible beyond hearing
             </p>
           </div>
         </section>
@@ -1116,7 +1073,7 @@ function CaseStudy() {
         <section className="quick-read shell reveal">
           <div className="section-label">In short</div>
           <div className="quick-read__title">
-            <h2><SplitWords text="What does a sound feel like?" /></h2>
+            <h2>What does a sound feel like?</h2>
             <p>
               Research into the instruments of the Studio di Fonologia RAI became an animated video
               and a series of tactile artefacts that translate electronic music into images and relief.
@@ -1231,7 +1188,7 @@ function CaseStudy() {
           <div className="process-sticky">
             <div className="shell process__head">
               <div className="section-label">Process</div>
-              <h2><SplitWords text="From signal to surface" /></h2>
+              <h2>From signal to surface</h2>
               <p>Scroll sideways →</p>
             </div>
             <div className="process-strip" tabIndex={0} role="region" aria-label="Process images, scroll sideways">
@@ -1246,7 +1203,7 @@ function CaseStudy() {
         <section id="outcome" data-section className="section shell outcome">
           <div className="outcome-gallery reveal">
             <span className="outcome-gallery__number">03</span>
-            <h2><SplitWords text="Designing with, not only for, the senses." /></h2>
+            <h2>Designing with, not only for, the senses.</h2>
             <Placeholder className="outcome-gallery__hero" play caption="Final video, 04:12" />
             <div className="outcome-gallery__grid">
               <Placeholder caption="Tempophon: tactile artefact" />
