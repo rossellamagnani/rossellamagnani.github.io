@@ -119,7 +119,7 @@ article .section-label { display: none; }
   margin-top: 28px; padding: 22px 0 76px; display: grid; grid-template-columns: 1fr 2fr .7fr 1fr 1.5fr;
   gap: 24px;
 }
-.fact span { color: var(--accent); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
+.fact > span { color: var(--accent); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
 .fact p { margin-top: 9px; max-width: 235px; font-size: 14px; line-height: 1.5; }
 
 .reading-mode {
@@ -207,7 +207,7 @@ article .section-label { display: none; }
   width: min(76%, 1100px); margin: 70px auto 0;
 }
 .research-row > .placeholder .placeholder__surface { aspect-ratio: 16 / 9; }
-.section-heading span { color: var(--accent); font-size: 12px; letter-spacing: .15em; }
+.section-heading > span { color: var(--accent); font-size: 12px; letter-spacing: .15em; }
 .section-heading h2, .process h2, .reflection h2 {
   margin-top: 18px; font: 500 clamp(42px, 5.2vw, 82px)/.94 'Suisse Intl', 'Inter', Helvetica, sans-serif; letter-spacing: -.065em;
 }
@@ -1060,10 +1060,10 @@ main:not(.is-deep) .deep-content {
 
 /* Images form from top to bottom: the opening one on load, the others with the scroll */
 @keyframes form-down { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0); } }
-.hero__media .placeholder__surface { animation: form-down 1.4s cubic-bezier(.65, 0, .35, 1) .15s both; }
+.hero__media .placeholder__surface { animation: form-down 1.5s cubic-bezier(.5, 1, .89, 1) .15s both; }
 .placeholder__surface.will-form {
   clip-path: inset(0 0 100% 0);
-  transition: clip-path 1s cubic-bezier(.65, 0, .35, 1) var(--form-delay, 0s);
+  transition: clip-path 1.2s cubic-bezier(.5, 1, .89, 1) var(--form-delay, 0s);
 }
 .placeholder__surface.will-form.is-formed { clip-path: inset(0); }
 /* The picture inside settles from a slight zoom while it forms */
@@ -1107,9 +1107,9 @@ main .outcome-gallery .outcome-gallery__grid .placeholder + .placeholder { margi
    small uppercase grey labels, mid-size statements, plain text controls.
    The project title in the case study opening stays the only large moment.
 ------------------------------------------------------------------- */
-.fact span,
+.fact > span,
 .quick-read__steps span,
-.section-heading span,
+.section-heading > span,
 .reading-action small,
 .outcome-gallery__number,
 .about-table__head span,
@@ -1275,3 +1275,29 @@ main { animation: page-in .45s ease-out both; }
 @media (prefers-reduced-motion: reduce) { main { animation: none; } }
 
 .footer, .footer div, .hm-footer, .hm-footer div { align-items: center; }
+
+/* ------------------------------------------------------------------
+   Taken from the reference case study page: text rises line by line from a mask
+   (1s, power2.out, lines 0.08s apart); images uncover from the top on the same curve
+------------------------------------------------------------------- */
+.ln-w { display: inline-block; overflow: hidden; vertical-align: top; padding-block: .06em .16em; margin-block: -.06em -.16em; }
+.ln-w > span {
+  display: inline-block; transform: translateY(110%);
+  transition: transform 1s cubic-bezier(.5, 1, .89, 1) calc(var(--line, 0) * 80ms);
+}
+.lines.is-in .ln-w > span { transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ln-w > span { transform: none; transition: none; }
+}
+
+/* Outcome images on a four-column grid with narrow 8px gutters */
+@media (min-width: 761px) {
+  .outcome-gallery .outcome-gallery__hero { width: calc((100% - 24px) / 4 * 3 + 16px); margin: 0; }
+  main .outcome-gallery .outcome-gallery__grid {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 8px; row-gap: 64px; margin-top: 64px;
+  }
+  main .outcome-gallery .outcome-gallery__grid .placeholder:nth-child(n) { width: auto; margin: 0; }
+  .outcome-gallery .outcome-gallery__grid .placeholder:nth-child(1) { grid-column: 4; }
+  .outcome-gallery .outcome-gallery__grid .placeholder:nth-child(2) { grid-column: 2 / 4; }
+  .outcome-gallery .outcome-gallery__grid .placeholder:nth-child(3) { grid-column: 1 / 3; }
+}

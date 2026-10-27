@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 
 const instruments = [
   {
@@ -370,7 +370,7 @@ function useGrowOnScroll(dependency: unknown) {
           const element = entry.target as HTMLElement
           const group = element.closest(GROUP_SELECTOR)
           const index = group ? Array.from(group.querySelectorAll(GROW_SELECTOR)).indexOf(element) : 0
-          element.style.setProperty('--form-delay', `${index * 0.18}s`)
+          element.style.setProperty('--form-delay', `${index * 0.15}s`)
           element.classList.add('is-formed')
           observer.unobserve(element)
         }),
@@ -384,11 +384,76 @@ function useGrowOnScroll(dependency: unknown) {
   }, [dependency])
 }
 
+// Text that rises line by line from behind a mask when it comes into view. Each visual line moves
+// together and starts a moment after the one above; screen readers get the plain text.
+// A "\n" in the text forces a line break.
+function Lines({ text }: { text: string }) {
+  const ref = useRef<HTMLSpanElement>(null)
+
+  useEffect(() => {
+    const element = ref.current
+    if (!element) return
+    const markLines = () => {
+      let line = -1
+      let lastTop = Number.NEGATIVE_INFINITY
+      element.querySelectorAll<HTMLElement>('.ln-w').forEach(word => {
+        if (word.offsetTop > lastTop + 2) {
+          line += 1
+          lastTop = word.offsetTop
+        }
+        word.style.setProperty('--line', String(line))
+      })
+    }
+    markLines()
+    const resizeObserver = new ResizeObserver(markLines)
+    resizeObserver.observe(element)
+    // Text in the opening of a page rises as soon as the page loads
+    if (element.closest('.hero')) {
+      requestAnimationFrame(() => element.classList.add('is-in'))
+      return () => resizeObserver.disconnect()
+    }
+    const viewObserver = new IntersectionObserver(
+      entries => {
+        if (entries.some(entry => entry.isIntersecting)) {
+          element.classList.add('is-in')
+          viewObserver.disconnect()
+        }
+      },
+      { rootMargin: '0px 0px -8% 0px' },
+    )
+    viewObserver.observe(element)
+    return () => {
+      resizeObserver.disconnect()
+      viewObserver.disconnect()
+    }
+  }, [text])
+
+  return (
+    <>
+      <span className="sr-only">{text.replace(/\n/g, ' ')}</span>
+      <span className="lines" aria-hidden="true" ref={ref}>
+        {text.split('\n').map((row, rowIndex) => (
+          <Fragment key={rowIndex}>
+            {rowIndex > 0 && <br />}
+            {row.split(' ').map((word, index) => (
+              <Fragment key={index}>
+                <span className="ln-w">
+                  <span>{word}</span>
+                </span>{' '}
+              </Fragment>
+            ))}
+          </Fragment>
+        ))}
+      </span>
+    </>
+  )
+}
+
 function SectionHeading({ number, children }: { number?: string; children: React.ReactNode }) {
   return (
     <div className="section-heading">
       {number && <span>{number}</span>}
-      <h2>{children}</h2>
+      <h2>{typeof children === 'string' ? <Lines text={children} /> : children}</h2>
     </div>
   )
 }
@@ -450,9 +515,9 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
         <section className="hero shell reveal">
           <div className="hero__text">
             <div className="hero__head">
-              <h1 lang={projects[projectIndex]?.lang}>{project.title}</h1>
+              <h1 lang={projects[projectIndex]?.lang}><Lines text={project.title} /></h1>
               <p className="hero__subtitle">
-                {project.slug === 'crossing-kyiv' ? 'Ukrainian creativity beyond the narratives of war.' : project.lead}
+                <Lines text={project.slug === 'crossing-kyiv' ? 'Ukrainian creativity beyond the narratives of war.' : project.lead} />
               </p>
             </div>
             <div className="facts" role="group" aria-label="Project details">
@@ -464,8 +529,8 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
                 ['Tools', project.slug === 'sovrapposizioni' ? 'Midjourney, Illustrator, Indesign, Photoshop' : project.slug === 'marco-magnani-art' ? 'Illustrator, Photoshop, Figma, Framer, Indesign' : project.slug === 'crossing-kyiv' ? 'Indesign, Illustrator, Photoshop' : project.slug === 'brera-district' ? 'Illustrator, Photoshop, Indesign' : project.slug === 'a-drop-of-corruption' ? 'Midjourney, Premiere' : 'Replace with project tools'],
               ].map(([label, value]) => (
                 <div className="fact" key={label}>
-                  <span>{label}</span>
-                  <p>{value}</p>
+                  <span><Lines text={label} /></span>
+                  <p><Lines text={value} /></p>
                 </div>
               ))}
             </div>
@@ -480,11 +545,11 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
           <div className="section-label">In short</div>
           <div className="quick-read__title">
             <h2>
-              {project.slug === 'sovrapposizioni'
+              <Lines text={project.slug === 'sovrapposizioni'
                 ? 'Four masters, one algorithm, twenty new images.'
                 : project.slug === 'marco-magnani-art'
                   ? 'Paintings that hold a room like sculpture.' : project.slug === 'brera-district' ? "What if Brera's students reclaimed the district from below?" : project.slug === 'a-drop-of-corruption' ? 'Error as a way of telling a story.' : project.slug === 'crossing-kyiv' ? 'A country told through the people who make its culture.'
-                : project.lead}
+                : project.lead} />
             </h2>
             <p>
               {project.slug === 'sovrapposizioni'
@@ -531,11 +596,11 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
               <p>{project.challenge}</p>
             </div>
             <blockquote>
-              {project.slug === 'sovrapposizioni'
+              <Lines text={project.slug === 'sovrapposizioni'
                 ? '"Neither entirely the machine\'s, nor entirely the human\'s."'
                 : project.slug === 'marco-magnani-art'
                   ? '"Bridging the art gallery and the architectural firm."' : project.slug === 'brera-district' ? '"Celebrated for its art, closed to its own creative community."'
-                : project.lead}
+                : project.lead} />
             </blockquote>
           </section>
 
@@ -580,7 +645,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
                   <article className="instrument-card" key={item.title}>
                     <Placeholder caption={`${project.title}: ${item.title}`} />
                     <div className="instrument-card__body">
-                      <h3>{item.title}</h3>
+                      <h3><Lines text={item.title} /></h3>
                       <p>{item.copy}</p>
                       {project.slug !== 'sovrapposizioni' && project.slug !== 'marco-magnani-art' && project.slug !== 'brera-district' && (
                         <strong>Research {String(index + 2).padStart(2, '0')}</strong>
@@ -609,7 +674,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
           <section id="insight" className="insight reveal">
             <div className="shell insight__inner">
               <div className="section-label">Key insight</div>
-              <p>{project.insight}</p>
+              <p><Lines text={project.insight} /></p>
             </div>
           </section>
 
@@ -617,7 +682,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
             <div className="process-sticky">
               <div className="shell process__head">
                 <div className="section-label">Process</div>
-                <h2>{project.processTitle}</h2>
+                <h2><Lines text={project.processTitle} /></h2>
                 <p>{project.processDescription} →</p>
               </div>
               <div className="process-strip" tabIndex={0} role="region" aria-label="Process images, scroll sideways">
@@ -636,7 +701,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
         <section id="outcome" className="section shell outcome">
           <div className="outcome-gallery reveal">
             <span className="outcome-gallery__number">03</span>
-            <h2>{project.summary}</h2>
+            <h2><Lines text={project.summary} /></h2>
             <Placeholder className="outcome-gallery__hero" play caption={`${project.title}: main outcome`} />
             <div className="outcome-gallery__grid">
               <Placeholder caption={`${project.title}: outcome detail 01`} />
@@ -648,7 +713,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
 
         <a id="next-project" className="next-project reveal" href={`/${nextProject.slug}`}>
           <span className="next-project__label">Next project</span>
-          <strong lang={nextProject.lang}>{nextProject.title}</strong>
+          <strong lang={nextProject.lang}><Lines text={nextProject.title} /></strong>
           <i aria-hidden="true">
             <svg viewBox="0 0 180 120">
               <path d="M0 51h151v18H0z" />
@@ -963,9 +1028,9 @@ function CaseStudy() {
         <section className="hero shell reveal">
           <div className="hero__text">
             <div className="hero__head">
-              <h1 lang="it">Oltre<br />l’ascolto</h1>
+              <h1 lang="it"><Lines text={'Oltre\nl’ascolto'} /></h1>
               <p className="hero__subtitle hero__subtitle--ink">
-                Making sound accessible beyond hearing
+                <Lines text="Making sound accessible beyond hearing" />
               </p>
             </div>
             <div className="facts" role="group" aria-label="Project details">
@@ -977,8 +1042,8 @@ function CaseStudy() {
                 ['Tools', 'After Effects, Illustrator, Rhino'],
               ].map(([label, value]) => (
                 <div className="fact" key={label}>
-                  <span>{label}</span>
-                  <p>{value}</p>
+                  <span><Lines text={label} /></span>
+                  <p><Lines text={value} /></p>
                 </div>
               ))}
             </div>
@@ -992,7 +1057,7 @@ function CaseStudy() {
         <section className="quick-read shell reveal">
           <div className="section-label">In short</div>
           <div className="quick-read__title">
-            <h2>What does a sound feel like?</h2>
+            <h2><Lines text="What does a sound feel like?" /></h2>
             <p>
               Research into the instruments of the Studio di Fonologia RAI became an animated video
               and a series of tactile artefacts that translate electronic music into images and relief.
@@ -1039,7 +1104,7 @@ function CaseStudy() {
               music through image, touch, vibration and material form.
             </p>
           </div>
-          <blockquote>“A sound is not only heard. It can be <span>seen and held</span>.”</blockquote>
+          <blockquote><Lines text="“A sound is not only heard. It can be seen and held.”" /></blockquote>
         </section>
 
         <section id="research" className="section shell research">
@@ -1068,7 +1133,7 @@ function CaseStudy() {
                 <article className="instrument-card" key={instrument.name}>
                   <Placeholder caption={`Archive image: ${instrument.name}`} />
                   <div className="instrument-card__body">
-                    <h3>{instrument.name}</h3>
+                    <h3><Lines text={instrument.name} /></h3>
                     <p>{instrument.description}</p>
                     <strong>{instrument.keyword}</strong>
                   </div>
@@ -1097,8 +1162,7 @@ function CaseStudy() {
           <div className="shell insight__inner">
             <div className="section-label">Key insight</div>
             <p>
-              The sounds of the Studio are rough, mechanical and material. The design had to{' '}
-              <em>keep that roughness</em>, in something you can see and something you can hold.
+              <Lines text="The sounds of the Studio are rough, mechanical and material. The design had to keep that roughness, in something you can see and something you can hold." />
             </p>
           </div>
         </section>
@@ -1107,7 +1171,7 @@ function CaseStudy() {
           <div className="process-sticky">
             <div className="shell process__head">
               <div className="section-label">Process</div>
-              <h2>From signal to surface</h2>
+              <h2><Lines text="From signal to surface" /></h2>
               <p>Scroll sideways →</p>
             </div>
             <div className="process-strip" tabIndex={0} role="region" aria-label="Process images, scroll sideways">
@@ -1122,7 +1186,7 @@ function CaseStudy() {
         <section id="outcome" className="section shell outcome">
           <div className="outcome-gallery reveal">
             <span className="outcome-gallery__number">03</span>
-            <h2>Designing with, not only for, the senses.</h2>
+            <h2><Lines text="Designing with, not only for, the senses." /></h2>
             <Placeholder className="outcome-gallery__hero" play caption="Final video, 04:12" />
             <div className="outcome-gallery__grid">
               <Placeholder caption="Tempophon: tactile artefact" />
@@ -1134,7 +1198,7 @@ function CaseStudy() {
 
         <a id="next-project" href="/sovrapposizioni" className="next-project reveal">
           <span className="next-project__label">Next project</span>
-          <strong lang="it">Sovrapposizioni</strong>
+          <strong lang="it"><Lines text="Sovrapposizioni" /></strong>
           <i aria-hidden="true">
             <svg viewBox="0 0 180 120">
               <path d="M0 51h151v18H0z" />
