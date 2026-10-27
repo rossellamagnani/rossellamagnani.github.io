@@ -27,12 +27,12 @@ const process = [
 ]
 
 const projects = [
-  { title: "Oltre l'ascolto", type: 'MULTISENSORY DESIGN · ACCESSIBILITY', year: '2024', slug: 'oltre-lascolto' },
-  { title: 'Sovrapposizioni', type: 'EXHIBITION DESIGN · AI', year: '2024', slug: 'sovrapposizioni' },
-  { title: 'Marco Magnani Art', type: 'BRAND IDENTITY · ART DIRECTION', year: '2023', slug: 'marco-magnani-art' },
-  { title: 'Crossing Kyiv', type: 'EDITORIAL DESIGN · CULTURAL PROJECT', year: '2023', slug: 'crossing-kyiv' },
-  { title: 'PRO Brera', type: 'SPECULATIVE DESIGN · SPATIAL', year: '2022', slug: 'brera-district' },
-  { title: 'a drop of corruption', type: 'EXPERIMENTAL VIDEO · AI', year: '2022', slug: 'a-drop-of-corruption' },
+  { title: "Oltre l'ascolto", type: 'MULTISENSORY DESIGN · ACCESSIBILITY', slug: 'oltre-lascolto' },
+  { title: 'Sovrapposizioni', type: 'EXHIBITION DESIGN · AI', slug: 'sovrapposizioni' },
+  { title: 'Marco Magnani Art', type: 'BRAND IDENTITY · ART DIRECTION', slug: 'marco-magnani-art' },
+  { title: 'Crossing Kyiv', type: 'EDITORIAL DESIGN · CULTURAL PROJECT', slug: 'crossing-kyiv' },
+  { title: 'PRO Brera', type: 'SPECULATIVE DESIGN · SPATIAL', slug: 'brera-district' },
+  { title: 'a drop of corruption', type: 'AI VIDEO · ART DIRECTION', slug: 'a-drop-of-corruption' },
 ]
 
 const caseStudies = [
@@ -42,7 +42,7 @@ const caseStudies = [
     lead: 'What makes a work of art authentic?',
     type: 'Exhibition design, editorial design, AI',
     year: '2024',
-    context: 'Academic project · Politecnico di Milano · MEET Digital Culture Center',
+    context: 'Academic project · Politecnico di Milano',
     summary:
       'A generative exhibition and editorial system that questions where authorship ends and artificial intelligence begins.',
     quickSteps: [
@@ -166,7 +166,7 @@ const caseStudies = [
       },
       {
         title: 'A platform for exchange',
-        copy: 'First presented during Zurich Design Weeks 2023, alongside the inaugural Kyiv Design Week, Crossing Kyiv extended NO MAD’s curatorial vision into a tangible editorial artifact. The publication was created in collaboration with T12, Design4Ukraine, and with the support of the Canada-Ukraine Foundation.',
+        copy: 'Crossing Kyiv extends NO MAD’s curatorial vision into a tangible editorial artifact. The publication was created in collaboration with T12, Design4Ukraine, and with the support of the Canada-Ukraine Foundation.',
       },
     ],
     insight: 'Creativity becomes both a tool for resistance and a language for reconstruction.',
@@ -247,11 +247,11 @@ const caseStudies = [
       ['03 / Outcome', 'A short experimental video moving from stark landscapes to vivid traces of fuel and contamination.'],
     ],
     challenge:
-      '“A drop of corruption” is an experimental short film created as part of “Glitches & Glory: Aesthetics of Error for New Visual Narratives,” an intensive workshop led by David Szauder. The project investigates the narrative potential of artificial intelligence and glitch aesthetics, exploring the fine line between human-driven destruction and computational synthesis.',
+      '“A drop of corruption” is an experimental short video created as part of “Glitches & Glory: Aesthetics of Error for New Visual Narratives,” an intensive workshop led by David Szauder. The project investigates the narrative potential of artificial intelligence and glitch aesthetics, exploring the fine line between human-driven destruction and computational synthesis.',
     research: [
       {
         title: 'From resource to corruption',
-        copy: 'At its core, the piece addresses themes of corporate greed, environmental degradation, and systemic corruption. Through high-contrast visual storytelling — shifting from stark monochrome landscapes to striking bursts of yellow fuel and vivid red contamination — the narrative traces the transformation of raw resources into capital, and ultimately, into irreversible corruption.',
+        copy: 'At its core, the piece addresses themes of corporate greed, environmental degradation, and systemic corruption. Through high-contrast visual storytelling, shifting from stark monochrome landscapes to striking bursts of yellow fuel and vivid red contamination, the narrative traces the transformation of raw resources into capital, and ultimately, into irreversible corruption.',
       },
       {
         title: 'AI as creative partner',
@@ -259,7 +259,7 @@ const caseStudies = [
       },
       {
         title: 'A one-week proof of concept',
-        copy: 'Created in just one week, A Drop of Corruption stands as a proof of concept for the accelerating power of AI in contemporary visual storytelling. It reflects a growing shift in creative methodology — where the algorithm becomes not just a tool for execution, but an accelerator of imagination.',
+        copy: 'Created in just one week, A Drop of Corruption stands as a proof of concept for the accelerating power of AI in contemporary visual storytelling. It reflects a growing shift in creative methodology, where the algorithm becomes not just a tool for execution, but an accelerator of imagination.',
       },
     ],
     insight: 'Turn the aesthetics of error into a language for exposing the hidden cost of human greed.',
@@ -419,16 +419,16 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
 
       <article>
         <section className="hero shell reveal">
-          <Placeholder
-            className="hero__media"
-            caption={`${project.title} — main project visual`}
-          />
           <h1>{project.title}</h1>
           <p className="hero__subtitle">
             {project.slug === 'crossing-kyiv'
               ? 'Ukrainian creativity beyond the narratives of war.'
               : project.lead}
           </p>
+          <Placeholder
+            className="hero__media"
+            caption={`${project.title}: main project visual`}
+          />
         </section>
 
         <section className="facts shell reveal" aria-label="Project details">
@@ -447,13 +447,13 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
         </section>
 
         <section className="quick-read shell reveal">
-          <div className="section-label">In breve</div>
+          <div className="section-label">In short</div>
           <div className="quick-read__title">
             <h2>
               {project.slug === 'sovrapposizioni'
-                ? 'Twenty images that belong neither to the machine nor to the human.'
+                ? 'Four masters, one algorithm, twenty new images.'
                 : project.slug === 'marco-magnani-art'
-                  ? 'Paintings that hold a room like sculpture.' : project.slug === 'brera-district' ? "What if Brera's students reclaimed the district from below?" : project.slug === 'a-drop-of-corruption' ? 'Error as a way of telling a story.'
+                  ? 'Paintings that hold a room like sculpture.' : project.slug === 'brera-district' ? "What if Brera's students reclaimed the district from below?" : project.slug === 'a-drop-of-corruption' ? 'Error as a way of telling a story.' : project.slug === 'crossing-kyiv' ? 'A country told through the people who make its culture.'
                 : project.lead}
             </h2>
             <p>
@@ -533,11 +533,11 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
                   </div>
                 )}
               </div>
-              <Placeholder caption={`${project.title} — research context`} />
+              <Placeholder caption={`${project.title}: research context`} />
             </div>
 
             <div className="research-block reveal">
-              <SectionHeading number="02">Research framework</SectionHeading>
+              <SectionHeading number="02–04">Research framework</SectionHeading>
               <p className="intro">
                 {project.slug === 'sovrapposizioni'
                   ? "Three directions shaped the exhibition's visual and conceptual language."
@@ -548,7 +548,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
               <div className="instrument-grid">
                 {researchCards.map((item, index) => (
                   <article className="instrument-card" key={item.title}>
-                    <Placeholder caption={`${project.title} — ${item.title}`} />
+                    <Placeholder caption={`${project.title}: ${item.title}`} />
                     <div className="instrument-card__body">
                       <h3>{item.title}</h3>
                       <p>{item.copy}</p>
@@ -563,15 +563,15 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
 
             <div className="research-row accessibility reveal">
               <div className="research-copy">
-                <SectionHeading number="03">Design translation</SectionHeading>
+                <SectionHeading number="05">Design translation</SectionHeading>
                 <p>
                   {finalResearch ||
                     'Replace this text with the final research findings and explain how they were translated into the design outcome.'}
                 </p>
               </div>
               <div className="paired-media">
-                <Placeholder caption={`${project.title} — design development`} />
-                <Placeholder caption={`${project.title} — tests and iterations`} />
+                <Placeholder caption={`${project.title}: design development`} />
+                <Placeholder caption={`${project.title}: tests and iterations`} />
               </div>
             </div>
           </section>
@@ -594,7 +594,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
                 {Array.from({ length: 5 }, (_, index) => (
                   <Placeholder
                     key={index}
-                    caption={`${String(index + 1).padStart(2, '0')} — ${project.title} process`}
+                    caption={`${String(index + 1).padStart(2, '0')}: ${project.title} process`}
                   />
                 ))}
               </div>
@@ -607,11 +607,11 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
           <div className="outcome-gallery reveal">
             <span className="outcome-gallery__number">03</span>
             <h2>{project.summary}</h2>
-            <Placeholder className="outcome-gallery__hero" play caption={`${project.title} — main outcome`} />
+            <Placeholder className="outcome-gallery__hero" play caption={`${project.title}: main outcome`} />
             <div className="outcome-gallery__grid">
-              <Placeholder caption={`${project.title} — outcome detail 01`} />
-              <Placeholder caption={`${project.title} — outcome detail 02`} />
-              <Placeholder caption={`${project.title} — outcome detail 03`} />
+              <Placeholder caption={`${project.title}: outcome detail 01`} />
+              <Placeholder caption={`${project.title}: outcome detail 02`} />
+              <Placeholder caption={`${project.title}: outcome detail 03`} />
             </div>
           </div>
         </section>
@@ -680,7 +680,7 @@ function AboutTable({
               </button>
               <div className="about-table__detail">
                 <p>
-                  Placeholder text — add a short description of your role, responsibilities,
+                  Placeholder text: add a short description of your role, responsibilities,
                   process and contribution to this experience.
                 </p>
               </div>
@@ -764,7 +764,6 @@ function About() {
           expandable
           rows={[
             ['Venice Biennale', "Children's workshop materials", '2025'],
-            ['Zurich Design Weeks', 'Crossing Kyiv publication', '2023'],
             ['Loro Piana Global Summit', 'Event visual system', '2024'],
           ]}
         />
@@ -853,7 +852,7 @@ function Home() {
   const changeView = (nextView: 'gallery' | 'list') => {
     setView(nextView)
     window.requestAnimationFrame(() => {
-      window.scrollTo({ top: window.innerHeight * 0.34, behavior: 'smooth' })
+      window.scrollTo({ top: window.innerHeight * 0.75, behavior: 'smooth' })
     })
   }
 
@@ -876,7 +875,7 @@ function Home() {
         <button
           type="button"
           className="home-scroll"
-          onClick={() => window.scrollTo({ top: window.innerHeight * 0.34, behavior: 'smooth' })}
+          onClick={() => window.scrollTo({ top: window.innerHeight * 0.75, behavior: 'smooth' })}
         >
           Scroll <span>↓</span>
         </button>
@@ -1000,14 +999,14 @@ function CaseStudy() {
 
       <article>
         <section className="hero shell reveal">
-          <Placeholder
-            className="hero__media"
-            caption="Main film still — abstract visualisation of electronic sound"
-          />
           <h1>Oltre<br />l’ascolto</h1>
           <p className="hero__subtitle hero__subtitle--ink">
             Making sound accessible <span>beyond hearing</span>
           </p>
+          <Placeholder
+            className="hero__media"
+            caption="Main video still: abstract visualisation of electronic sound"
+          />
         </section>
 
         <section className="facts shell reveal" aria-label="Project details">
@@ -1026,12 +1025,12 @@ function CaseStudy() {
         </section>
 
         <section className="quick-read shell reveal">
-          <div className="section-label">In breve</div>
+          <div className="section-label">In short</div>
           <div className="quick-read__title">
             <h2>What does a sound feel like?</h2>
             <p>
               Research into the instruments of the Studio di Fonologia RAI became an animated video
-              and a series of tactile artefacts that make electronic sound accessible beyond hearing.
+              and a series of tactile artefacts that translate electronic music into images and relief.
             </p>
           </div>
           <div className="quick-read__steps">
@@ -1075,7 +1074,7 @@ function CaseStudy() {
               music through image, touch, vibration and material form.
             </p>
           </div>
-          <blockquote>“Sound can be experienced <span>beyond hearing</span>.”</blockquote>
+          <blockquote>“A sound is not only heard. It can be <span>seen and held</span>.”</blockquote>
         </section>
 
         <section id="research" data-section className="section shell research">
@@ -1091,18 +1090,18 @@ function CaseStudy() {
                 through oscillators, filters and magnetic tape.
               </p>
             </div>
-            <Placeholder caption="Archive photographs — Studio di Fonologia, Milan" />
+            <Placeholder caption="Archive photographs: Studio di Fonologia, Milan" />
           </div>
 
           <div className="research-block reveal">
-            <SectionHeading number="02">The instruments</SectionHeading>
+            <SectionHeading number="02–04">The instruments</SectionHeading>
             <p className="intro">
               Three machines built at the Studio became the starting point for a visual and tactile vocabulary.
             </p>
             <div className="instrument-grid">
               {instruments.map(instrument => (
                 <article className="instrument-card" key={instrument.name}>
-                  <Placeholder caption={`Archive image — ${instrument.name}`} />
+                  <Placeholder caption={`Archive image: ${instrument.name}`} />
                   <div className="instrument-card__body">
                     <h3>{instrument.name}</h3>
                     <p>{instrument.description}</p>
@@ -1115,7 +1114,7 @@ function CaseStudy() {
 
           <div className="research-row accessibility reveal">
             <div className="research-copy">
-              <SectionHeading number="03">Accessibility research</SectionHeading>
+              <SectionHeading number="05">Accessibility research</SectionHeading>
               <p>
                 A study of sensory translation explored how sound may be perceived through sight,
                 touch and vibration. In parallel, Braille tests shaped the scale, spacing and reading
@@ -1148,7 +1147,7 @@ function CaseStudy() {
             </div>
             <div className="process-strip">
               {process.map(([number, caption]) => (
-                <Placeholder key={number} caption={`${number} — ${caption}`} />
+                <Placeholder key={number} caption={`${number}: ${caption}`} />
               ))}
             </div>
           </div>
@@ -1159,11 +1158,11 @@ function CaseStudy() {
           <div className="outcome-gallery reveal">
             <span className="outcome-gallery__number">03</span>
             <h2>Designing with, not only for, the senses.</h2>
-            <Placeholder className="outcome-gallery__hero" play caption="Final film — full video, 04:12" />
+            <Placeholder className="outcome-gallery__hero" play caption="Final video, 04:12" />
             <div className="outcome-gallery__grid">
-              <Placeholder caption="Tempophon — tactile artefact" />
-              <Placeholder caption="Speed Variator — tactile artefact" />
-              <Placeholder caption="Amplitude Modulator — tactile artefact" />
+              <Placeholder caption="Tempophon: tactile artefact" />
+              <Placeholder caption="Speed Variator: tactile artefact" />
+              <Placeholder caption="Amplitude Modulator: tactile artefact" />
             </div>
           </div>
         </section>
