@@ -940,6 +940,30 @@ main:not(.is-deep) .deep-content {
 }
 .site-header nav button.active, .site-header nav a:hover, .site-header nav button:hover { color: var(--ink); }
 
+/* Licence line in the header, centred, a step lighter than the navigation */
+.site-header__licence {
+  position: absolute; left: 50%; translate: -50% 0;
+  font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: #767570; white-space: nowrap;
+}
+
+/* Contact drop-down: Email and LinkedIn appear on one line just under Contact */
+.contact-menu { position: relative; }
+.contact-menu > button[aria-expanded="true"] { color: var(--ink); }
+.contact-menu__panel {
+  position: absolute; z-index: 40; top: 100%; right: 0; margin: 0; padding: 10px 0 0 24px; list-style: none;
+  display: flex; gap: 24px; background: var(--paper);
+}
+.contact-menu__panel[hidden] { display: none; }
+.contact-menu.is-open .contact-menu__panel li { animation: contact-in .4s cubic-bezier(.22, 1, .36, 1) both; }
+.contact-menu.is-open .contact-menu__panel li + li { animation-delay: .05s; }
+@keyframes contact-in { from { opacity: 0; transform: translateY(-6px); } }
+.site-header .contact-menu__panel a { color: var(--ink); white-space: nowrap; }
+.site-header .contact-menu__panel a:hover { color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .contact-menu.is-open .contact-menu__panel li { animation: none; } }
+@media (max-width: 760px) {
+  .site-header__licence { position: static; translate: none; order: 3; flex-basis: 100%; font-size: 11px; }
+}
+
 /* ------------------------------------------------------------------
    Home: the projects in a row along the bottom of the screen that scrolls sideways
 ------------------------------------------------------------------- */
@@ -959,7 +983,7 @@ main:not(.is-deep) .deep-content {
    wheel, trackpad, drag and arrow keys move the endless row instead (see Home in App.tsx) */
 .hm-stage {
   position: sticky; top: 0; height: 100svh; overflow: hidden;
-  display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 56px;
+  display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 24px;
 }
 .hm-row:focus { outline: none; }
 .hm-track { display: flex; gap: 8px; width: max-content; padding-inline: 20px; will-change: transform; }
@@ -998,16 +1022,6 @@ main:not(.is-deep) .deep-content {
 }
 .hm-image > span { position: absolute; top: 14px; left: 14px; font-size: 12px; letter-spacing: .12em; color: var(--muted); }
 
-.hm-footer {
-  position: fixed; z-index: 20; left: 20px; right: 20px; bottom: 18px;
-  display: flex; justify-content: space-between; align-items: baseline; pointer-events: none;
-  font-size: 12px; letter-spacing: .04em; color: var(--muted);
-}
-.hm-footer > * { pointer-events: auto; }
-.hm-footer div { display: flex; gap: 24px; }
-.hm-footer a { color: var(--ink); }
-.hm-footer a:hover { text-decoration: underline; text-underline-offset: 4px; }
-.hm-footer > span { text-transform: uppercase; }
 
 /* Phone: the row is swiped sideways with the finger, one project at a time */
 @media (max-width: 760px) {
@@ -1023,7 +1037,6 @@ main:not(.is-deep) .deep-content {
   .hm-track { padding-inline: 16px; }
   .hm-card { scroll-snap-align: start; }
   .hm-card .hm-image { height: auto; aspect-ratio: 4 / 5; }
-  .hm-footer { position: static; padding: 0 16px 40px; flex-wrap: wrap; gap: 16px; }
 }
 
 /* ------------------------------------------------------------------
@@ -1262,7 +1275,7 @@ figure.placeholder .placeholder__surface:has(> img, > video) {
 main { animation: page-in .45s ease-out both; }
 @media (prefers-reduced-motion: reduce) { main { animation: none; } }
 
-.footer, .footer div, .hm-footer, .hm-footer div { align-items: center; }
+.footer, .footer div { align-items: center; }
 
 /* ------------------------------------------------------------------
    Taken from the reference case study page: text rises line by line from a mask
@@ -1293,7 +1306,7 @@ main { animation: page-in .45s ease-out both; }
 /* Small uppercase labels, header, captions and footer in the label typeface, as on the reference site */
 :root { --font-label: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
 .site-header, .site-header .brand, .site-header nav a, .site-header nav button,
-.footer, .hm-footer, .hm-card__label, .hm-intro p,
+.footer, .hm-card__label, .hm-intro p, .site-header__licence, .contact-menu__panel a,
 .fact > span, .quick-read__steps span, .section-heading > span, .reading-action small,
 .outcome-gallery__number, .about-table__head span, .about article .section-label,
 .instrument-card strong, .next-project__label, .about-cv, .custom-cursor__label, .hm-image > span, .placeholder__index {

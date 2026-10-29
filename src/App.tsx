@@ -469,11 +469,70 @@ function SiteHeader({ skipTo = 'content', children }: { skipTo?: string; childre
       <a href="/" className="brand">
         Rossella Magnani
       </a>
+      <small className="site-header__licence">© {new Date().getFullYear()} Rossella Magnani</small>
       <nav aria-label="Primary navigation">
         {children}
         <a href="/about">About</a>
+        <ContactMenu />
       </nav>
     </header>
+  )
+}
+
+// "Contact" in the header: a small drop-down with Email and LinkedIn on one line.
+// Opens on hover with a mouse, on click or Enter/Space otherwise; Escape or clicking elsewhere closes it.
+function ContactMenu() {
+  const [open, setOpen] = useState(false)
+  const rootRef = useRef<HTMLDivElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const hoverable = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches
+
+  useEffect(() => {
+    if (!open) return
+    const onPointer = (event: PointerEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false)
+    }
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return
+      setOpen(false)
+      buttonRef.current?.focus()
+    }
+    document.addEventListener('pointerdown', onPointer)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('pointerdown', onPointer)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open])
+
+  return (
+    <div
+      ref={rootRef}
+      className={`contact-menu ${open ? 'is-open' : ''}`}
+      onMouseEnter={() => hoverable() && setOpen(true)}
+      onMouseLeave={() => hoverable() && setOpen(false)}
+      onBlur={event => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node)) setOpen(false)
+      }}
+    >
+      <button
+        ref={buttonRef}
+        type="button"
+        aria-expanded={open}
+        aria-controls="contact-links"
+        onClick={() => setOpen(value => !value)}
+      >
+        Contact
+      </button>
+      <ul id="contact-links" className="contact-menu__panel" hidden={!open}>
+        <li>
+          <a href="mailto:magnanirossella02@gmail.com">Email</a>
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/in/rossella-magnani-276219279/">LinkedIn</a>
+        </li>
+      </ul>
+    </div>
   )
 }
 
@@ -1109,13 +1168,6 @@ function Home() {
         </section>
       </div>
 
-      <footer id="contact" className="hm-footer">
-        <div>
-          <a href="mailto:magnanirossella02@gmail.com">Email</a>
-          <a href="https://www.linkedin.com/in/rossella-magnani-276219279/">LinkedIn</a>
-        </div>
-        <span>© {new Date().getFullYear()} Rossella Magnani</span>
-      </footer>
     </main>
   )
 }
