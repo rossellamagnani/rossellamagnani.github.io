@@ -947,7 +947,7 @@ main:not(.is-deep) .deep-content {
 /* ------------------------------------------------------------------
    Home: the projects in a row along the bottom of the screen that scrolls sideways
 ------------------------------------------------------------------- */
-.hm { --card-w: min(calc((100vw - 64px) / 3.5), calc((100svh - 300px) * .8)); min-height: 100svh; background: var(--paper); color: var(--ink); }
+.hm { --card-w: calc((100vw - 64px) / 3.5); --card-h: min(calc(100svh - 270px), calc(var(--card-w) * 1.5)); min-height: 100svh; background: var(--paper); color: var(--ink); }
 .hm > .site-header {
   position: fixed; z-index: 30; top: 0; left: 0; right: 0; width: auto; height: 64px;
   padding-inline: 20px;
@@ -974,7 +974,7 @@ main:not(.is-deep) .deep-content {
 }
 .hm-card__year { color: var(--muted); font-variant-numeric: tabular-nums; }
 .hm-card:hover .hm-card__year, .hm-card:focus-visible .hm-card__year { color: var(--ink); }
-.hm-card .hm-image { aspect-ratio: 4 / 5; overflow: hidden; }
+.hm-card .hm-image { height: var(--card-h); overflow: hidden; }
 .hm-card .hm-image > img { transition: scale .8s cubic-bezier(.5, 1, .89, 1); }
 .hm-card:hover .hm-image > img { scale: 1.03; }
 .hm-image {
@@ -1007,6 +1007,7 @@ main:not(.is-deep) .deep-content {
   .hm-row::-webkit-scrollbar { display: none; }
   .hm-track { padding-inline: 16px; }
   .hm-card { scroll-snap-align: start; }
+  .hm-card .hm-image { height: auto; aspect-ratio: 4 / 5; }
   .hm-footer { position: static; padding: 0 16px 40px; flex-wrap: wrap; gap: 16px; }
 }
 

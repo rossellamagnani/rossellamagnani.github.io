@@ -961,7 +961,6 @@ function Home() {
           Communication designer working on exhibitions and multisensory experiences that
           everyone can access.
         </h1>
-        <p>Based in Milan. MSc Communication Design, Politecnico di Milano.</p>
       </section>
 
       <div className="hm-stage">
