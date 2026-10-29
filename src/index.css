@@ -979,8 +979,14 @@ main:not(.is-deep) .deep-content {
 .hm-card .hm-image > :is(img, video) { scale: 1.03; transition: transform .7s cubic-bezier(.22, 1, .36, 1); }
 .hm-card:hover, .hm-card:focus-visible { transform: translateY(-8px); }
 .hm-card:hover .hm-image > :is(img, video), .hm-card:focus-visible .hm-image > :is(img, video) { transform: translateY(4px); }
+/* Title roll on hover: the title slides up and an identical copy takes its place;
+   on leaving it snaps back unseen, so every hover rolls upwards */
+.hm-card__label { display: block; height: 1.2em; overflow: hidden; line-height: 1.2; }
+.hm-roll { display: block; }
+.hm-roll > span { display: block; }
+.hm-card:hover .hm-roll, .hm-card:focus-visible .hm-roll { transform: translateY(-50%); transition: transform .45s cubic-bezier(.22, 1, .36, 1); }
 @media (prefers-reduced-motion: reduce) {
-  .hm-card, .hm-card .hm-image > :is(img, video) { transition: none; }
+  .hm-card, .hm-card .hm-image > :is(img, video), .hm-card .hm-roll { transition: none !important; }
 }
 .hm-image {
   display: block; position: relative; background: #e2e0da;

@@ -1070,7 +1070,10 @@ function Home() {
                 draggable={false}
               >
                 <span className="hm-card__label" lang={project.lang}>
-                  {project.title}
+                  <span className="hm-roll">
+                    <span>{project.title}</span>
+                    <span aria-hidden="true">{project.title}</span>
+                  </span>
                 </span>
                 <span className="sr-only">, {project.type.toLowerCase()}</span>
                 <span className={`hm-image ${project.whole ? 'hm-image--whole' : ''}`} aria-hidden="true">
