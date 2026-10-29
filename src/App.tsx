@@ -27,13 +27,14 @@ const process = [
 ]
 
 // `image` / `video`: the picture for each project in the home row, cropped to fill the frame;
-// `focus` moves the crop (CSS object-position). For now they are taken from the current site
+// `focus` moves the crop (CSS object-position); `crop` zooms into one area instead: x and y are
+// the centre of that area in % of the image, zoom how much larger than the frame's height it is drawn. For now they are taken from the current site
 // (rossellamagnani.figma.site); once the files are uploaded to public/, point these to the local copies.
-const projects: { title: string; type: string; slug: string; lang?: 'it'; image: string; video?: string; focus?: string }[] = [
+const projects: { title: string; type: string; slug: string; lang?: 'it'; image: string; video?: string; focus?: string; crop?: { x: number; y: number; zoom: number } }[] = [
   { title: "Oltre l'ascolto", type: 'MULTISENSORY DESIGN · ACCESSIBILITY', slug: 'oltre-lascolto', lang: 'it', image: 'https://rossellamagnani.figma.site/_assets/v11/176474d4960ebe154d49f3d2840823b84d71f931.png' },
   { title: 'Sovrapposizioni', type: 'EXHIBITION DESIGN · AI', slug: 'sovrapposizioni', lang: 'it', image: 'https://rossellamagnani.figma.site/_assets/v11/141ddc64b5b5362cf1d47cddb155b8aefeecc258.png?w=1536' },
   { title: 'Marco Magnani Art', type: 'BRAND IDENTITY · ART DIRECTION', slug: 'marco-magnani-art', image: 'https://rossellamagnani.figma.site/_assets/v11/6eb7ffe7a5b70424dcb96a2ca56a52145979e5ba.png?w=1536' },
-  { title: 'Crossing Kyiv', type: 'EDITORIAL DESIGN · CULTURAL PROJECT', slug: 'crossing-kyiv', image: 'https://rossellamagnani.figma.site/_assets/v11/80b5605660174fa81e94a9085663a9f9c21554d2.png?w=1536', focus: '30% 50%' },
+  { title: 'Crossing Kyiv', type: 'EDITORIAL DESIGN · CULTURAL PROJECT', slug: 'crossing-kyiv', image: 'https://rossellamagnani.figma.site/_assets/v11/80b5605660174fa81e94a9085663a9f9c21554d2.png?w=1536', crop: { x: 30.2, y: 47.8, zoom: 1.65 } },
   { title: 'PRO Brera', type: 'SPECULATIVE DESIGN · SPATIAL', slug: 'brera-district', image: 'https://rossellamagnani.figma.site/_assets/v11/a75a152e3bb77dbc00210ce9034b4be06d42e903.png?w=1200' },
   { title: 'a drop of corruption', type: 'AI VIDEO · ART DIRECTION', slug: 'a-drop-of-corruption', image: '', video: 'https://rossellamagnani.figma.site/_videos/v1/4d1d4bed175820029240b41dd761342d8a2dc045' },
 ]
@@ -1083,7 +1084,17 @@ function Home() {
                       draggable={false}
                     />
                   ) : project.image ? (
-                    <img src={project.image} alt="" draggable={false} style={{ objectPosition: project.focus }} />
+                    <img
+                      src={project.image}
+                      alt=""
+                      draggable={false}
+                      className={project.crop ? 'hm-image__crop' : undefined}
+                      style={
+                        project.crop
+                          ? { height: `${project.crop.zoom * 100}%`, translate: `-${project.crop.x}% -${project.crop.y}%` }
+                          : { objectPosition: project.focus }
+                      }
+                    />
                   ) : (
                     <span>PROJECT IMAGE</span>
                   )}
