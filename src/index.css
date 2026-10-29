@@ -22,19 +22,15 @@
 
 ::selection { background: var(--accent); color: white; }
 
+/* No dot: only an "Open project" label that follows the normal pointer over project images */
 .custom-cursor { display: none; }
 @media (hover: hover) and (pointer: fine) {
   .custom-cursor {
-    position: fixed; z-index: 9999; top: 0; left: 0; width: 10px; height: 10px;
-    display: block; border-radius: 50%; background: #1646ff; opacity: 0;
-    pointer-events: none; will-change: transform, width, height, opacity;
-    transition: width .2s ease, height .2s ease, opacity .15s ease;
+    position: fixed; z-index: 9999; top: 0; left: 0; width: 0; height: 0;
+    display: block; pointer-events: none; will-change: transform;
   }
-  .custom-cursor.visible { opacity: 1; }
-  .custom-cursor.interactive { width: 24px; height: 24px; }
-  .custom-cursor.pressed { width: 16px; height: 16px; }
   .custom-cursor__label {
-    position: absolute; top: 50%; left: calc(100% + 10px); translate: 0 -50%; white-space: nowrap;
+    position: absolute; top: 14px; left: 16px; white-space: nowrap;
     padding: 4px 8px; background: var(--paper); color: var(--ink);
     font-size: 12px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase;
     opacity: 0; transition: opacity .2s ease;

@@ -282,25 +282,17 @@ function CustomCursor() {
     if (!cursor) return
 
     const handleMove = (event: MouseEvent) => {
-      cursor.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`
-      cursor.classList.add('visible')
+      cursor.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`
       const target = event.target as Element | null
-      cursor.classList.toggle('interactive', Boolean(target?.closest('a, button, [role="button"]')))
       cursor.classList.toggle('labelled', Boolean(target?.closest('[data-cursor-label]')))
     }
-    const handleLeave = () => cursor.classList.remove('visible')
-    const handleDown = () => cursor.classList.add('pressed')
-    const handleUp = () => cursor.classList.remove('pressed')
+    const handleLeave = () => cursor.classList.remove('labelled')
 
     window.addEventListener('mousemove', handleMove)
     document.documentElement.addEventListener('mouseleave', handleLeave)
-    window.addEventListener('mousedown', handleDown)
-    window.addEventListener('mouseup', handleUp)
     return () => {
       window.removeEventListener('mousemove', handleMove)
       document.documentElement.removeEventListener('mouseleave', handleLeave)
-      window.removeEventListener('mousedown', handleDown)
-      window.removeEventListener('mouseup', handleUp)
     }
   }, [])
 
