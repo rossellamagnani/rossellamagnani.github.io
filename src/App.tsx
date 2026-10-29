@@ -36,8 +36,8 @@ const projects: { title: string; type: string; slug: string; lang?: 'it'; image:
   { title: 'Sovrapposizioni', type: 'EXHIBITION DESIGN · AI', slug: 'sovrapposizioni', lang: 'it', image: 'https://rossellamagnani.figma.site/_assets/v11/141ddc64b5b5362cf1d47cddb155b8aefeecc258.png?w=1536' },
   { title: 'Marco Magnani Art', type: 'BRAND IDENTITY · ART DIRECTION', slug: 'marco-magnani-art', image: 'https://rossellamagnani.figma.site/_assets/v11/6eb7ffe7a5b70424dcb96a2ca56a52145979e5ba.png?w=1536' },
   { title: 'Crossing Kyiv', type: 'EDITORIAL DESIGN · CULTURAL PROJECT', slug: 'crossing-kyiv', image: 'https://rossellamagnani.figma.site/_assets/v11/80b5605660174fa81e94a9085663a9f9c21554d2.png?w=1536', crop: { x: 30.2, y: 47.8, zoom: 1.65 } },
-  { title: 'PRO Brera', type: 'SPECULATIVE DESIGN · SPATIAL', slug: 'brera-district', image: '/projects/pro-brera.svg', focus: '50% 0%' },
   { title: 'a drop of corruption', type: 'AI VIDEO · ART DIRECTION', slug: 'a-drop-of-corruption', image: '', video: 'https://rossellamagnani.figma.site/_videos/v1/4d1d4bed175820029240b41dd761342d8a2dc045' },
+  { title: 'PRO Brera', type: 'SPECULATIVE DESIGN · SPATIAL', slug: 'brera-district', image: '/projects/pro-brera.svg', focus: '50% 0%' },
 ]
 
 const caseStudies = [
