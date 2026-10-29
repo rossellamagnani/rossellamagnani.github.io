@@ -866,41 +866,21 @@ function About() {
       <SiteHeader />
 
       <article id="content" tabIndex={-1}>
-        {/* Opening: same split as the project pages */}
-        <section className="hero shell reveal">
-          <div className="hero__text">
-            <div className="hero__head">
-              <h1><Lines text="About" /></h1>
-              <p className="hero__subtitle">
-                <Lines text="I design the moment when content meets people in a physical space." />
+        {/* Opening: a small portrait in the first column, the statement and profile across the others */}
+        <section className="ab-intro shell reveal">
+          <Placeholder className="ab-intro__portrait" caption="Portrait" />
+          <div className="ab-intro__text">
+            <h1><Lines text="I design the moment when content meets people in a physical space." /></h1>
+            <div className="ab-profile">
+              <p>
+                <Lines text="I'm Rossella, a communication designer based in Milan. I work on exhibitions, event identities and multisensory experiences, translating cultural content into spaces, objects and graphics that everyone can read, touch and enjoy." />
+              </p>
+              <p>
+                <Lines text="Accessibility shapes everything I do. My MSc thesis at Politecnico di Milano, developed with the University Library of Pavia, redesigns its exhibition stations around tactile and inclusive interaction. Before that, I explored how sound can be experienced beyond hearing, and how artificial intelligence can become the subject of an exhibition rather than a shortcut." />
               </p>
             </div>
-            <div className="facts" role="group" aria-label="In brief">
-              {[
-                ['Based in', 'Milan'],
-                ['Studies', 'MSc Communication Design, Politecnico di Milano'],
-                ['Focus', 'Exhibitions, event identities, multisensory experiences'],
-              ].map(([label, value]) => (
-                <div className="fact" key={label}>
-                  <span><Lines text={label} /></span>
-                  <p><Lines text={value} /></p>
-                </div>
-              ))}
-            </div>
           </div>
-          <Placeholder className="hero__media" caption="Portrait or studio image" />
         </section>
-
-        <AboutSection label="Profile">
-          <div className="ab-profile">
-            <p>
-              <Lines text="I'm Rossella, a communication designer based in Milan. I work on exhibitions, event identities and multisensory experiences, translating cultural content into spaces, objects and graphics that everyone can read, touch and enjoy." />
-            </p>
-            <p>
-              <Lines text="Accessibility shapes everything I do. My MSc thesis at Politecnico di Milano, developed with the University Library of Pavia, redesigns its exhibition stations around tactile and inclusive interaction. Before that, I explored how sound can be experienced beyond hearing, and how artificial intelligence can become the subject of an exhibition rather than a shortcut." />
-            </p>
-          </div>
-        </AboutSection>
 
         <AboutSection label="Approach">
           <ol className="ab-approach">
@@ -960,19 +940,12 @@ function About() {
           />
         </AboutSection>
 
-        {/* CV: the same closing row as "Next project" on the project pages */}
-        <a className="next-project reveal" href="/Rossella_Magnani_CV.pdf" download>
-          <span className="next-project__label">Curriculum</span>
-          <strong>
-            <Lines text="Download CV" /> <span className="sr-only">(PDF, 2 MB)</span>
-          </strong>
-          <i aria-hidden="true">
-            <svg viewBox="0 0 120 180">
-              <path d="M51 0h18v151H51z" />
-              <path d="M0 82v19c27 14 45 38 51 79h18c6-41 24-65 51-79V82c-29 13-49 34-60 65C49 116 29 95 0 82Z" />
-            </svg>
-          </i>
-        </a>
+        <AboutSection label="Curriculum">
+          <a className="ab-cv" href="/Rossella_Magnani_CV.pdf" download>
+            Download CV <span aria-hidden="true">↓</span>
+            <span className="sr-only">(PDF, 2 MB)</span>
+          </a>
+        </AboutSection>
       </article>
 
       <footer className="footer shell">
