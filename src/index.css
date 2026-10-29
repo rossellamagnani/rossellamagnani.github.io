@@ -940,18 +940,12 @@ main:not(.is-deep) .deep-content {
 }
 .site-header nav button.active, .site-header nav a:hover, .site-header nav button:hover { color: var(--ink); }
 
-/* Licence line in the header, centred, a step lighter than the navigation */
-.site-header__licence {
-  position: absolute; left: 50%; translate: -50% 0;
-  font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: #767570; white-space: nowrap;
-}
-
-/* Contact drop-down: Email and LinkedIn appear on one line just under Contact */
+/* Contact drop-down: Email and LinkedIn drop in one under the other, just under Contact */
 .contact-menu { position: relative; }
 .contact-menu > button[aria-expanded="true"] { color: var(--ink); }
 .contact-menu__panel {
-  position: absolute; z-index: 40; top: 100%; right: 0; margin: 0; padding: 10px 0 0 24px; list-style: none;
-  display: flex; gap: 24px; background: var(--paper);
+  position: absolute; z-index: 40; top: 100%; right: 0; margin: 0; padding: 10px 0 8px 16px; list-style: none;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 6px; background: var(--paper);
 }
 .contact-menu__panel[hidden] { display: none; }
 .contact-menu.is-open .contact-menu__panel li { animation: contact-in .4s cubic-bezier(.22, 1, .36, 1) both; }
@@ -960,9 +954,6 @@ main:not(.is-deep) .deep-content {
 .site-header .contact-menu__panel a { color: var(--ink); white-space: nowrap; }
 .site-header .contact-menu__panel a:hover { color: var(--muted); }
 @media (prefers-reduced-motion: reduce) { .contact-menu.is-open .contact-menu__panel li { animation: none; } }
-@media (max-width: 760px) {
-  .site-header__licence { position: static; translate: none; order: 3; flex-basis: 100%; font-size: 11px; }
-}
 
 /* ------------------------------------------------------------------
    Home: the projects in a row along the bottom of the screen that scrolls sideways
@@ -973,7 +964,7 @@ main:not(.is-deep) .deep-content {
   padding-inline: 20px;
 }
 .hm-intro {
-  position: fixed; z-index: 20; top: 96px; right: 20px; width: min(30vw, 400px);
+  position: fixed; z-index: 20; top: 21px; left: calc(20px + var(--card-w) + 8px); width: min(30vw, 400px);
   display: flex; flex-direction: column; gap: 14px;
 }
 .hm-intro h1 { font-size: 16px; font-weight: 400; line-height: 1.4; letter-spacing: 0; }
@@ -983,7 +974,7 @@ main:not(.is-deep) .deep-content {
    wheel, trackpad, drag and arrow keys move the endless row instead (see Home in App.tsx) */
 .hm-stage {
   position: sticky; top: 0; height: 100svh; overflow: hidden;
-  display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 24px;
+  display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 48px;
 }
 .hm-row:focus { outline: none; }
 .hm-track { display: flex; gap: 8px; width: max-content; padding-inline: 20px; will-change: transform; }
@@ -1020,6 +1011,12 @@ main:not(.is-deep) .deep-content {
   display: block; position: relative; background: #e2e0da;
   background-image: linear-gradient(135deg, transparent 49.85%, rgba(17,17,17,.1) 50%, transparent 50.15%);
 }
+/* Licence, small, bottom right */
+.hm-licence {
+  position: fixed; z-index: 20; right: 20px; bottom: 18px;
+  font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted);
+}
+.hm-licence small { font-size: inherit; }
 .hm-image > span { position: absolute; top: 14px; left: 14px; font-size: 12px; letter-spacing: .12em; color: var(--muted); }
 
 
@@ -1030,6 +1027,7 @@ main:not(.is-deep) .deep-content {
   .site-header { flex-wrap: wrap; row-gap: 10px; height: auto; padding-block: 20px 0; }
   .site-header nav { gap: 18px; }
   .hm-intro { position: static; width: auto; padding: 32px 16px 40px; }
+  .hm-licence { position: static; padding: 0 16px 32px; }
   .hm-intro h1 { font-size: 22px; line-height: 1.3; }
   .hm-stage { position: static; height: auto; overflow: visible; padding-bottom: 48px; }
   .hm-row { cursor: auto; touch-action: auto; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; scrollbar-width: none; }
@@ -1155,7 +1153,7 @@ main .outcome-gallery .outcome-gallery__grid .placeholder + .placeholder { margi
 /* Footer: email and LinkedIn on the left, licence on the right, as on the home page */
 .footer { min-height: 0; padding-block: 64px 24px; align-items: baseline; font-size: 12px; letter-spacing: .04em; }
 .footer div { justify-content: flex-start; gap: 24px; }
-.footer > span { color: var(--muted); }
+.footer > span { color: var(--muted); font-size: 11px; }
 
 /* CV: a text link instead of a filled pill */
 .about-cv {
@@ -1306,7 +1304,7 @@ main { animation: page-in .45s ease-out both; }
 /* Small uppercase labels, header, captions and footer in the label typeface, as on the reference site */
 :root { --font-label: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
 .site-header, .site-header .brand, .site-header nav a, .site-header nav button,
-.footer, .hm-card__label, .hm-intro p, .site-header__licence, .contact-menu__panel a,
+.footer, .hm-card__label, .hm-intro p, .hm-licence, .contact-menu__panel a,
 .fact > span, .quick-read__steps span, .section-heading > span, .reading-action small,
 .outcome-gallery__number, .about-table__head span, .about article .section-label,
 .instrument-card strong, .next-project__label, .about-cv, .custom-cursor__label, .hm-image > span, .placeholder__index {

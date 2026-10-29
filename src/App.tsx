@@ -469,7 +469,6 @@ function SiteHeader({ skipTo = 'content', children }: { skipTo?: string; childre
       <a href="/" className="brand">
         Rossella Magnani
       </a>
-      <small className="site-header__licence">© {new Date().getFullYear()} Rossella Magnani</small>
       <nav aria-label="Primary navigation">
         {children}
         <a href="/about">About</a>
@@ -479,7 +478,7 @@ function SiteHeader({ skipTo = 'content', children }: { skipTo?: string; childre
   )
 }
 
-// "Contact" in the header: a small drop-down with Email and LinkedIn on one line.
+// "Contact" in the header: a small drop-down with Email and LinkedIn, one under the other.
 // Opens on hover with a mouse, on click or Enter/Space otherwise; Escape or clicking elsewhere closes it.
 function ContactMenu() {
   const [open, setOpen] = useState(false)
@@ -1168,6 +1167,9 @@ function Home() {
         </section>
       </div>
 
+      <footer className="hm-licence">
+        <small>© {new Date().getFullYear()} Rossella Magnani</small>
+      </footer>
     </main>
   )
 }
