@@ -1494,5 +1494,6 @@ main.is-deep .reading-mode { padding-bottom: 0; }
 /* iPad upright uses the phone layout; its project row gets narrower cards than a phone */
 @media (min-width: 600px) and (max-width: 1024px) and (orientation: portrait) {
   .hm { --card-w: 46vw; }
-  .hm-card .hm-image { height: min(calc(100svh - 300px), calc(var(--card-w) * 1.6)); }
+  .hm-card .hm-image { height: min(calc(100svh - 300px), calc(var(--card-w) * 1.25)); }
+  .hero .hero__media .placeholder__surface { max-height: 56svh; }
 }
