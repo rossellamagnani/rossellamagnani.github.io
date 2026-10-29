@@ -970,7 +970,7 @@ main:not(.is-deep) .deep-content {
 }
 .hm-card__year { color: var(--muted); font-variant-numeric: tabular-nums; }
 .hm-card:hover .hm-card__year, .hm-card:focus-visible .hm-card__year { color: var(--ink); }
-.hm-card .hm-image { height: var(--card-h); overflow: hidden; }
+.hm-card .hm-image { height: var(--card-h); overflow: hidden; scale: var(--hm-scale, 1); }
 .hm-card .hm-image > img { transition: scale .8s cubic-bezier(.5, 1, .89, 1); }
 .hm-card:hover .hm-image > img { scale: 1.03; }
 .hm-image {

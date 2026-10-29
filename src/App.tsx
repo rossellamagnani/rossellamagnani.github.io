@@ -907,32 +907,74 @@ function Home() {
   }, [])
 
   // Desktop: the page scrolls down while the row of projects moves sideways.
-  // The page keeps its normal scrollbar, so wheel, trackpad and keyboard all work.
+  // The page keeps its normal scrollbar, so wheel, trackpad and keyboard all work;
+  // sideways swipes on the trackpad move the row too.
+  // The row follows the scroll with a little delay, and the images shrink slightly while it moves.
   useEffect(() => {
     const track = trackRef.current
-    if (!track) return
+    const row = track?.parentElement
+    if (!track || !row) return
     const sideways = window.matchMedia('(min-width: 761px)')
+    const still = prefersReducedMotion()
     let frame = 0
-    const measure = () => setTravel(sideways.matches ? Math.max(0, track.scrollWidth - window.innerWidth) : 0)
-    const move = () => {
+    let current = 0
+    let last = 0
+    let scale = 1
+
+    const maxShift = () => Math.max(0, track.scrollWidth - window.innerWidth)
+    const measure = () => setTravel(sideways.matches ? maxShift() : 0)
+    const position = () => (sideways.matches ? Math.min(window.scrollY, maxShift()) : row.scrollLeft)
+
+    const tick = () => {
       frame = 0
-      const shift = sideways.matches ? Math.min(window.scrollY, track.scrollWidth - window.innerWidth) : 0
-      track.style.transform = shift > 0 ? `translate3d(${-shift}px, 0, 0)` : ''
+      const target = position()
+      if (sideways.matches) {
+        current = still ? target : current + (target - current) * 0.12
+        track.style.transform = current > 0.5 ? `translate3d(${-current}px, 0, 0)` : ''
+      } else {
+        current = target
+        track.style.transform = ''
+      }
+      const speed = Math.abs(current - last)
+      last = current
+      const goal = still ? 1 : 1 - Math.min(speed * 0.004, 0.08)
+      scale += (goal - scale) * 0.15
+      track.style.setProperty('--hm-scale', scale.toFixed(4))
+      if (Math.abs(target - current) > 0.5 || Math.abs(1 - scale) > 0.001) frame = window.requestAnimationFrame(tick)
+      else track.style.setProperty('--hm-scale', '1')
     }
     const onScroll = () => {
-      if (!frame) frame = window.requestAnimationFrame(move)
+      if (!frame) frame = window.requestAnimationFrame(tick)
     }
     const onResize = () => {
       measure()
       onScroll()
     }
+    const onWheel = (event: WheelEvent) => {
+      if (!sideways.matches || Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return
+      event.preventDefault()
+      window.scrollBy(0, event.deltaX)
+    }
+    const onKey = (event: KeyboardEvent) => {
+      if (!sideways.matches || (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft')) return
+      const step = (track.firstElementChild as HTMLElement | null)?.offsetWidth ?? window.innerWidth / 3
+      event.preventDefault()
+      window.scrollBy({ top: event.key === 'ArrowRight' ? step + 8 : -step - 8, behavior: scrollBehavior() })
+    }
     measure()
-    move()
+    current = last = position()
+    tick()
     window.addEventListener('scroll', onScroll, { passive: true })
+    row.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onResize)
+    window.addEventListener('wheel', onWheel, { passive: false })
+    window.addEventListener('keydown', onKey)
     return () => {
       window.removeEventListener('scroll', onScroll)
+      row.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onResize)
+      window.removeEventListener('wheel', onWheel)
+      window.removeEventListener('keydown', onKey)
       if (frame) window.cancelAnimationFrame(frame)
     }
   }, [])
