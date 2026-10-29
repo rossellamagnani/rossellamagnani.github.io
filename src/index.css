@@ -981,8 +981,12 @@ main:not(.is-deep) .deep-content {
 .hm-card:hover .hm-image > :is(img, video), .hm-card:focus-visible .hm-image > :is(img, video) { transform: translateY(4px); }
 /* Title roll on hover: the title slides up and an identical copy takes its place;
    on leaving it snaps back unseen, so every hover rolls upwards */
-.hm-card__label { display: block; height: 1.2em; overflow: hidden; line-height: 1.2; }
-.hm-roll { display: block; }
+.hm-card__label { display: block; height: 1.2em; overflow: hidden; clip-path: inset(0); line-height: 1.2; }
+.hm-roll { display: block; will-change: transform; }
+/* Keep each project, and the moving picture inside it, on its own layer from the start:
+   Safari otherwise re-layers cards with a video or SVG on hover, making the title jump */
+.hm-card { will-change: transform; }
+.hm-card .hm-image { isolation: isolate; transform: translateZ(0); }
 .hm-roll > span { display: block; }
 .hm-card:hover .hm-roll, .hm-card:focus-visible .hm-roll { transform: translateY(-50%); transition: transform .45s cubic-bezier(.22, 1, .36, 1); }
 @media (prefers-reduced-motion: reduce) {
