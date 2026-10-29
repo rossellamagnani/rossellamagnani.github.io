@@ -1388,3 +1388,74 @@ main.is-deep .reading-mode { padding-bottom: 0; }
   /* a drop of corruption: a single video in the centre */
   .outcome-gallery--a-drop-of-corruption .outcome-gallery__hero { width: min(100%, 1040px); margin-inline: auto; }
 }
+
+/* ------------------------------------------------------------------
+   Phone menu: three lines that turn into a cross; About, Email and LinkedIn
+------------------------------------------------------------------- */
+.phone-menu__toggle, .phone-menu { display: none; }
+@media (max-width: 760px) {
+  .site-header nav { display: none; }
+  .phone-menu__toggle {
+    position: relative; z-index: 41; display: grid; place-content: center; gap: 5px;
+    width: 32px; height: 32px; margin-right: -6px; cursor: pointer;
+  }
+  .phone-menu__toggle span {
+    display: block; width: 20px; height: 1.5px; background: var(--ink);
+    transition: transform .35s cubic-bezier(.22, 1, .36, 1), opacity .2s ease;
+  }
+  .phone-menu__toggle.is-open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .phone-menu__toggle.is-open span:nth-child(2) { opacity: 0; }
+  .phone-menu__toggle.is-open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+  .site-header .brand { position: relative; z-index: 41; }
+  .phone-menu {
+    position: fixed; z-index: 40; inset: 0; padding: 96px 16px 32px; background: var(--paper);
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .phone-menu[hidden] { display: none; }
+  .phone-menu a {
+    color: var(--ink); font-size: 32px; line-height: 1.1; letter-spacing: -.02em;
+    animation: contact-in .5s cubic-bezier(.22, 1, .36, 1) both;
+  }
+  .phone-menu a:nth-child(2) { animation-delay: .05s; }
+  .phone-menu a:nth-child(3) { animation-delay: .1s; }
+}
+@media (max-width: 760px) and (prefers-reduced-motion: reduce) {
+  .phone-menu a, .phone-menu__toggle span { animation: none; transition: none; }
+}
+
+/* ------------------------------------------------------------------
+   Home on the phone: smaller intro, more air before the projects, projects nearly
+   as tall as the screen, a free-moving row and the licence underneath
+------------------------------------------------------------------- */
+@media (max-width: 760px) {
+  .hm { --card-w: 82vw; }
+  .hm-intro { padding: 28px 16px 0; }
+  .hm-intro h1 { font-size: 17px; line-height: 1.35; }
+  .hm-stage { padding: 0; margin-top: 96px; }
+  .hm-row { scroll-snap-type: none; }
+  .hm-card { scroll-snap-align: none; }
+  .hm-card .hm-image { aspect-ratio: auto; height: calc(100svh - 96px); }
+  .hm-licence { padding: 16px 16px 24px; }
+}
+
+/* ------------------------------------------------------------------
+   Project pages: the cover a little below the header; sideways galleries
+   move freely instead of stopping on each image
+------------------------------------------------------------------- */
+.process-strip { scroll-snap-type: none; }
+.process-strip .placeholder { scroll-snap-align: none; }
+@media (min-width: 761px) {
+  .hero .hero__media { margin-top: 16px; }
+  .hero .hero__media .placeholder__surface { height: calc(100svh - 64px - 16px - var(--page-margin)); }
+}
+@media (max-width: 760px) {
+  .hero .hero__media { margin-top: 20px; }
+  /* Outcome images closer together */
+  main .outcome-gallery .outcome-gallery__grid { margin-top: 8px; }
+  main .outcome-gallery .outcome-gallery__grid .placeholder + .placeholder { margin-top: 8px; }
+  /* Next project: label and title apart, and the block nearer the end of the page */
+  main .outcome { padding-bottom: 32px; }
+  .next-project { margin-top: 24px; padding: 40px 16px 32px; row-gap: 12px; }
+  .next-project__label { position: static; margin: 0; padding: 0; }
+  .footer { padding-block: 24px 32px; align-items: flex-start; }
+}

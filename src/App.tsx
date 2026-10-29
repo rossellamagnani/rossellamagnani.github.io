@@ -474,7 +474,61 @@ function SiteHeader({ skipTo = 'content', children }: { skipTo?: string; childre
         <a href="/about">About</a>
         <ContactMenu />
       </nav>
+      <PhoneMenu />
     </header>
+  )
+}
+
+// Phone only: three lines that open a menu with About, Email and LinkedIn and turn into a cross to close it.
+function PhoneMenu() {
+  const [open, setOpen] = useState(false)
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!open) return
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return
+      setOpen(false)
+      buttonRef.current?.focus()
+    }
+    const overflow = document.documentElement.style.overflow
+    document.documentElement.style.overflow = 'hidden'
+    panelRef.current?.querySelector('a')?.focus()
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.documentElement.style.overflow = overflow
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open])
+
+  return (
+    <>
+      <button
+        ref={buttonRef}
+        type="button"
+        className={`phone-menu__toggle ${open ? 'is-open' : ''}`}
+        aria-expanded={open}
+        aria-controls="phone-menu"
+        aria-label={open ? 'Close menu' : 'Menu'}
+        onClick={() => setOpen(value => !value)}
+      >
+        <span />
+        <span />
+        <span />
+      </button>
+      <div ref={panelRef} id="phone-menu" className="phone-menu" hidden={!open}>
+        <a href="/about" onClick={() => setOpen(false)}>
+          About
+        </a>
+        <a href="mailto:magnanirossella02@gmail.com" onClick={() => setOpen(false)}>
+          Email
+        </a>
+        <a href="https://www.linkedin.com/in/rossella-magnani-276219279/" onClick={() => setOpen(false)}>
+          LinkedIn
+        </a>
+      </div>
+    </>
   )
 }
 
