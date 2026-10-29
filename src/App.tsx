@@ -850,6 +850,64 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
   )
 }
 
+function AboutTable({
+  title,
+  rows,
+  expandable = false,
+}: {
+  title: string
+  rows: Array<[string, string, string]>
+  expandable?: boolean
+}) {
+  const [openRow, setOpenRow] = useState<number | null>(null)
+
+  return (
+    <section className="about-section shell reveal">
+      <div className="section-label">{title}</div>
+      <div className={`about-table ${expandable ? 'is-expandable' : ''}`}>
+        <div className="about-table__head">
+          <span>Role / Context</span>
+          <span>Company / Project</span>
+          <span>Year</span>
+          {expandable && <span aria-hidden="true" />}
+        </div>
+        {rows.map(([first, second, year], index) =>
+          expandable ? (
+            <article
+              className={`about-table__item ${openRow === index ? 'is-open' : ''}`}
+              key={`${first}-${year}`}
+            >
+              <button
+                type="button"
+                className="about-table__row about-table__row--button"
+                aria-expanded={openRow === index}
+                onClick={() => setOpenRow(current => current === index ? null : index)}
+              >
+                <strong>{first}</strong>
+                <span>{second}</span>
+                <span>{year}</span>
+                <i aria-hidden="true">{openRow === index ? '−' : '+'}</i>
+              </button>
+              <div className="about-table__detail" inert={openRow !== index}>
+                <p>
+                  Placeholder text: add a short description of your role, responsibilities,
+                  process and contribution to this experience.
+                </p>
+              </div>
+            </article>
+          ) : (
+            <div className="about-table__row" key={`${first}-${year}`}>
+              <strong>{first}</strong>
+              <span>{second}</span>
+              <span>{year}</span>
+            </div>
+          ),
+        )}
+      </div>
+    </section>
+  )
+}
+
 function About() {
   useEffect(() => {
     const revealObserver = new IntersectionObserver(
@@ -859,154 +917,94 @@ function About() {
     document.querySelectorAll('.about .reveal').forEach(element => revealObserver.observe(element))
     return () => revealObserver.disconnect()
   }, [])
-  useGrowOnScroll(null)
 
   return (
     <main className="about">
       <SiteHeader />
 
       <article id="content" tabIndex={-1}>
-        {/* Opening: a small portrait in the first column, the statement and profile across the others */}
-        <section className="ab-intro shell reveal">
-          <Placeholder className="ab-intro__portrait" caption="Portrait" />
-          <div className="ab-intro__text">
-            <h1><Lines text="I design the moment when content meets people in a physical space." /></h1>
-            <div className="ab-profile">
-              <p>
-                <Lines text="I'm Rossella, a communication designer based in Milan. I work on exhibitions, event identities and multisensory experiences, translating cultural content into spaces, objects and graphics that everyone can read, touch and enjoy." />
-              </p>
-              <p>
-                <Lines text="Accessibility shapes everything I do. My MSc thesis at Politecnico di Milano, developed with the University Library of Pavia, redesigns its exhibition stations around tactile and inclusive interaction. Before that, I explored how sound can be experienced beyond hearing, and how artificial intelligence can become the subject of an exhibition rather than a shortcut." />
-              </p>
-            </div>
+        <section className="about-hero shell reveal">
+          <h1>I design the moment when content meets people in a physical space.</h1>
+          <div className="about-hero__bio">
+            <p>
+              I&apos;m Rossella, a communication designer based in Milan. I work on exhibitions,
+              event identities and multisensory experiences, translating cultural content into
+              spaces, objects and graphics that everyone can read, touch and enjoy.
+            </p>
+            <p>
+              Accessibility shapes everything I do. My MSc thesis at Politecnico di Milano,
+              developed with the University Library of Pavia, redesigns its exhibition stations
+              around tactile and inclusive interaction. Before that, I explored how sound can be
+              experienced beyond hearing, and how artificial intelligence can become the subject
+              of an exhibition rather than a shortcut.
+            </p>
           </div>
         </section>
 
-        <AboutSection label="Approach">
-          <ol className="ab-approach">
+        <section className="about-section about-approach shell reveal">
+          <div className="section-label">Approach</div>
+          <div className="quick-read__steps about-approach__grid">
             {[
               ['Research first', 'Every project starts from people, places and archives, not from a visual style.'],
               ['Design for every sense', 'Sight is only one way in: touch, sound and space carry meaning too.'],
               ['From page to room', 'I move between editorial, graphic and spatial scale within the same project.'],
             ].map(([title, copy], index) => (
-              <li key={title}>
+              <article key={title}>
                 <span>{String(index + 1).padStart(2, '0')}</span>
-                <strong><Lines text={title} /></strong>
-                <p><Lines text={copy} /></p>
-              </li>
+                <strong>{title}</strong>
+                <p>{copy}</p>
+              </article>
             ))}
-          </ol>
-        </AboutSection>
+          </div>
+        </section>
 
-        <AboutSection label="Experience">
-          <AboutRows
-            expandable
-            rows={[
-              ['Brand & Communication Design Intern', 'CBA Design Italy, Milan', '2026'],
-              ['Communication & Editorial Design Intern', 'T12 Lab, Milan', '2025'],
-              ['Visual Designer', 'Loro Piana Global Summit', '2024'],
-              ['Communication Design Intern', 'DCode, Turin', '2024'],
-            ]}
-          />
-        </AboutSection>
+        <AboutTable
+          title="Experience"
+          expandable
+          rows={[
+            ['Brand & Communication Design Intern', 'CBA Design Italy, Milan', '2026'],
+            ['Communication & Editorial Design Intern', 'T12 Lab, Milan', '2025'],
+            ['Visual Designer', 'Loro Piana Global Summit', '2024'],
+            ['Communication Design Intern', 'DCode, Turin', '2024'],
+          ]}
+        />
 
-        <AboutSection label="Selected contexts">
-          <AboutRows
-            expandable
-            rows={[
-              ['Venice Biennale', "Children's workshop materials", '2025'],
-              ['Loro Piana Global Summit', 'Event visual system', '2024'],
-            ]}
-          />
-        </AboutSection>
+        <AboutTable
+          title="Selected contexts"
+          expandable
+          rows={[
+            ['Venice Biennale', "Children's workshop materials", '2025'],
+            ['Loro Piana Global Summit', 'Event visual system', '2024'],
+          ]}
+        />
 
-        <AboutSection label="Education">
-          <AboutRows
-            rows={[
-              ['MSc Communication Design', 'Politecnico di Milano', '2026'],
-              ['BSc Communication Design', 'Politecnico di Torino', '2024'],
-            ]}
-          />
-        </AboutSection>
+        <section className="about-section about-details shell reveal">
+          <div>
+            <div className="section-label">Education</div>
+            <p>MSc Communication Design, Politecnico di Milano, 2026</p>
+            <p>BSc Communication Design, Politecnico di Torino, 2024</p>
+          </div>
+          <div>
+            <div className="section-label">Tools</div>
+            <p>Rhino, AutoCAD, Blender</p>
+            <p>InDesign, Illustrator, Photoshop</p>
+            <p>After Effects, Premiere</p>
+            <p>Figma, Framer</p>
+          </div>
+        </section>
 
-        <AboutSection label="Tools">
-          <AboutRows
-            rows={[
-              ['Spatial', 'Rhino, AutoCAD, Blender', ''],
-              ['Editorial and graphic', 'InDesign, Illustrator, Photoshop', ''],
-              ['Motion', 'After Effects, Premiere', ''],
-              ['Digital', 'Figma, Framer', ''],
-            ]}
-          />
-        </AboutSection>
-
-        <AboutSection label="Curriculum">
-          <a className="ab-cv" href="/Rossella_Magnani_CV.pdf" download>
-            Download CV <span aria-hidden="true">↓</span>
-            <span className="sr-only">(PDF, 2 MB)</span>
+        <section className="about-closing shell reveal">
+          <p>Here&apos;s my CV.</p>
+          <a href="/Rossella_Magnani_CV.pdf" className="about-cv" download>
+            Download CV <span className="sr-only">(PDF, 2 MB)</span>
           </a>
-        </AboutSection>
+        </section>
       </article>
 
       <footer className="footer shell">
         <span>© {new Date().getFullYear()} Rossella Magnani</span>
       </footer>
     </main>
-  )
-}
-
-// One About section: a small label in the first column, the content across the other three,
-// on the same columns as the home row
-function AboutSection({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <section className="ab-section shell reveal">
-      <h2 className="ab-label">{label}</h2>
-      <div className="ab-body">{children}</div>
-    </section>
-  )
-}
-
-// Rows of three cells (title, place, year) on thin rules; expandable rows open a short description
-function AboutRows({ rows, expandable = false }: { rows: Array<[string, string, string]>; expandable?: boolean }) {
-  const [openRow, setOpenRow] = useState<number | null>(null)
-  return (
-    <ul className="ab-rows">
-      {rows.map(([first, second, year], index) => {
-        const open = openRow === index
-        const cells = (
-          <>
-            <strong>{first}</strong>
-            <span>{second}</span>
-            <span className="ab-rows__year">{year}</span>
-          </>
-        )
-        return (
-          <li key={first + second} className={open ? 'is-open' : undefined}>
-            {expandable ? (
-              <>
-                <button
-                  type="button"
-                  className="ab-rows__row"
-                  aria-expanded={open}
-                  onClick={() => setOpenRow(open ? null : index)}
-                >
-                  {cells}
-                  <i aria-hidden="true">{open ? '−' : '+'}</i>
-                </button>
-                <div className="ab-rows__detail" inert={!open}>
-                  <p>
-                    Placeholder text: add a short description of your role, responsibilities,
-                    process and contribution to this experience.
-                  </p>
-                </div>
-              </>
-            ) : (
-              <div className="ab-rows__row">{cells}</div>
-            )}
-          </li>
-        )
-      })}
-    </ul>
   )
 }
 
