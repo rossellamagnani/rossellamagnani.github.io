@@ -1111,8 +1111,8 @@ function Home() {
 
       <section className="hm-intro" aria-label="Introduction">
         <h1>
-          Communication designer working on exhibitions and multisensory experiences that
-          everyone can access.
+          Communication designer working on exhibitions and multisensory experiences designed
+          for the widest possible audience.
         </h1>
       </section>
 
