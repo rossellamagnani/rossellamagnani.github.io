@@ -964,10 +964,10 @@ main:not(.is-deep) .deep-content {
   padding-inline: 20px;
 }
 .hm-intro {
-  position: fixed; z-index: 20; top: 21px; left: calc(20px + var(--card-w) + 8px); width: min(30vw, 400px);
+  position: fixed; z-index: 20; top: 21px; left: calc(20px + var(--card-w) + 8px); width: min(36vw, 470px);
   display: flex; flex-direction: column; gap: 14px;
 }
-.hm-intro h1 { font-size: 16px; font-weight: 400; line-height: 1.4; letter-spacing: 0; }
+.hm-intro h1 { font-size: 13px; font-weight: 400; line-height: 1.4; letter-spacing: .01em; text-wrap: balance; }
 .hm-intro p { color: var(--muted); font-size: 13px; line-height: 1.45; }
 
 /* The row sits in the lower part of the screen; the page itself does not scroll on desktop,
