@@ -26,9 +26,9 @@ const process = [
   ['05', 'Tactile prototypes'],
 ]
 
-// `image`: the home gallery picture for each project (shown cropped to a square), e.g. '/assets/projects/oltre.jpg'
-// Home images: for now taken from the current site (rossellamagnani.figma.site).
-// Once the files are uploaded to public/, point these to the local copies instead.
+// `image` / `video`: the picture for each project in the home row, cropped to fill the frame;
+// `focus` moves the crop (CSS object-position). For now they are taken from the current site
+// (rossellamagnani.figma.site); once the files are uploaded to public/, point these to the local copies.
 const projects: { title: string; type: string; slug: string; lang?: 'it'; image: string; video?: string; focus?: string }[] = [
   { title: "Oltre l'ascolto", type: 'MULTISENSORY DESIGN · ACCESSIBILITY', slug: 'oltre-lascolto', lang: 'it', image: 'https://rossellamagnani.figma.site/_assets/v11/176474d4960ebe154d49f3d2840823b84d71f931.png' },
   { title: 'Sovrapposizioni', type: 'EXHIBITION DESIGN · AI', slug: 'sovrapposizioni', lang: 'it', image: 'https://rossellamagnani.figma.site/_assets/v11/141ddc64b5b5362cf1d47cddb155b8aefeecc258.png?w=1536' },
