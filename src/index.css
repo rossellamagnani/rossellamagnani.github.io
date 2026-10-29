@@ -945,10 +945,9 @@ main:not(.is-deep) .deep-content {
 .site-header nav button.active, .site-header nav a:hover, .site-header nav button:hover { color: var(--ink); }
 
 /* ------------------------------------------------------------------
-   Home: a narrow column of images in the middle of the screen,
-   project index on the left, the active project's details on the centre line
+   Home: the projects in a row along the bottom of the screen that scrolls sideways
 ------------------------------------------------------------------- */
-.hm { --hm-col: min(26vw, 400px); min-height: 100vh; background: var(--paper); color: var(--ink); }
+.hm { --card-w: min(calc((100vw - 64px) / 3.5), calc((100svh - 300px) * .8)); min-height: 100svh; background: var(--paper); color: var(--ink); }
 .hm > .site-header {
   position: fixed; z-index: 30; top: 0; left: 0; right: 0; width: auto; height: 64px;
   padding-inline: 20px;
@@ -960,40 +959,29 @@ main:not(.is-deep) .deep-content {
 .hm-intro h1 { font-size: 16px; font-weight: 400; line-height: 1.4; letter-spacing: 0; }
 .hm-intro p { color: var(--muted); font-size: 13px; line-height: 1.45; }
 
-.hm-index {
-  position: fixed; z-index: 20; left: 20px; top: 50%; translate: 0 -50%;
-  display: flex; flex-direction: column; align-items: flex-start; gap: 0;
+/* The row sits in the lower part of the screen and stays put while the page scrolls;
+   scrolling moves it sideways (see Home in App.tsx) */
+.hm-stage {
+  position: sticky; top: 0; height: 100svh; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 56px;
 }
-.hm-index button {
-  min-height: 24px; color: var(--muted); font-size: 13px; letter-spacing: .03em; text-transform: uppercase;
-  text-align: left; cursor: pointer; transition: color .25s ease;
+.hm-row:focus { outline: none; }
+.hm-track { display: flex; gap: 8px; width: max-content; padding-inline: 20px; will-change: transform; }
+.hm-card { display: flex; flex-direction: column; gap: 10px; width: var(--card-w); flex: none; }
+.hm-card__label {
+  display: flex; justify-content: space-between; gap: 16px;
+  font-size: 13px; letter-spacing: .03em; text-transform: uppercase; white-space: nowrap;
 }
-.hm-index button:hover, .hm-index button.active { color: var(--ink); }
-
-.hm-line {
-  position: fixed; z-index: 10; top: 50%; left: 0; right: 20px; translate: 0 -50%;
-  display: grid; grid-template-columns: 1fr var(--hm-col) minmax(0, 1fr) auto;
-  font-size: 13px; letter-spacing: .03em; text-transform: uppercase; white-space: nowrap; pointer-events: none;
-}
-.hm-line span:nth-child(1) { grid-column: 1; padding-left: 22vw; }
-.hm-line span:nth-child(2) { grid-column: 3; padding-left: 12vw; }
-.hm-line span:nth-child(3) { display: none; }
-
-
-.hm-gallery {
-  width: var(--hm-col); margin-inline: auto;
-  padding-block: calc(50vh - var(--hm-col) / 2);
-  display: flex; flex-direction: column; gap: 8px;
-}
-.hm-item { position: relative; display: block; }
+.hm-card__year { color: var(--muted); font-variant-numeric: tabular-nums; }
+.hm-card:hover .hm-card__year, .hm-card:focus-visible .hm-card__year { color: var(--ink); }
+.hm-card .hm-image { aspect-ratio: 4 / 5; overflow: hidden; }
+.hm-card .hm-image > img { transition: scale .8s cubic-bezier(.5, 1, .89, 1); }
+.hm-card:hover .hm-image > img { scale: 1.03; }
 .hm-image {
-  display: block; aspect-ratio: 1; position: relative; background: #e2e0da;
+  display: block; position: relative; background: #e2e0da;
   background-image: linear-gradient(135deg, transparent 49.85%, rgba(17,17,17,.1) 50%, transparent 50.15%);
 }
 .hm-image > span { position: absolute; top: 14px; left: 14px; font-size: 12px; letter-spacing: .12em; color: var(--muted); }
-/* Mobile only: a bar at the top naming the project in view */
-.hm-current { display: none; }
-
 
 .hm-footer {
   position: fixed; z-index: 20; left: 20px; right: 20px; bottom: 18px;
@@ -1006,31 +994,19 @@ main:not(.is-deep) .deep-content {
 .hm-footer a:hover { text-decoration: underline; text-underline-offset: 4px; }
 .hm-footer > span { text-transform: uppercase; }
 
-@media (max-width: 1100px) {
-  .hm { --hm-col: min(34vw, 400px); }
-  .hm-line span:nth-child(1) { padding-left: 22vw; }
-  .hm-line span:nth-child(2) { padding-left: 4vw; }
-}
-
+/* Phone: the row is swiped sideways with the finger, one project at a time */
 @media (max-width: 760px) {
+  .hm { --card-w: 78vw; }
   .hm > .site-header { position: static; height: auto; padding: 20px 16px 0; }
   .site-header { flex-wrap: wrap; row-gap: 10px; height: auto; padding-block: 20px 0; }
   .site-header nav { gap: 18px; }
   .hm-intro { position: static; width: auto; padding: 32px 16px 40px; }
   .hm-intro h1 { font-size: 22px; line-height: 1.3; }
-  .hm-index, .hm-line { display: none; }
-  .hm-gallery { width: auto; padding: 0 16px 120px; gap: 40px; }
-  .hm-gallery { gap: 16px; }
-  .hm-current {
-    position: fixed; z-index: 25; top: calc(env(safe-area-inset-top, 0px) + 12px); left: 16px; right: 16px;
-    padding: 10px 12px; display: flex; justify-content: space-between; gap: 16px;
-    background: rgba(255, 255, 255, .92); backdrop-filter: blur(8px);
-    font-size: 12px; letter-spacing: .07em; text-transform: uppercase;
-    opacity: 0; pointer-events: none; transition: opacity .3s ease;
-  }
-  .hm-current.visible { opacity: 1; }
-  .hm-current span { color: var(--muted); font-variant-numeric: tabular-nums; }
-  .hm-current strong { font-weight: 600; text-align: right; }
+  .hm-stage { position: static; height: auto; overflow: visible; padding-bottom: 48px; }
+  .hm-row { overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; scrollbar-width: none; }
+  .hm-row::-webkit-scrollbar { display: none; }
+  .hm-track { padding-inline: 16px; }
+  .hm-card { scroll-snap-align: start; }
   .hm-footer { position: static; padding: 0 16px 40px; flex-wrap: wrap; gap: 16px; }
 }
 
@@ -1298,7 +1274,7 @@ main { animation: page-in .45s ease-out both; }
 /* Small uppercase labels, header, captions and footer in the label typeface, as on the reference site */
 :root { --font-label: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
 .site-header, .site-header .brand, .site-header nav a, .site-header nav button,
-.footer, .hm-footer, .hm-index button, .hm-line, .hm-current, .hm-intro p,
+.footer, .hm-footer, .hm-card__label, .hm-intro p,
 .fact > span, .quick-read__steps span, .section-heading > span, .reading-action small,
 .outcome-gallery__number, .about-table__head span, .about article .section-label,
 .instrument-card strong, .next-project__label, .about-cv, .custom-cursor__label, .hm-image > span, .placeholder__index {

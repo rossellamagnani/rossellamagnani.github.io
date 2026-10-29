@@ -906,54 +906,54 @@ function About() {
 const projectYear = (slug: string) => caseStudies.find(item => item.slug === slug)?.year ?? '2025'
 
 function Home() {
-  const [activeProject, setActiveProject] = useState(0)
-  const [galleryInView, setGalleryInView] = useState(false)
+  const trackRef = useRef<HTMLDivElement>(null)
+  const [travel, setTravel] = useState(0)
 
   useEffect(() => {
     if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual'
     window.scrollTo(0, 0)
   }, [])
 
+  // Desktop: the page scrolls down while the row of projects moves sideways.
+  // The page keeps its normal scrollbar, so wheel, trackpad and keyboard all work.
   useEffect(() => {
+    const track = trackRef.current
+    if (!track) return
+    const sideways = window.matchMedia('(min-width: 761px)')
     let frame = 0
-    const update = () => {
-      const items = Array.from(document.querySelectorAll<HTMLElement>('.hm-item'))
-      const centre = window.innerHeight / 2
-      let closest = 0
-      let distance = Number.POSITIVE_INFINITY
-      items.forEach((item, index) => {
-        const rect = item.getBoundingClientRect()
-        const itemDistance = Math.abs(rect.top + rect.height / 2 - centre)
-        if (itemDistance < distance) {
-          distance = itemDistance
-          closest = index
-        }
-      })
-      setActiveProject(closest)
-      setGalleryInView(items.length > 0 && items[0].getBoundingClientRect().top < 80)
+    const measure = () => setTravel(sideways.matches ? Math.max(0, track.scrollWidth - window.innerWidth) : 0)
+    const move = () => {
       frame = 0
+      const shift = sideways.matches ? Math.min(window.scrollY, track.scrollWidth - window.innerWidth) : 0
+      track.style.transform = shift > 0 ? `translate3d(${-shift}px, 0, 0)` : ''
     }
     const onScroll = () => {
-      if (!frame) frame = window.requestAnimationFrame(update)
+      if (!frame) frame = window.requestAnimationFrame(move)
     }
-    update()
+    const onResize = () => {
+      measure()
+      onScroll()
+    }
+    measure()
+    move()
     window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
+    window.addEventListener('resize', onResize)
     return () => {
       window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
+      window.removeEventListener('resize', onResize)
       if (frame) window.cancelAnimationFrame(frame)
     }
   }, [])
 
-  const scrollToProject = (index: number) => {
-    document.getElementById(`project-${index}`)?.scrollIntoView({ behavior: scrollBehavior(), block: 'center' })
+  // Keyboard users: bring a focused project into view along the row
+  const revealProject = (item: HTMLElement) => {
+    if (!travel) return
+    const target = Math.min(travel, Math.max(0, item.offsetLeft - 20))
+    window.scrollTo({ top: target, behavior: scrollBehavior() })
   }
-  const active = projects[activeProject]
-  const [primaryType, secondaryType] = active.type.split(' · ')
 
   return (
-    <main className="hm">
+    <main className="hm" style={travel ? { height: `calc(100svh + ${travel}px)` } : undefined}>
       <SiteHeader skipTo="work" />
 
       <section className="hm-intro" aria-label="Introduction">
@@ -964,43 +964,30 @@ function Home() {
         <p>Based in Milan. MSc Communication Design, Politecnico di Milano.</p>
       </section>
 
-      <nav className="hm-index" aria-label="Projects">
-        {projects.map((project, index) => (
-          <button
-            type="button"
-            className={activeProject === index ? 'active' : ''}
-            aria-current={activeProject === index ? 'true' : undefined}
-            onClick={() => scrollToProject(index)}
-            key={project.title}
-          >
-            <span lang={project.lang}>{project.title}</span>
-          </button>
-        ))}
-      </nav>
-
-      <div className="hm-line" aria-hidden="true">
-        <span>{primaryType}</span>
-        <span>{secondaryType}</span>
-        <span>{projectYear(active.slug)}</span>
+      <div className="hm-stage">
+        <section id="work" className="hm-row" tabIndex={-1} aria-label="Projects">
+          <div className="hm-track" ref={trackRef}>
+            {projects.map(project => (
+              <a
+                className="hm-card"
+                href={`/${project.slug}`}
+                data-cursor-label
+                key={project.title}
+                onFocus={event => revealProject(event.currentTarget)}
+              >
+                <span className="hm-card__label">
+                  <span lang={project.lang}>{project.title}</span>
+                  <span className="hm-card__year">{projectYear(project.slug)}</span>
+                </span>
+                <span className="sr-only">, {project.type.toLowerCase()}</span>
+                <span className="hm-image" aria-hidden="true">
+                  {project.image ? <img src={project.image} alt="" /> : <span>PROJECT IMAGE</span>}
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
       </div>
-
-      <div className={`hm-current ${galleryInView ? 'visible' : ''}`} aria-hidden="true">
-        <span>({String(activeProject + 1).padStart(2, '0')})</span>
-        <strong lang={active.lang}>{active.title}</strong>
-      </div>
-
-      <section id="work" className="hm-gallery" tabIndex={-1} aria-label="Projects">
-        {projects.map((project, index) => (
-          <a id={`project-${index}`} className="hm-item" href={`/${project.slug}`} data-cursor-label key={project.title}>
-            <span className="sr-only">
-              <span lang={project.lang}>{project.title}</span>, {project.type.toLowerCase()}
-            </span>
-            <span className="hm-image" aria-hidden="true">
-              {project.image ? <img src={project.image} alt="" /> : <span>PROJECT IMAGE</span>}
-            </span>
-          </a>
-        ))}
-      </section>
 
       <footer id="contact" className="hm-footer">
         <div>
