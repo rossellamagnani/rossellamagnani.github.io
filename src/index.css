@@ -1459,3 +1459,12 @@ main.is-deep .reading-mode { padding-bottom: 0; }
   .next-project__label { position: static; margin: 0; padding: 0; }
   .footer { padding-block: 24px 32px; align-items: flex-start; }
 }
+
+/* Licence on its own, centred, at the foot of every page; phone menu items at the bottom left */
+.footer { justify-content: center; text-align: center; }
+.hm-licence { left: 20px; text-align: center; }
+@media (max-width: 760px) {
+  .footer { align-items: center; padding-block: 24px 28px; }
+  .hm-licence { text-align: center; }
+  .phone-menu { justify-content: flex-end; padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px)); }
+}

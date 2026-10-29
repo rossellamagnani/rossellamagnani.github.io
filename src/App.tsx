@@ -838,11 +838,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
         </a>
       </article>
 
-      <footer id="contact" className="footer shell">
-        <div>
-          <a href="mailto:magnanirossella02@gmail.com">Email</a>
-          <a href="https://www.linkedin.com/in/rossella-magnani-276219279/">LinkedIn</a>
-        </div>
+      <footer className="footer shell">
         <span>© {new Date().getFullYear()} Rossella Magnani</span>
       </footer>
     </main>
@@ -1000,11 +996,7 @@ function About() {
         </section>
       </article>
 
-      <footer id="contact" className="footer shell">
-        <div>
-          <a href="mailto:magnanirossella02@gmail.com">Email</a>
-          <a href="https://www.linkedin.com/in/rossella-magnani-276219279/">LinkedIn</a>
-        </div>
+      <footer className="footer shell">
         <span>© {new Date().getFullYear()} Rossella Magnani</span>
       </footer>
     </main>
@@ -1430,11 +1422,7 @@ function CaseStudy() {
         </a>
       </article>
 
-      <footer id="contact" className="footer shell">
-        <div>
-          <a href="mailto:magnanirossella02@gmail.com">Email</a>
-          <a href="https://www.linkedin.com/in/rossella-magnani-276219279/">LinkedIn</a>
-        </div>
+      <footer className="footer shell">
         <span>© {new Date().getFullYear()} Rossella Magnani</span>
       </footer>
     </main>
