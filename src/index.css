@@ -1472,7 +1472,7 @@ main.is-deep .reading-mode { padding-bottom: 0; }
 /* Phone: the introduction lives in the menu, under the name; the home fits one screen:
    header, some air, the row of projects sized to the remaining height, the licence */
 @media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
-  .phone-menu__intro { margin: 0 0 auto; max-width: 30ch; color: var(--ink); font-size: 17px; line-height: 1.35; }
+  .phone-menu__intro { margin: 0 0 auto; max-width: 340px; color: var(--ink); font-size: 20px; line-height: 1.3; }
   .phone-menu { justify-content: flex-start; padding-top: 72px; }
   .phone-menu__intro + a { margin-top: auto; }
   .phone-menu .phone-menu__intro { animation: contact-in .5s cubic-bezier(.22, 1, .36, 1) both; }
