@@ -1024,7 +1024,8 @@ function Home() {
     const row = track?.parentElement
     if (!track || !row) return
     const cards = Array.from(track.children) as HTMLElement[]
-    const desktop = window.matchMedia('(min-width: 761px)')
+    // the phone layout also covers an upright iPad (see the media queries in index.css)
+    const desktop = window.matchMedia('(min-width: 1025px), (min-width: 761px) and (orientation: landscape)')
     const still = prefersReducedMotion()
     let frame = 0
     let target = 0

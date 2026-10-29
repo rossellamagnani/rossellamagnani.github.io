@@ -362,7 +362,7 @@ main:not(.is-deep) .outcome-gallery__grid .placeholder__surface { aspect-ratio: 
 .skip-link:focus { transform: none; }
 .process-strip:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 
-@media (min-width: 761px) and (max-width: 1100px) {
+@media (min-width: 761px) and (max-width: 1100px) and (orientation: landscape) {
   .shell { width: calc(100% - 48px); }
   .hero h1 { font-size: 12vw; }
   .hero__media { margin-top: 90px; }
@@ -388,7 +388,7 @@ main:not(.is-deep) .outcome-gallery__grid .placeholder__surface { aspect-ratio: 
   .outcome-part + .outcome-part { margin-top: 150px; }
 }
 
-@media (min-width: 761px) and (max-width: 900px) {
+@media (min-width: 761px) and (max-width: 900px) and (orientation: landscape) {
   .nav nav { gap: 22px; }
   .quick-read__steps { grid-template-columns: 1fr; gap: 42px; }
   .quick-read__steps { margin-top: 65px; }
@@ -400,7 +400,7 @@ main:not(.is-deep) .outcome-gallery__grid .placeholder__surface { aspect-ratio: 
   .process__head p { grid-column: 1 / 6; }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .shell { width: calc(100% - 32px); }
   p, li, figcaption { overflow-wrap: break-word; }
   .nav { height: 70px; }
@@ -567,7 +567,7 @@ main:not(.is-deep) .outcome-gallery__grid .placeholder__surface { aspect-ratio: 
   .footer > span { order: 2; }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .nav {
     height: auto;
     min-height: calc(72px + env(safe-area-inset-top, 0px));
@@ -646,7 +646,7 @@ main:not(.is-deep) .outcome-gallery__grid .placeholder__surface { aspect-ratio: 
 }
 .generic-case__next i { align-self: end; color: var(--accent); font-size: 60px; font-style: normal; }
 
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .generic-case__hero { padding-top: 36px; }
   .generic-case__hero > img { aspect-ratio: 4 / 3; object-fit: cover; }
   .generic-case__hero h1 { margin-top: 48px; font-size: clamp(58px, 18vw, 92px); }
@@ -675,7 +675,7 @@ main:not(.is-deep) .deep-content {
   --case-media-space: var(--space-media);
 }
 
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   :root {
     --space-section: 76px;
     --space-content: 32px;
@@ -692,7 +692,7 @@ main:not(.is-deep) .deep-content {
 }
 
 /* Final narrow-screen type safeguards */
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .hero h1,
   .quick-read__title h2,
   .challenge blockquote,
@@ -877,7 +877,7 @@ main:not(.is-deep) .deep-content {
 }
 .about-cv:hover { transform: scale(1.04); }
 
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .about-hero { padding-top: 56px; }
   .about-hero h1 {
     font-size: clamp(42px, 11.5vw, 64px);
@@ -925,7 +925,7 @@ main:not(.is-deep) .deep-content {
 }
 
 /* Long case study titles (Sovrapposizioni) must fit on one line on phones instead of breaking mid-word */
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .hero h1 { font-size: min(78px, calc((100vw - 64px) / 6.6)); }
 }
 
@@ -1022,7 +1022,7 @@ main:not(.is-deep) .deep-content {
 
 
 /* Phone: the row is swiped sideways with the finger, one project at a time */
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .hm { --card-w: 78vw; }
   .hm > .site-header { position: static; height: auto; padding: 20px 16px 0; }
   .site-header { flex-wrap: wrap; row-gap: 10px; height: auto; padding-block: 20px 0; }
@@ -1068,7 +1068,7 @@ main:not(.is-deep) .deep-content {
 .will-form.is-formed > img, .will-form.is-formed > video { scale: 1; }
 
 
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .hero .hero__head { display: block; }
   .hero .hero__head h1 { font-size: min(64px, calc((100vw - 60px) / 7.4)); }
   .hero .hero__head .hero__subtitle { margin-top: 18px; font-size: 18px; }
@@ -1164,7 +1164,7 @@ main .outcome-gallery .outcome-gallery__grid .placeholder + .placeholder { margi
 }
 .about-cv:hover { transform: none; text-decoration-thickness: 2px; }
 
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .next-project { padding: 32px 16px 40px; }
   .footer { flex-direction: column; align-items: flex-start; gap: 16px; text-align: left; }
   .footer div { width: 100%; flex-direction: row; flex-wrap: wrap; align-items: baseline; justify-content: flex-start; gap: 8px 24px; }
@@ -1182,7 +1182,7 @@ main .outcome-gallery .outcome-gallery__grid .placeholder + .placeholder { margi
 .outcome-gallery .outcome-gallery__grid .placeholder:nth-child(1) { width: min(56%, 820px); margin-left: auto; margin-right: 0; }
 .outcome-gallery .outcome-gallery__grid .placeholder:nth-child(2) { width: min(44%, 640px); margin-left: 8%; margin-right: auto; }
 .outcome-gallery .outcome-gallery__grid .placeholder:nth-child(3) { width: min(64%, 920px); margin-inline: auto; }
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .outcome-gallery .outcome-gallery__hero,
   .outcome-gallery .outcome-gallery__grid .placeholder:nth-child(n) { width: 100%; margin-inline: 0; }
 }
@@ -1214,7 +1214,7 @@ figure.placeholder .placeholder__surface:has(> img, > video) {
 .hero .facts .fact { margin-top: 0; grid-column: auto; }
 .hero .facts .fact p { max-width: none; }
 
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .hero { display: flex; flex-direction: column; gap: 32px; padding-bottom: 56px; }
   .hero .hero__media { order: -1; width: 100%; }
   .hero__media .placeholder__surface { aspect-ratio: 4 / 5; max-height: 70svh; }
@@ -1235,7 +1235,7 @@ figure.placeholder .placeholder__surface:has(> img, > video) {
 .hero .hero__media .placeholder__surface > img,
 .hero .hero__media .placeholder__surface > video { height: 100%; object-fit: cover; }
 
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .hero.shell { display: flex; flex-direction: column; gap: 32px; padding: 0 0 56px; }
   .hero__text { padding: 0 16px; }
   .hero .hero__media .placeholder__surface { height: auto; aspect-ratio: 4 / 5; max-height: 70svh; }
@@ -1243,7 +1243,7 @@ figure.placeholder .placeholder__surface:has(> img, > video) {
 
 /* Opening: the image keeps the page margin on the right; title, subtitle and project details
    sit together at the bottom of the text column, ending on the image's bottom edge */
-@media (min-width: 761px) {
+@media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
   .hero.shell { align-items: stretch; }
   .hero .hero__media { width: auto; margin-right: max(16px, calc((100vw - 1600px) / 2)); }
   .hero .hero__media .placeholder__surface { height: calc(100svh - 72px - 16px); }
@@ -1257,13 +1257,13 @@ figure.placeholder .placeholder__surface:has(> img, > video) {
 .shell { width: calc(100% - 2 * var(--page-margin)); max-width: none; }
 .site-header.nav { height: 64px; min-height: 0; padding-top: 0; }
 .hero__text { padding-left: var(--page-margin); }
-@media (min-width: 761px) {
+@media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
   .hero .hero__media { margin-right: var(--page-margin); }
   .hero .hero__media .placeholder__surface { height: calc(100svh - 64px - var(--page-margin)); }
 }
 .next-project { padding-inline: var(--page-margin); }
 .process-strip { padding-inline: var(--page-margin); }
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   :root { --page-margin: 16px; }
   .site-header.nav { height: auto; padding-top: 20px; }
   .hero__text { padding-inline: var(--page-margin); }
@@ -1291,7 +1291,7 @@ main { animation: page-in .45s ease-out both; }
 }
 
 /* Outcome images on a four-column grid with narrow 8px gutters */
-@media (min-width: 761px) {
+@media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
   .outcome-gallery .outcome-gallery__hero { width: calc((100% - 24px) / 4 * 3 + 16px); margin: 0; }
   main .outcome-gallery .outcome-gallery__grid {
     display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 8px; row-gap: 64px; margin-top: 64px;
@@ -1348,7 +1348,7 @@ main.is-deep .reading-mode { padding-bottom: 0; }
    Outcome compositions, one per project, on the four-column grid (8px gutters).
    --start / --span place the main image; grid-column places the three details.
 ------------------------------------------------------------------- */
-@media (min-width: 761px) {
+@media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
   .outcome-gallery { --col: calc((100% - 24px) / 4); }
   .outcome-gallery .outcome-gallery__hero {
     --start: 0; --span: 3;
@@ -1393,7 +1393,7 @@ main.is-deep .reading-mode { padding-bottom: 0; }
    Phone menu: three lines that turn into a cross; About, Email and LinkedIn
 ------------------------------------------------------------------- */
 .phone-menu__toggle, .phone-menu { display: none; }
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .site-header nav { display: none; }
   .phone-menu__toggle {
     position: relative; z-index: 41; display: grid; place-content: center; gap: 5px;
@@ -1419,7 +1419,7 @@ main.is-deep .reading-mode { padding-bottom: 0; }
   .phone-menu a:nth-child(2) { animation-delay: .05s; }
   .phone-menu a:nth-child(3) { animation-delay: .1s; }
 }
-@media (max-width: 760px) and (prefers-reduced-motion: reduce) {
+@media (max-width: 760px) and (prefers-reduced-motion: reduce), (max-width: 1024px) and (orientation: portrait) and (prefers-reduced-motion: reduce) {
   .phone-menu a, .phone-menu__toggle span { animation: none; transition: none; }
 }
 
@@ -1427,7 +1427,7 @@ main.is-deep .reading-mode { padding-bottom: 0; }
    Home on the phone: smaller intro, more air before the projects, projects nearly
    as tall as the screen, a free-moving row and the licence underneath
 ------------------------------------------------------------------- */
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .hm { --card-w: 82vw; }
   .hm-intro { padding: 28px 16px 0; }
   .hm-intro h1 { font-size: 17px; line-height: 1.35; }
@@ -1444,11 +1444,11 @@ main.is-deep .reading-mode { padding-bottom: 0; }
 ------------------------------------------------------------------- */
 .process-strip { scroll-snap-type: none; }
 .process-strip .placeholder { scroll-snap-align: none; }
-@media (min-width: 761px) {
+@media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
   .hero .hero__media { margin-top: 16px; }
   .hero .hero__media .placeholder__surface { height: calc(100svh - 64px - 16px - var(--page-margin)); }
 }
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .hero .hero__media { margin-top: 20px; }
   /* Outcome images closer together */
   main .outcome-gallery .outcome-gallery__grid { margin-top: 8px; }
@@ -1463,7 +1463,7 @@ main.is-deep .reading-mode { padding-bottom: 0; }
 /* Licence on its own, centred, at the foot of every page; phone menu items at the bottom left */
 .footer { justify-content: center; text-align: center; }
 .hm-licence { left: 20px; text-align: center; }
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .footer { align-items: center; padding-block: 24px 28px; }
   .hm-licence { text-align: center; }
   .phone-menu { justify-content: flex-end; padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px)); }
@@ -1471,7 +1471,7 @@ main.is-deep .reading-mode { padding-bottom: 0; }
 
 /* Phone: the introduction lives in the menu, under the name; the home fits one screen:
    header, some air, the row of projects sized to the remaining height, the licence */
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .phone-menu__intro { margin: 0 0 auto; max-width: 30ch; color: var(--ink); font-size: 17px; line-height: 1.35; }
   .phone-menu { justify-content: flex-start; padding-top: 72px; }
   .phone-menu__intro + a { margin-top: auto; }
@@ -1489,4 +1489,10 @@ main.is-deep .reading-mode { padding-bottom: 0; }
 @media (hover: none), (pointer: coarse) {
   .hm-card:hover, .hm-card:hover .hm-roll, .hm-card:hover .hm-image > :is(img, video) { transform: none; }
   .hm-card, .hm-roll, .hm-card .hm-image > :is(img, video) { transition: none !important; }
+}
+
+/* iPad upright uses the phone layout; its project row gets narrower cards than a phone */
+@media (min-width: 600px) and (max-width: 1024px) and (orientation: portrait) {
+  .hm { --card-w: 46vw; }
+  .hm-card .hm-image { height: min(calc(100svh - 300px), calc(var(--card-w) * 1.6)); }
 }
