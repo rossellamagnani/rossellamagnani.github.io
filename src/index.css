@@ -1166,6 +1166,8 @@ figure.placeholder .placeholder__surface:has(> img, > video) {
 /* Home gallery pictures are cropped to the square frame */
 .hm-image > img, .hm-image > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .hm-image > img.hm-image__crop { inset: auto; top: 50%; left: 50%; width: auto; max-width: none; object-fit: fill; }
+.hm-image--whole { background: #eeede9; }
+.hm-image--whole > img { inset: 8%; width: 84%; height: 84%; object-fit: contain; }
 
 /* Case study opening: title, subtitle and project details on the left half, image on the right half */
 .hero {
