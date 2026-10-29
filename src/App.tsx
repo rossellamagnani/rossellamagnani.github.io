@@ -479,7 +479,11 @@ function SiteHeader({ skipTo = 'content', children }: { skipTo?: string; childre
   )
 }
 
-// Phone only: three lines that open a menu with About, Email and LinkedIn and turn into a cross to close it.
+const introduction =
+  'Communication designer working on exhibitions and multisensory experiences designed for the widest possible audience.'
+
+// Phone only: three lines that open a menu and turn into a cross to close it. The menu shows the
+// introduction under the name and About, Email and LinkedIn at the bottom left.
 function PhoneMenu() {
   const [open, setOpen] = useState(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -518,6 +522,7 @@ function PhoneMenu() {
         <span />
       </button>
       <div ref={panelRef} id="phone-menu" className="phone-menu" hidden={!open}>
+        <p className="phone-menu__intro">{introduction}</p>
         <a href="/about" onClick={() => setOpen(false)}>
           About
         </a>
@@ -1156,10 +1161,7 @@ function Home() {
       <SiteHeader skipTo="work" />
 
       <section className="hm-intro" aria-label="Introduction">
-        <h1>
-          Communication designer working on exhibitions and multisensory experiences designed
-          for the widest possible audience.
-        </h1>
+        <h1>{introduction}</h1>
       </section>
 
       <div className="hm-stage">

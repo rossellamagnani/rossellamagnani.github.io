@@ -1468,3 +1468,18 @@ main.is-deep .reading-mode { padding-bottom: 0; }
   .hm-licence { text-align: center; }
   .phone-menu { justify-content: flex-end; padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px)); }
 }
+
+/* Phone: the introduction lives in the menu, under the name; the home fits one screen:
+   header, some air, the row of projects sized to the remaining height, the licence */
+@media (max-width: 760px) {
+  .phone-menu__intro { margin: 0 0 auto; max-width: 30ch; color: var(--ink); font-size: 17px; line-height: 1.35; }
+  .phone-menu { justify-content: flex-start; padding-top: 72px; }
+  .phone-menu__intro + a { margin-top: auto; }
+  .phone-menu .phone-menu__intro { animation: contact-in .5s cubic-bezier(.22, 1, .36, 1) both; }
+  .hm-intro { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .hm { height: 100svh; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+  .hm > .site-header { width: 100%; margin: 0; }
+  .hm-stage { flex: 1; margin-top: 32px; display: flex; flex-direction: column; justify-content: flex-start; }
+  .hm-card .hm-image { height: calc(100svh - 52px - 32px - 26px - 56px); }
+  .hm-licence { padding: 0 16px 20px; }
+}
