@@ -1483,3 +1483,10 @@ main.is-deep .reading-mode { padding-bottom: 0; }
   .hm-card .hm-image { height: min(calc(100svh - 300px), 150vw); }
   .hm-licence { padding: 0 16px 20px; }
 }
+
+/* Touch screens (phone, iPad): no hover effects on the home projects. A tap would leave
+   the title roll and the lift stuck halfway, so the titles and pictures stay still */
+@media (hover: none), (pointer: coarse) {
+  .hm-card:hover, .hm-card:hover .hm-roll, .hm-card:hover .hm-image > :is(img, video) { transform: none; }
+  .hm-card, .hm-roll, .hm-card .hm-image > :is(img, video) { transition: none !important; }
+}
