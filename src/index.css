@@ -972,8 +972,6 @@ main:not(.is-deep) .deep-content {
   display: flex; justify-content: space-between; gap: 16px;
   font-size: 13px; letter-spacing: .03em; text-transform: uppercase; white-space: nowrap;
 }
-.hm-card__year { color: var(--muted); font-variant-numeric: tabular-nums; }
-.hm-card:hover .hm-card__year, .hm-card:focus-visible .hm-card__year { color: var(--ink); }
 .hm-card .hm-image { height: var(--card-h); overflow: hidden; }
 .hm-card .hm-image > img { transition: scale .8s cubic-bezier(.5, 1, .89, 1); }
 .hm-card:hover .hm-image > img { scale: 1.03; }

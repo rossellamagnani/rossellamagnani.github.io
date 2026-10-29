@@ -895,8 +895,6 @@ function About() {
   )
 }
 
-const projectYear = (slug: string) => caseStudies.find(item => item.slug === slug)?.year ?? '2025'
-
 function Home() {
   const trackRef = useRef<HTMLDivElement>(null)
 
@@ -1067,9 +1065,8 @@ function Home() {
                 key={project.title}
                 draggable={false}
               >
-                <span className="hm-card__label">
-                  <span lang={project.lang}>{project.title}</span>
-                  <span className="hm-card__year">{projectYear(project.slug)}</span>
+                <span className="hm-card__label" lang={project.lang}>
+                  {project.title}
                 </span>
                 <span className="sr-only">, {project.type.toLowerCase()}</span>
                 <span className="hm-image" aria-hidden="true">
