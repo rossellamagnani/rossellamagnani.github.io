@@ -899,95 +899,154 @@ const projectYear = (slug: string) => caseStudies.find(item => item.slug === slu
 
 function Home() {
   const trackRef = useRef<HTMLDivElement>(null)
-  const [travel, setTravel] = useState(0)
 
   useEffect(() => {
     if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual'
     window.scrollTo(0, 0)
   }, [])
 
-  // Desktop: the page scrolls down while the row of projects moves sideways.
-  // The page keeps its normal scrollbar, so wheel, trackpad and keyboard all work;
-  // sideways swipes on the trackpad move the row too.
-  // The row follows the scroll with a little delay, and the images shrink slightly while it moves.
+  // Desktop: an endless row. Wheel, trackpad (down or sideways), dragging and the arrow keys
+  // move it; it glides to a stop, and each project shrinks a little while the row is moving.
+  // Phone: the row is swiped natively, with the same slight shrink while it moves.
   useEffect(() => {
     const track = trackRef.current
     const row = track?.parentElement
     if (!track || !row) return
-    const sideways = window.matchMedia('(min-width: 761px)')
+    const cards = Array.from(track.children) as HTMLElement[]
+    const desktop = window.matchMedia('(min-width: 761px)')
     const still = prefersReducedMotion()
     let frame = 0
+    let target = 0
     let current = 0
     let last = 0
     let scale = 1
+    let step = 0
+    let drag: { x: number; moved: boolean } | null = null
+    let suppressClick = false
 
-    const maxShift = () => Math.max(0, track.scrollWidth - window.innerWidth)
-    const measure = () => setTravel(sideways.matches ? maxShift() : 0)
-    const position = () => (sideways.matches ? Math.min(window.scrollY, maxShift()) : row.scrollLeft)
-
+    const measure = () => {
+      step = (cards[0]?.offsetWidth ?? 0) + 8
+    }
+    const place = () => {
+      const total = step * cards.length
+      cards.forEach((card, index) => {
+        if (!desktop.matches || !total) {
+          card.style.translate = ''
+          return
+        }
+        const raw = index * step - current
+        const x = ((((raw + step) % total) + total) % total) - step
+        card.style.translate = `${x - index * step}px 0`
+      })
+    }
     const tick = () => {
       frame = 0
-      const target = position()
-      if (sideways.matches) {
-        current = still ? target : current + (target - current) * 0.12
-        track.style.transform = current > 0.5 ? `translate3d(${-current}px, 0, 0)` : ''
-      } else {
-        current = target
-        track.style.transform = ''
-      }
+      if (desktop.matches) current = still || drag ? target : current + (target - current) * 0.08
+      else current = row.scrollLeft
+      place()
       const speed = Math.abs(current - last)
       last = current
-      const goal = still ? 1 : 1 - Math.min(speed * 0.004, 0.08)
-      scale += (goal - scale) * 0.15
+      const goal = still ? 1 : 1 - Math.min(speed * 0.006, 0.12)
+      scale += (goal - scale) * 0.2
       track.style.setProperty('--hm-scale', scale.toFixed(4))
-      if (Math.abs(target - current) > 0.5 || Math.abs(1 - scale) > 0.001) frame = window.requestAnimationFrame(tick)
+      const moving = desktop.matches && Math.abs(target - current) > 0.1
+      if (moving || drag || Math.abs(1 - scale) > 0.001) frame = window.requestAnimationFrame(tick)
       else track.style.setProperty('--hm-scale', '1')
     }
-    const onScroll = () => {
+    const wake = () => {
       if (!frame) frame = window.requestAnimationFrame(tick)
+    }
+    const moveBy = (distance: number) => {
+      target += distance
+      wake()
+    }
+
+    const onWheel = (event: WheelEvent) => {
+      if (!desktop.matches) return
+      event.preventDefault()
+      const unit = event.deltaMode === 1 ? 40 : 1
+      moveBy((Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY) * unit)
+    }
+    const onKey = (event: KeyboardEvent) => {
+      if (!desktop.matches) return
+      const forward = ['ArrowRight', 'ArrowDown', 'PageDown'].includes(event.key)
+      const back = ['ArrowLeft', 'ArrowUp', 'PageUp'].includes(event.key)
+      if (!forward && !back) return
+      event.preventDefault()
+      moveBy(forward ? step : -step)
+    }
+    const onPointerDown = (event: PointerEvent) => {
+      if (!desktop.matches || event.button !== 0) return
+      drag = { x: event.clientX, moved: false }
+      wake()
+    }
+    const onPointerMove = (event: PointerEvent) => {
+      if (!drag) return
+      const distance = drag.x - event.clientX
+      if (!drag.moved && Math.abs(distance) < 6) return
+      if (!drag.moved) row.setPointerCapture(event.pointerId)
+      drag.moved = true
+      drag.x = event.clientX
+      target += distance
+    }
+    const onPointerUp = () => {
+      if (!drag) return
+      suppressClick = drag.moved
+      drag = null
+      wake()
+    }
+    const onClick = (event: MouseEvent) => {
+      if (!suppressClick) return
+      suppressClick = false
+      event.preventDefault()
+      event.stopPropagation()
+    }
+    // Keyboard users: bring a focused project fully into view
+    const onFocus = (event: FocusEvent) => {
+      if (!desktop.matches) return
+      // the browser may scroll the clipped row on its own to show the focused link; undo that
+      row.scrollLeft = 0
+      if (row.parentElement) row.parentElement.scrollLeft = 0
+      const rect = (event.target as HTMLElement).getBoundingClientRect()
+      if (rect.left < 20 || rect.right > window.innerWidth - 20) {
+        target = current + rect.left - 20
+        wake()
+      }
     }
     const onResize = () => {
       measure()
-      onScroll()
+      wake()
     }
-    const onWheel = (event: WheelEvent) => {
-      if (!sideways.matches || Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return
-      event.preventDefault()
-      window.scrollBy(0, event.deltaX)
-    }
-    const onKey = (event: KeyboardEvent) => {
-      if (!sideways.matches || (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft')) return
-      const step = (track.firstElementChild as HTMLElement | null)?.offsetWidth ?? window.innerWidth / 3
-      event.preventDefault()
-      window.scrollBy({ top: event.key === 'ArrowRight' ? step + 8 : -step - 8, behavior: scrollBehavior() })
-    }
+
     measure()
-    current = last = position()
     tick()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    row.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onResize)
     window.addEventListener('wheel', onWheel, { passive: false })
     window.addEventListener('keydown', onKey)
+    window.addEventListener('resize', onResize)
+    row.addEventListener('scroll', wake, { passive: true })
+    row.addEventListener('pointerdown', onPointerDown)
+    row.addEventListener('pointermove', onPointerMove)
+    row.addEventListener('pointerup', onPointerUp)
+    row.addEventListener('pointercancel', onPointerUp)
+    row.addEventListener('click', onClick, true)
+    row.addEventListener('focusin', onFocus)
     return () => {
-      window.removeEventListener('scroll', onScroll)
-      row.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onResize)
       window.removeEventListener('wheel', onWheel)
       window.removeEventListener('keydown', onKey)
+      window.removeEventListener('resize', onResize)
+      row.removeEventListener('scroll', wake)
+      row.removeEventListener('pointerdown', onPointerDown)
+      row.removeEventListener('pointermove', onPointerMove)
+      row.removeEventListener('pointerup', onPointerUp)
+      row.removeEventListener('pointercancel', onPointerUp)
+      row.removeEventListener('click', onClick, true)
+      row.removeEventListener('focusin', onFocus)
       if (frame) window.cancelAnimationFrame(frame)
     }
   }, [])
 
-  // Keyboard users: bring a focused project into view along the row
-  const revealProject = (item: HTMLElement) => {
-    if (!travel) return
-    const target = Math.min(travel, Math.max(0, item.offsetLeft - 20))
-    window.scrollTo({ top: target, behavior: scrollBehavior() })
-  }
-
   return (
-    <main className="hm" style={travel ? { height: `calc(100svh + ${travel}px)` } : undefined}>
+    <main className="hm">
       <SiteHeader skipTo="work" />
 
       <section className="hm-intro" aria-label="Introduction">
@@ -1006,7 +1065,7 @@ function Home() {
                 href={`/${project.slug}`}
                 data-cursor-label
                 key={project.title}
-                onFocus={event => revealProject(event.currentTarget)}
+                draggable={false}
               >
                 <span className="hm-card__label">
                   <span lang={project.lang}>{project.title}</span>
@@ -1014,7 +1073,7 @@ function Home() {
                 </span>
                 <span className="sr-only">, {project.type.toLowerCase()}</span>
                 <span className="hm-image" aria-hidden="true">
-                  {project.image ? <img src={project.image} alt="" /> : <span>PROJECT IMAGE</span>}
+                  {project.image ? <img src={project.image} alt="" draggable={false} /> : <span>PROJECT IMAGE</span>}
                 </span>
               </a>
             ))}
