@@ -5,25 +5,20 @@ const instruments = [
     name: 'Tempophon',
     description: 'Controls the duration and the pitch of a recorded sound independently, stretching time without bending the tone.',
     keyword: 'Elastic',
+    image: '/projects/oltre/tempophon.svg',
   },
   {
     name: 'Speed Variator',
     description: 'Changes the playback speed of the tape, shifting pitch and duration together.',
     keyword: 'Kinetic',
+    image: '/projects/oltre/speed-variator.svg',
   },
   {
     name: 'Amplitude Modulator',
     description: 'Shapes intensity into pulses, tremors and shifting waves.',
     keyword: 'Pulsing',
+    image: '/projects/oltre/amplitude-modulator.svg',
   },
-]
-
-const process = [
-  ['01', 'Early material sketches'],
-  ['02', 'Storyboard fragments'],
-  ['03', 'Motion and rhythm tests'],
-  ['04', 'Surface experiments'],
-  ['05', 'Tactile prototypes'],
 ]
 
 // Pictures and videos still served by the current site; to be replaced by local files in public/
@@ -1365,7 +1360,11 @@ function CaseStudy() {
                 through oscillators, filters and magnetic tape.
               </p>
             </div>
-            <Placeholder caption="Archive photographs: Studio di Fonologia, Milan" />
+            <Placeholder
+              caption="The Studio di Fonologia Musicale RAI, Milan: archive photograph"
+              alt="Archive photograph: five men of the Studio di Fonologia Musicale RAI among the studio's electronic equipment."
+              src="/projects/oltre/studio-di-fonologia.svg"
+            />
           </div>
 
           <div className="research-block reveal">
@@ -1376,7 +1375,11 @@ function CaseStudy() {
             <div className="instrument-grid">
               {instruments.map(instrument => (
                 <article className="instrument-card" key={instrument.name}>
-                  <Placeholder caption={`Archive image: ${instrument.name}`} />
+                  <Placeholder
+                    caption={`Archive photograph: ${instrument.name}`}
+                    alt={`Archive photograph of the ${instrument.name}.`}
+                    src={instrument.image}
+                  />
                   <div className="instrument-card__body">
                     <h3><Lines text={instrument.name} /></h3>
                     <p>{instrument.description}</p>
@@ -1396,10 +1399,11 @@ function CaseStudy() {
                 sequence of the accompanying texts.
               </p>
             </div>
-            <div className="paired-media">
-              <Placeholder caption="Sensory mapping and vibration sketches" />
-              <Placeholder caption="Braille spacing and embossing studies" />
-            </div>
+            <Placeholder
+              caption="Project idea: sound translated into sensory stimuli"
+              alt="Close-up of a white relief surface with rows of wavy ridges, sound turned into something to touch."
+              src="/projects/oltre/project-idea.svg"
+            />
           </div>
         </section>
 
@@ -1412,19 +1416,18 @@ function CaseStudy() {
           </div>
         </section>
 
-        <section id="process" className="section process reveal">
-          <div className="process-sticky">
-            <div className="shell process__head">
-              <div className="section-label">Process</div>
-              <h2><Lines text="From signal to surface" /></h2>
-              <p>Scroll sideways →</p>
-            </div>
-            <div className="process-strip" tabIndex={0} role="region" aria-label="Process images, scroll sideways">
-              {process.map(([number, caption]) => (
-                <Placeholder key={number} caption={`${number}: ${caption}`} />
-              ))}
-            </div>
-          </div>
+        <section id="process" className="section shell process-score reveal">
+          <div className="section-label">Process</div>
+          <h2><Lines text="From signal to surface" /></h2>
+          <p className="process-score__intro">
+            The intercode score lines up every scene of the video with the voice and the sounds, from
+            the opening titles to the closing credits.
+          </p>
+          <Placeholder
+            caption="Intercode score of the video"
+            alt="Intercode score: a timeline from 0:00 to 3:00 with the video's scenes in columns (opening titles, the Studio di Fonologia, the three instruments, the Studio's anniversary, closing credits) above the waveforms of the voice and of the sounds."
+            src="/projects/oltre/intercode-score.svg"
+          />
         </section>
         </div>
 

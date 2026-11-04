@@ -1534,3 +1534,16 @@ main.is-deep .reading-mode { padding-bottom: 0; }
 
 /* Media start slightly enlarged while they form: keep them inside their frame so the page never scrolls sideways */
 .placeholder__surface:has(> img, > video) { overflow: clip; }
+
+/* Oltre l'ascolto research: the three instrument photographs share one frame shape */
+.instrument-card figure.placeholder .placeholder__surface:has(> img) { aspect-ratio: 4 / 5 !important; }
+.instrument-card .placeholder__surface > img { height: 100%; object-fit: cover; }
+@media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
+  .research-row > .placeholder:has(img) { width: min(52%, 640px); margin-left: auto; }
+}
+/* Process: the intercode score across the page */
+.process-score { display: grid; gap: 16px; }
+.process-score h2 { margin: 0; font-size: clamp(24px, 2.4vw, 36px); font-weight: 400; line-height: 1.2; letter-spacing: -.015em; }
+.process-score__intro { margin: 0 0 16px; max-width: 56ch; }
+.process-score .placeholder { margin: 0; }
+.process-score figcaption { display: none; }
