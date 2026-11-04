@@ -1284,15 +1284,17 @@ function CaseStudy() {
             <Lines text="Exhibited during Accessibility Days at the Istituto dei Ciechi di Milano, at Politecnico di Milano for Inclusion: oltre l’udito, and at the BookCity Milano exhibition at RAI CPTV, Milan." />
           </p>
           <ul className="exhibited__logos">
-            {/* add each logo to public/logos/ and set `logo`; until then the name is shown */}
+            {/* logos in black, each with its own height so they look the same size */}
             {[
-              { name: 'Accessibility Days', logo: '' },
-              { name: 'Istituto dei Ciechi di Milano', logo: '' },
-              { name: 'Politecnico di Milano', logo: '' },
-              { name: 'BookCity Milano', logo: '' },
-              { name: 'Rai', logo: '' },
-            ].map(({ name, logo }) => (
-              <li key={name}>{logo ? <img src={logo} alt={name} /> : name}</li>
+              { name: 'Accessibility Days', logo: '/logos/accessibility-days.svg', height: 44 },
+              { name: 'Istituto dei Ciechi di Milano', logo: '/logos/istituto-dei-ciechi-di-milano.svg', height: 48 },
+              { name: 'Politecnico di Milano', logo: '/logos/politecnico-di-milano.svg', height: 38 },
+              { name: 'BookCity Milano', logo: '/logos/bookcity-milano.svg', height: 58 },
+              { name: 'Rai Pubblica Utilità', logo: '/logos/rai-pubblica-utilita.svg', height: 34 },
+            ].map(({ name, logo, height }) => (
+              <li key={name}>
+                <img src={logo} alt={name} style={{ '--logo-h': `${height}px` } as React.CSSProperties} />
+              </li>
             ))}
           </ul>
         </section>
