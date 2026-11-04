@@ -1559,12 +1559,13 @@ main.is-deep .reading-mode { padding-bottom: 0; }
   .hero.shell { grid-template-columns: minmax(0, 1fr) 42vw; }
   .hero .hero__head h1 { font-size: 5.2vw; }
   .hero .hero__subtitle { font-size: 1.6vw; }
-  main.case p:not(.hero__subtitle):not(.exhibited__text),
+  main.case p:not(.hero__subtitle):not(.exhibited__text):not(.insight p),
   .about p { font-size: max(14px, .8vw); }
   .fact p { font-size: max(14px, .8vw); }
   .section-heading h2, .process-score h2, .outcome-gallery h2, .reading-action strong { font-size: 2.5vw; }
   .next-project strong { font-size: 3.3vw; }
   .exhibited__text { font-size: 1.67vw; }
+  .insight p, .expanded-research blockquote { font-size: 2.4vw; }
   /* home row: a little more than four projects in view, so the pictures do not swell */
   .hm { --card-w: calc((100vw - 64px) / 4.4); }
 }
