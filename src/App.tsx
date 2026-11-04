@@ -311,19 +311,21 @@ function CustomCursor() {
 }
 
 // Pass `src` (and `alt`) to show a real image or video; the frame then takes the file's own proportions.
-// Without `src` a grey placeholder is shown.
+// `poster` is the frame a video shows before it starts. Without `src` a grey placeholder is shown.
 function Placeholder({
   caption,
   className = '',
   play = false,
   src,
   alt = '',
+  poster,
 }: {
   caption: string
   className?: string
   play?: boolean
   src?: string
   alt?: string
+  poster?: string
 }) {
   // files ending in .mp4/.webm/.mov, or videos served by the current site (/_videos/...)
   const isVideo = Boolean(src && /\.(mp4|webm|mov)$|\/_videos\//i.test(src))
@@ -332,7 +334,7 @@ function Placeholder({
       <div className="placeholder__surface">
         {src ? (
           isVideo ? (
-            <video src={src} controls playsInline preload="metadata" aria-label={alt || caption} />
+            <video src={src} poster={poster} controls playsInline preload="metadata" aria-label={alt || caption} />
           ) : (
             <img src={src} alt={alt} loading="lazy" />
           )
@@ -1276,6 +1278,25 @@ function CaseStudy() {
           />
         </section>
 
+        {/* Where the project was shown, centred under the opening */}
+        <section className="exhibited shell reveal" aria-label="Exhibitions">
+          <p className="exhibited__text">
+            <Lines text="Exhibited during Accessibility Days at the Istituto dei Ciechi di Milano, at Politecnico di Milano for Inclusion: oltre l’udito, and at the BookCity Milano exhibition at RAI CPTV, Milan." />
+          </p>
+          <ul className="exhibited__logos">
+            {/* add each logo to public/logos/ and set `logo`; until then the name is shown */}
+            {[
+              { name: 'Accessibility Days', logo: '' },
+              { name: 'Istituto dei Ciechi di Milano', logo: '' },
+              { name: 'Politecnico di Milano', logo: '' },
+              { name: 'BookCity Milano', logo: '' },
+              { name: 'Rai', logo: '' },
+            ].map(({ name, logo }) => (
+              <li key={name}>{logo ? <img src={logo} alt={name} /> : name}</li>
+            ))}
+          </ul>
+        </section>
+
         <section className="quick-read shell reveal">
           <div className="section-label">In short</div>
           <div className="quick-read__title">
@@ -1413,6 +1434,7 @@ function CaseStudy() {
               className="outcome-gallery__hero"
               caption="Oltre l'ascolto, the video"
               src={`${CURRENT_SITE}/_videos/v1/e3a098ddfc758683570663837c6b6866fe367e72`}
+              poster="/projects/oltre-video-poster.svg"
             />
             <div className="outcome-gallery__grid">
               {[
