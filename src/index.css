@@ -1547,21 +1547,3 @@ main.is-deep .reading-mode { padding-bottom: 0; }
 .process-score__intro { margin: 0 0 16px; max-width: 56ch; }
 .process-score .placeholder { margin: 0; }
 .process-score figcaption { display: none; }
-
-/* Oltre l'ascolto, accessibility research: tall photographs in a row that scrolls sideways */
-.research-row.accessibility { display: block; }
-.sense-strip-wrap { margin-top: 32px; }
-.sense-strip__hint { margin: 0 0 12px; color: var(--muted); font-family: var(--font-label); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
-.sense-strip {
-  display: flex; gap: 8px; overflow-x: auto; overscroll-behavior-inline: contain;
-  scrollbar-width: thin; scrollbar-color: var(--line) transparent; padding-bottom: 12px;
-}
-.sense-strip:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
-.sense-strip .placeholder { flex: none; width: max-content !important; margin: 0; }
-.sense-strip .placeholder__surface { width: max-content; }
-.sense-strip figure.placeholder .placeholder__surface:has(> img) { height: min(78svh, 760px); }
-.sense-strip .placeholder__surface > img { height: 100%; width: auto; max-width: none; }
-.sense-strip figcaption { display: none; }
-@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
-  .sense-strip figure.placeholder .placeholder__surface:has(> img) { height: 62svh; }
-}

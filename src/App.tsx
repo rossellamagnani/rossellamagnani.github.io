@@ -351,8 +351,7 @@ function Placeholder({
 
 // Case study images form from top to bottom once they enter the screen; the animation always runs
 // to the end on its own. Grouped images (cards, pairs, process strip) start one after another
-// pictures in a sideways strip are left out: off to the side they would never be seen to form
-const GROW_SELECTOR = '.placeholder__surface:not(.hero__media .placeholder__surface):not(.sense-strip .placeholder__surface)'
+const GROW_SELECTOR = '.placeholder__surface:not(.hero__media .placeholder__surface)'
 const GROUP_SELECTOR = '.instrument-grid, .paired-media, .process-strip'
 
 function useGrowOnScroll(dependency: unknown) {
@@ -1400,18 +1399,11 @@ function CaseStudy() {
                 sequence of the accompanying texts.
               </p>
             </div>
-            <div className="sense-strip-wrap">
-              <p className="sense-strip__hint" aria-hidden="true">Scroll sideways →</p>
-              <div className="sense-strip" tabIndex={0} role="region" aria-label="Accessibility research images, scroll sideways">
-                {[
-                  ['/projects/oltre/project-idea.svg', 'Project idea: sound translated into sensory stimuli', 'Close-up of a white relief surface with rows of wavy ridges, sound turned into something to touch.'],
-                  ['/projects/oltre/tactile-waves.svg', 'Tactile study: waves and Braille', 'A white relief panel with vertical wavy ridges above silver strips that keep the wave form, dotted with Braille.'],
-                  ['/projects/oltre/tactile-braille.svg', 'Tactile study: ridges and Braille', 'A white relief panel with horizontal ridges above tapering silver strips carrying Braille text.'],
-                ].map(([src, caption, alt]) => (
-                  <Placeholder key={src} src={src} caption={caption} alt={alt} />
-                ))}
-              </div>
-            </div>
+            <Placeholder
+              caption="Tactile study: sound waves and Braille"
+              alt="A white relief panel with wavy ridges, continued by silver strips that keep the wave form, dotted with Braille."
+              src="/projects/oltre/tactile-waves.svg"
+            />
           </div>
         </section>
 
