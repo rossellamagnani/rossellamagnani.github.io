@@ -1547,3 +1547,6 @@ main.is-deep .reading-mode { padding-bottom: 0; }
 .process-score__intro { margin: 0 0 16px; max-width: 56ch; }
 .process-score .placeholder { margin: 0; }
 .process-score figcaption { display: none; }
+
+/* Oltre l'ascolto accessibility research: the tactile photograph across the full width */
+.research-row > .placeholder.research-wide { width: 100% !important; margin-left: 0; }

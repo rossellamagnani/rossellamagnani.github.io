@@ -1360,11 +1360,6 @@ function CaseStudy() {
                 through oscillators, filters and magnetic tape.
               </p>
             </div>
-            <Placeholder
-              caption="The Studio di Fonologia Musicale RAI, Milan: archive photograph"
-              alt="Archive photograph: five men of the Studio di Fonologia Musicale RAI among the studio's electronic equipment."
-              src="/projects/oltre/studio-di-fonologia.svg"
-            />
           </div>
 
           <div className="research-block reveal">
@@ -1400,6 +1395,7 @@ function CaseStudy() {
               </p>
             </div>
             <Placeholder
+              className="research-wide"
               caption="Tactile study: sound waves and Braille"
               alt="A white relief panel with wavy ridges, continued by silver strips that keep the wave form, dotted with Braille."
               src="/projects/oltre/tactile-waves.svg"
