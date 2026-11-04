@@ -1330,8 +1330,8 @@ main.is-deep .reading-mode { padding-bottom: 0; }
 
 /* Opening: the band unrolls downwards from the button over the first screen */
 @keyframes band-open {
-  from { clip-path: inset(0 0 100% 0); }
-  to { clip-path: inset(0 0 calc(100% - 100vh) 0); }
+  from { clip-path: inset(0 -100vmax 100% -100vmax); }
+  to { clip-path: inset(0 -100vmax calc(100% - 100vh) -100vmax); }
 }
 .is-deep .expanded-research { animation: band-open .9s cubic-bezier(.5, 1, .89, 1); }
 @media (prefers-reduced-motion: reduce) {
@@ -1550,3 +1550,21 @@ main.is-deep .reading-mode { padding-bottom: 0; }
 
 /* Oltre l'ascolto accessibility research: the tactile photograph across the full width */
 .research-row > .placeholder.research-wide { width: 100% !important; margin-left: 0; }
+
+/* Large screens, following the reference site: nothing is capped, the layout keeps the
+   proportions it has at 1440px. Above that the cover takes ~42% of the width, titles grow with
+   the screen and running text a little, so pictures and text stay in balance instead of the
+   pictures looking oversized. The small labels, header and menu keep their size. */
+@media (min-width: 1441px) {
+  .hero.shell { grid-template-columns: minmax(0, 1fr) 42vw; }
+  .hero .hero__head h1 { font-size: 5.2vw; }
+  .hero .hero__subtitle { font-size: 1.6vw; }
+  main.case p:not(.hero__subtitle):not(.exhibited__text),
+  .about p { font-size: max(14px, .8vw); }
+  .fact p { font-size: max(14px, .8vw); }
+  .section-heading h2, .process-score h2, .outcome-gallery h2, .reading-action strong { font-size: 2.5vw; }
+  .next-project strong { font-size: 3.3vw; }
+  .exhibited__text { font-size: 1.67vw; }
+  /* home row: a little more than four projects in view, so the pictures do not swell */
+  .hm { --card-w: calc((100vw - 64px) / 4.4); }
+}

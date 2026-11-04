@@ -1121,8 +1121,9 @@ function Home() {
       row.scrollLeft = 0
       if (row.parentElement) row.parentElement.scrollLeft = 0
       const rect = (event.target as HTMLElement).getBoundingClientRect()
-      if (rect.left < 20 || rect.right > window.innerWidth - 20) {
-        target = current + rect.left - 20
+      const frame = row.getBoundingClientRect() // the row may be narrower than the window on large screens
+      if (rect.left < frame.left + 20 || rect.right > frame.right - 20) {
+        target = current + rect.left - frame.left - 20
         wake()
       }
     }
