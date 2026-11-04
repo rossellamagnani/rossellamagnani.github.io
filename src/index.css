@@ -1522,7 +1522,7 @@ main.is-deep .reading-mode { padding-bottom: 0; }
 .exhibited { display: flex; flex-direction: column; align-items: center; gap: 32px; padding-block: clamp(56px, 7vw, 104px); text-align: center; }
 .exhibited__text { margin: 0; max-width: 46ch; font-size: clamp(18px, 1.6vw, 24px); line-height: 1.35; text-wrap: balance; }
 .exhibited__logos {
-  margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 24px 48px;
+  margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 28px 56px;
   color: var(--muted); font-family: var(--font-label); font-size: 12px; letter-spacing: .04em; text-transform: uppercase;
 }
 .exhibited__logos img { display: block; height: var(--logo-h, 40px); width: auto; }

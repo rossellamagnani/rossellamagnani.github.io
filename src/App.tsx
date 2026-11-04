@@ -1286,11 +1286,11 @@ function CaseStudy() {
           <ul className="exhibited__logos">
             {/* logos in black, each with its own height so they look the same size */}
             {[
-              { name: 'Accessibility Days', logo: '/logos/accessibility-days.svg', height: 44 },
-              { name: 'Istituto dei Ciechi di Milano', logo: '/logos/istituto-dei-ciechi-di-milano.svg', height: 48 },
-              { name: 'Politecnico di Milano', logo: '/logos/politecnico-di-milano.svg', height: 38 },
-              { name: 'BookCity Milano', logo: '/logos/bookcity-milano.svg', height: 58 },
-              { name: 'Rai Pubblica Utilità', logo: '/logos/rai-pubblica-utilita.svg', height: 34 },
+              { name: 'Accessibility Days', logo: '/logos/accessibility-days.svg', height: 58 },
+              { name: 'Istituto dei Ciechi di Milano', logo: '/logos/istituto-dei-ciechi-di-milano.svg', height: 64 },
+              { name: 'Politecnico di Milano', logo: '/logos/politecnico-di-milano.svg', height: 50 },
+              { name: 'BookCity Milano', logo: '/logos/bookcity-milano.svg', height: 76 },
+              { name: 'Rai Pubblica Utilità', logo: '/logos/rai-pubblica-utilita.svg', height: 44 },
             ].map(({ name, logo, height }) => (
               <li key={name}>
                 <img src={logo} alt={name} style={{ '--logo-h': `${height}px` } as React.CSSProperties} />
