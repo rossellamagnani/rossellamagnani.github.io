@@ -26,6 +26,9 @@ const process = [
   ['05', 'Tactile prototypes'],
 ]
 
+// Pictures and videos still served by the current site; to be replaced by local files in public/
+const CURRENT_SITE = 'https://rossellamagnani.figma.site'
+
 // `image` / `video`: the picture for each project in the home row, cropped to fill the frame;
 // `focus` moves the crop (CSS object-position); `crop` zooms into one area instead: x and y are
 // the centre of that area in % of the image, zoom how much larger than the frame's height it is drawn;
@@ -322,7 +325,8 @@ function Placeholder({
   src?: string
   alt?: string
 }) {
-  const isVideo = Boolean(src && /\.(mp4|webm|mov)$/i.test(src))
+  // files ending in .mp4/.webm/.mov, or videos served by the current site (/_videos/...)
+  const isVideo = Boolean(src && /\.(mp4|webm|mov)$|\/_videos\//i.test(src))
   return (
     <figure className={`placeholder ${className}`}>
       <div className="placeholder__surface">
@@ -1267,7 +1271,8 @@ function CaseStudy() {
           </div>
           <Placeholder
             className="hero__media"
-            caption="Main video still: abstract visualisation of electronic sound"
+            caption="Two textured spheres in motion, from the project's animation"
+            src={`${CURRENT_SITE}/_assets/v11/176474d4960ebe154d49f3d2840823b84d71f931.png`}
           />
         </section>
 
@@ -1404,11 +1409,23 @@ function CaseStudy() {
           <div className="outcome-gallery outcome-gallery--oltre-lascolto reveal">
             <span className="outcome-gallery__number">03</span>
             <h2><Lines text="Designing with, not only for, the senses." /></h2>
-            <Placeholder className="outcome-gallery__hero" play caption="Final video, 04:12" />
+            <Placeholder
+              className="outcome-gallery__hero"
+              caption="Oltre l'ascolto, the video"
+              src={`${CURRENT_SITE}/_videos/v1/e3a098ddfc758683570663837c6b6866fe367e72`}
+            />
             <div className="outcome-gallery__grid">
-              <Placeholder caption="Tempophon: tactile artefact" />
-              <Placeholder caption="Speed Variator: tactile artefact" />
-              <Placeholder caption="Amplitude Modulator: tactile artefact" />
+              {[
+                ['abcbde4a04da3d0a883fd34057859888cf28a9d8.png?w=1856', 'White 3D models and black information cards with Braille text: the models recreate the forms of the post-war sound instruments, with tactile patterns that picture sound waves.'],
+                ['bbf10eb90d1050a64d40fdf081e3f2009b6a418d.png?w=1400', 'A hand exploring a raised tactile surface that turns sound frequencies into physical patterns for people with visual impairments.'],
+                ['95cbff86f40b1d8561570829aa040e732fa7de85.png?w=1400', 'Two hands exploring the raised tactile surface.'],
+                ['49535040979dbc77bca4c8fa489f5480c70725c7.png?w=1400', 'Close-up of the raised artefacts and their textures, wavy lines, steps and overlapping squares, that stand for sound transformations.'],
+                ['5237067cdf6730e1966641a547a72380feaaefcb.png?w=1000', 'The Tempophon artefact seen from above: a historic sound technology reinterpreted as a tactile object.'],
+                ['02424f99ca12d8d0378e9df1b0575b98f1b9ef15.png?w=1000', 'The Speed Variator artefact seen from above.'],
+                ['b7a5b08984d94b8175c039fc1d0de8b70a0f7a1a.png?w=1000', 'The Amplitude Modulator artefact seen from above.'],
+              ].map(([file, alt]) => (
+                <Placeholder key={file} caption={alt} alt={alt} src={`${CURRENT_SITE}/_assets/v11/${file}`} />
+              ))}
             </div>
           </div>
         </section>
