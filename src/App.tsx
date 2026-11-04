@@ -331,7 +331,7 @@ function Placeholder({
           isVideo ? (
             <video src={src} poster={poster} controls playsInline preload="metadata" aria-label={alt || caption} />
           ) : (
-            <img src={src} alt={alt} loading="lazy" />
+            <img src={src} alt={alt} />
           )
         ) : (
           <>
@@ -368,8 +368,14 @@ function useGrowOnScroll(dependency: unknown) {
           const group = element.closest(GROUP_SELECTOR)
           const index = group ? Array.from(group.querySelectorAll(GROW_SELECTOR)).indexOf(element) : 0
           element.style.setProperty('--form-delay', `${index * 0.15}s`)
-          element.classList.add('is-formed')
           observer.unobserve(element)
+          // a picture still loading would form while empty and then just pop in: wait for it
+          const img = element.querySelector('img')
+          const form = () => element.classList.add('is-formed')
+          if (img && !img.complete) {
+            img.addEventListener('load', form, { once: true })
+            img.addEventListener('error', form, { once: true })
+          } else form()
         }),
       { rootMargin: '0px 0px -12% 0px' },
     )

@@ -1568,3 +1568,12 @@ main.is-deep .reading-mode { padding-bottom: 0; }
   /* home row: a little more than four projects in view, so the pictures do not swell */
   .hm { --card-w: calc((100vw - 64px) / 4.4); }
 }
+
+/* Every picture and video in the project pages fits the screen's height: never taller than the
+   window, so it can always be seen whole without scrolling */
+main figure.placeholder:not(.hero__media) .placeholder__surface:has(> img, > video) { width: fit-content; max-width: 100%; }
+main figure.placeholder:not(.hero__media) .placeholder__surface > img,
+main figure.placeholder:not(.hero__media) .placeholder__surface > video {
+  width: auto; max-width: 100%; max-height: calc(100svh - 160px);
+}
+.research-row > .placeholder.research-wide .placeholder__surface { margin-inline: auto; }
