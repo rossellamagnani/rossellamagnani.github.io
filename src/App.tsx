@@ -85,21 +85,23 @@ const caseStudies = [
       src: `${CURRENT_SITE}/_assets/v11/141ddc64b5b5362cf1d47cddb155b8aefeecc258.png?w=1600`,
       alt: 'The Sovrapposizioni exhibition at MEET Digital Culture Center, Milan: a visitor looks at AI-generated works inspired by great masters.',
     },
-    // the pictures of the project on the current site (the exhibition photo is already beside the title)
+    // outcome: the book GIF, then the exhibition (pictures from the current site and from the presentation)
     outcome: [
-      ['1ce14e6bd4101af66b7e9fc69587eebdb8bb93cb.png?h=2385', 'Animated spreads of the Sovrapposizioni book: inside pages on a clean grid with modern typography.'],
-      ['c363270d72b8e06db7aaf51c238bb3ea113733cd.png?w=1600', 'The exhibition at MEET Digital Culture Center: a visitor walks past the AI-generated works.'],
-      ['be04d60125a1b190f560c65f52d5480f9834d7c9.png?h=1400', "Backlit poster for the exhibition: an AI reinterpretation of a classical painting and the question 'If art speaks to you, does it matter who made it?'", 'tall'],
-      ['297d2bf3f77e804b239bcd73c5936df12ffa1fbf.png?w=1600', 'Inside pages of the book showing the training dataset: a grid of photographs of flowers and shells used to teach the generative algorithm.'],
-      ['7fc8b686031b4829a0921a509cd4b48571dd1787.png?w=1600', 'The cover of the Sovrapposizioni book: a natural image reworked through digital pixelation.'],
-      ['41c75cf2b7142255a806a952c7894c13d0421120.png?w=1600', 'Entrance tickets for the exhibition, with vertical barcodes, the title in an elegant serif and details of the AI-generated works.'],
-    ].map(([file, alt, tall], index) => ({
-      src: `${CURRENT_SITE}/_assets/v11/${file}`,
-      alt,
-      tall: Boolean(tall),
-      // the GIF's frames sit on a wide empty border: show only the book (x, y, width, height of 2048 × 2560)
-      crop: index === 0 ? ([211, 466, 1631, 1626, 2048, 2560] as const) : undefined,
-    })),
+      {
+        src: `${CURRENT_SITE}/_assets/v11/1ce14e6bd4101af66b7e9fc69587eebdb8bb93cb.png?h=2385`,
+        alt: 'Animated spreads of the Sovrapposizioni book: inside pages on a clean grid with modern typography.',
+        // the GIF's frames sit on a wide empty border: show only the book (x, y, width, height of 2048 × 2560)
+        crop: [211, 466, 1631, 1626, 2048, 2560] as const,
+      },
+      { src: `${CURRENT_SITE}/_assets/v11/c363270d72b8e06db7aaf51c238bb3ea113733cd.png?w=1600`, alt: 'The exhibition at MEET Digital Culture Center: a visitor walks past the AI-generated works.' },
+      { src: '/projects/sovrapposizioni/posters-street.svg', alt: 'A row of exhibition posters along a street wall.' },
+      { src: `${CURRENT_SITE}/_assets/v11/be04d60125a1b190f560c65f52d5480f9834d7c9.png?h=1400`, alt: "Exhibition poster on a street stand: an AI reinterpretation of a classical painting and the question 'If art speaks to you, does it matter who made it?'", tall: true },
+      { src: '/projects/sovrapposizioni/poster-tree.svg', alt: 'Exhibition poster under a tree.', tall: true },
+      { src: '/projects/sovrapposizioni/poster-backlit.svg', alt: 'Backlit exhibition poster at night.', tall: true },
+      { src: '/projects/sovrapposizioni/banners.svg', alt: 'Exhibition banners hanging between the columns of a building.' },
+      { src: '/projects/sovrapposizioni/tickets-2.svg', alt: 'Two entrance tickets with works from the exhibition.', tall: true },
+      { src: `${CURRENT_SITE}/_assets/v11/41c75cf2b7142255a806a952c7894c13d0421120.png?w=1600`, alt: 'Entrance tickets for the exhibition, with vertical barcodes, the title in an elegant serif and details of the AI-generated works.' },
+    ],
     // the deep dive has its own structure (see SovrapposizioniDeep), with pictures from the project presentation
     deep: {
       framework: { src: '/projects/sovrapposizioni/training-collage.svg', alt: 'The images generated while training the AI, grouped by master: Kusama, Hockney, Warhol, Monet, Modigliani, Canaletto, Murakami and Degas.' },
@@ -107,24 +109,23 @@ const caseStudies = [
         { src: '/projects/sovrapposizioni/painting-pool.svg', alt: 'AI-generated work: a swimming pool in front of a modernist house, in the manner of Hockney.' },
         { src: '/projects/sovrapposizioni/painting-lake.svg', alt: 'AI-generated work: boats on a lake among trees, in an impressionist manner.' },
       ],
+      // the book, large, before the strip
+      book: [
+        { src: `${CURRENT_SITE}/_assets/v11/297d2bf3f77e804b239bcd73c5936df12ffa1fbf.png?w=1600`, alt: 'Inside pages of the book showing the training dataset: a grid of photographs of flowers and shells used to teach the generative algorithm.' },
+        { src: `${CURRENT_SITE}/_assets/v11/7fc8b686031b4829a0921a509cd4b48571dd1787.png?w=1600`, alt: 'The cover of the Sovrapposizioni book: a natural image reworked through digital pixelation.' },
+      ],
+      // the editorial object in the order it is opened: the box, the brochure, the book, the postcards, the print
       editorial: [
+        ['box-closed', 'The cardboard box closed and tied with string.'],
+        ['box-open', 'The box opened: the brochure on top, with the dates, venue and curators.'],
+        ['brochure-folded', 'The brochure standing half open.'],
+        ['brochure-open', 'The brochure fully unfolded, with the works and the texts of the exhibition.'],
+        ['book-artists', "The book opened on the chapter 'Artisti e opere', beside a postcard in its sleeve."],
         ['postcard-portrait', 'A postcard of a portrait in its translucent sleeve.'],
         ['postcard-lake', 'The postcard of the lake work.'],
         ['card-text', "The text card of the work 'Luce sul fiume', with how to scan it."],
-        ['box-open', 'The open cardboard box holding the brochure, with the dates, venue and curators.'],
-        ['box-closed', 'The cardboard box closed and tied with string.'],
-        ['book-artists', "The book opened on the chapter 'Artisti e opere', beside a postcard in its sleeve."],
-        ['brochure-folded', 'The brochure standing half open.'],
-        ['brochure-open', 'The brochure fully unfolded, with the works and the texts of the exhibition.'],
         ['print-apple', 'A print of the green apple work hanging from two clips.'],
       ].map(([name, alt]) => ({ src: `/projects/sovrapposizioni/${name}.svg`, alt })),
-      city: [
-        ['posters-street', 'A row of exhibition posters along a street wall.'],
-        ['poster-tree', 'Exhibition poster under a tree.', 'tall'],
-        ['poster-backlit', 'Backlit exhibition poster at night.', 'tall'],
-        ['banners', 'Exhibition banners hanging between the columns of a building.'],
-        ['tickets-2', 'Two entrance tickets with other works.', 'tall'],
-      ].map(([name, alt, tall]) => ({ src: `/projects/sovrapposizioni/${name}.svg`, alt, tall: Boolean(tall) })),
     },
   },
   {
@@ -435,11 +436,11 @@ function useGrowOnScroll(dependency: unknown) {
 // two or three upright ones share a row.
 // `crop` shows only part of a picture: [x, y, width, height, picture width, picture height] in pixels
 type OutcomePic = { src?: string; alt?: string; caption: string; tall?: boolean; poster?: string; crop?: readonly number[] }
-function OutcomeRows({ items }: { items: OutcomePic[] }) {
+function OutcomeRows({ items, turn = 0 }: { items: OutcomePic[]; turn?: number }) {
   type Cell = OutcomePic & { start: number; span: number; shift?: boolean }
   const rows: Cell[][] = []
   const wideStarts = [2, 1, 3]
-  let wideTurn = 0
+  let wideTurn = turn // where the first landscape picture goes: 0 centre, 1 left, 2 right
   let pairTurn = 0
   let i = 0
   while (i < items.length) {
@@ -730,7 +731,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
       backstage?: Pic[]
       works?: Pic[]
       editorial?: Pic[]
-      city?: (Pic & { tall?: boolean })[]
+      book?: Pic[]
     }
   }
   const deep = media.deep
@@ -1004,39 +1005,40 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
   )
 }
 
-// Sovrapposizioni's deep dive: training the AI with the collage of generated images, two works beside
-// the texts on authorship and dialogue, the editorial object in a sideways strip, the exhibition in the city
+// Sovrapposizioni's deep dive, laid out like the rest of the page: each text, then its pictures large on
+// the 7-column grid. Training the AI with the collage of generated images; authorship and the dialogue
+// with the originals, each followed by a generated work; the book; the editorial object in a strip.
 function SovrapposizioniDeep({
   project,
   deep,
 }: {
   project: (typeof caseStudies)[number]
-  deep: { framework?: { src: string; alt: string }; works?: { src: string; alt: string }[]; editorial?: { src: string; alt: string }[]; city?: { src: string; alt: string; tall?: boolean }[] }
+  deep: { framework?: { src: string; alt: string }; works?: { src: string; alt: string }[]; editorial?: { src: string; alt: string }[]; book?: { src: string; alt: string }[] }
 }) {
   const [authorship, masters, dialogue, beyond, translation] = project.research
+  const pictures = (list?: { src: string; alt: string }[], turn = 0) =>
+    list && <OutcomeRows turn={turn} items={list.map(pic => ({ ...pic, caption: pic.alt }))} />
   return (
     <>
       <section id="research" className="section shell research sv-deep">
         <div className="section-label reveal">Research</div>
 
-        <div className="sv-training reveal">
-          <div className="research-copy">
-            <SectionHeading number="01">{masters.title}</SectionHeading>
-            <p>{masters.copy}</p>
-          </div>
-          {deep.framework && (
-            <Placeholder className="research-collage" caption="Images generated while training the AI" src={deep.framework.src} alt={deep.framework.alt} />
-          )}
+        <div className="sv-text reveal">
+          <SectionHeading number="01">{masters.title}</SectionHeading>
+          <p>{masters.copy}</p>
         </div>
+        {deep.framework && (
+          <Placeholder className="research-collage" caption="Images generated while training the AI" src={deep.framework.src} alt={deep.framework.alt} />
+        )}
 
         {[authorship, dialogue].map((text, index) => (
-          <div className={`sv-work reveal ${index % 2 ? 'is-flipped' : ''}`} key={text.title}>
-            <Placeholder caption={text.title} src={deep.works?.[index]?.src} alt={deep.works?.[index]?.alt} />
-            <div className="research-copy">
+          <Fragment key={text.title}>
+            <div className="sv-text reveal">
               <SectionHeading number={String(index + 2).padStart(2, '0')}>{text.title}</SectionHeading>
               <p>{text.copy}</p>
             </div>
-          </div>
+            {pictures(deep.works?.slice(index, index + 1), index + 1)}
+          </Fragment>
         ))}
       </section>
 
@@ -1047,26 +1049,26 @@ function SovrapposizioniDeep({
         </div>
       </section>
 
+      <section className="section shell research sv-deep">
+        <div className="sv-text reveal">
+          <SectionHeading number="04">{beyond.title}</SectionHeading>
+          <p>{beyond.copy}</p>
+        </div>
+        {pictures(deep.book)}
+      </section>
+
       <section id="process" className="section process reveal">
         <div className="process-sticky">
           <div className="shell process__head">
-            <div className="section-label">04</div>
-            <h2><Lines text={beyond.title} /></h2>
-            <p className="sv-strip-copy">{beyond.copy}</p>
+            <div className="section-label">05</div>
+            <h2><Lines text={translation.title} /></h2>
+            <p className="sv-strip-copy">{translation.copy}</p>
             <p>Scroll sideways →</p>
           </div>
           <div className="process-strip" tabIndex={0} role="region" aria-label="The editorial object, scroll sideways">
             {deep.editorial?.map(({ src, alt }) => <Placeholder key={src} caption={alt} alt={alt} src={src} />)}
           </div>
         </div>
-      </section>
-
-      <section className="section shell sv-city reveal">
-        <div className="research-copy">
-          <SectionHeading number="05">{translation.title}</SectionHeading>
-          <p>{translation.copy}</p>
-        </div>
-        {deep.city && <OutcomeRows items={deep.city.map(pic => ({ ...pic, caption: pic.alt }))} />}
       </section>
     </>
   )
