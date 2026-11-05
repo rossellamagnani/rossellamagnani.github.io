@@ -1740,3 +1740,16 @@ figure.placeholder.hero__media.is-cropped .placeholder__surface { aspect-ratio: 
   main .orow figure.placeholder .placeholder__surface > video { max-height: none; }
   main .orow figure.placeholder.is-cropped .placeholder__surface:has(> img) { width: 100% !important; }
 }
+
+/* About: what each experience involved, as a short list under the opened row */
+.about-table__detail ul { min-height: 0; overflow: hidden; margin: 0; padding: 0; list-style: none; max-width: 760px; }
+.about-table__detail li { font-size: 14px; line-height: 1.6; }
+.about-table__detail li + li { margin-top: 8px; }
+.about-table__item.is-open .about-table__detail ul { padding: 0 76px 26px 0; }
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .about-table__item.is-open .about-table__detail ul { padding: 0 0 22px; }
+}
+/* Education, tools and languages side by side */
+@media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
+  .about-details { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}

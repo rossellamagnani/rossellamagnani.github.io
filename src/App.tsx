@@ -1316,7 +1316,8 @@ function AboutTable({
   expandable = false,
 }: {
   title: string
-  rows: Array<[string, string, string]>
+  // each row: role or context, company or project, year, and the lines shown when it is opened
+  rows: Array<[string, string, string, string[]?]>
   expandable?: boolean
 }) {
   const [openRow, setOpenRow] = useState<number | null>(null)
@@ -1331,7 +1332,7 @@ function AboutTable({
           <span>Year</span>
           {expandable && <span aria-hidden="true" />}
         </div>
-        {rows.map(([first, second, year], index) =>
+        {rows.map(([first, second, year, details = []], index) =>
           expandable ? (
             <article
               className={`about-table__item ${openRow === index ? 'is-open' : ''}`}
@@ -1349,10 +1350,11 @@ function AboutTable({
                 <i aria-hidden="true">{openRow === index ? '−' : '+'}</i>
               </button>
               <div className="about-table__detail" inert={openRow !== index}>
-                <p>
-                  Placeholder text: add a short description of your role, responsibilities,
-                  process and contribution to this experience.
-                </p>
+                <ul>
+                  {details.map(line => (
+                    <li key={line}>{line}</li>
+                  ))}
+                </ul>
               </div>
             </article>
           ) : (
@@ -1422,10 +1424,28 @@ function About() {
           title="Experience"
           expandable
           rows={[
-            ['Brand & Communication Design Intern', 'CBA Design Italy, Milan', '2026'],
-            ['Communication & Editorial Design Intern', 'T12 Lab, Milan', '2025'],
-            ['Visual Designer', 'Loro Piana Global Summit', '2024'],
-            ['Communication Design Intern', 'DCode, Turin', '2024'],
+            ['MSc Thesis Researcher & Exhibition Designer', "Spazio Geco · Pavia's University Library", '2026', [
+              "Visitor research: analysed the library's exhibition spaces and visitor behaviour to redesign its interactive stations and improve the flow through the space.",
+              'Accessible exhibition stations: designed the graphic interfaces and on-site touchpoints of the stations, ensuring barrier-free navigation and clear reading for diverse visitors.',
+              'Tactile and multisensory design: developed tactile panels and tangible objects that translate the manuscripts on display into multisensory experiences.',
+            ]],
+            ['Brand and Communication Design', 'CBA Design Italy, Milan', '2026', [
+              'Large-format and OOH: designed out-of-home campaigns, including stadium installations, and institutional materials for international corporate clients.',
+              'Brand systems: extended the visual identities of HR and corporate welfare companies across brochures, advertising and commercial presentations.',
+              'Motion: designed motion graphics for social media campaigns.',
+            ]],
+            ['Communication & Editorial Design Intern', 'T12 Lab, Milan', '2025', [
+              "Venice Biennale 2025: designed visual and hands-on materials for a children's workshop held during the Biennale, making the content accessible and engaging for a young audience.",
+              'Branding and editorial: developed visual identities, editorial projects and multimedia content for crowdfunding campaigns, from concept to final cut.',
+              'Cultural and social initiatives: managed digital and physical touchpoints for cultural and social impact projects.',
+            ]],
+            ['Visual Designer', 'Loro Piana Global Summit', '2024', [
+              'Event visual system: designed the presentation graphics for the global summit of a luxury brand, in line with its identity and addressed to executive stakeholders.',
+              'Live event: managed the delivery of digital assets and visual content during live broadcasts, working under real-time pressure.',
+            ]],
+            ['Communication Design Intern', 'DCode, Turin', '2024', [
+              'Designed brand identities, custom patterns and pitch presentations for corporate and luxury clients (300 hours).',
+            ]],
           ]}
         />
 
@@ -1433,29 +1453,39 @@ function About() {
           title="Selected contexts"
           expandable
           rows={[
-            ['Venice Biennale', "Children's workshop materials", '2025'],
-            ['Loro Piana Global Summit', 'Event visual system', '2024'],
+            ['Venice Biennale', "Children's workshop materials", '2025', [
+              "With T12 Lab, designed visual and hands-on materials for a children's workshop held during the Biennale, making the content accessible and engaging for a young audience.",
+            ]],
+            ['Loro Piana Global Summit', 'Event visual system', '2024', [
+              'Designed the presentation graphics for the global summit of a luxury brand, in line with its identity and addressed to executive stakeholders, and managed the visual content during the live broadcasts.',
+            ]],
           ]}
         />
 
         <section className="about-section about-details shell reveal">
           <div>
             <div className="section-label">Education</div>
-            <p>MSc Communication Design, Politecnico di Milano, 2026</p>
-            <p>BSc Communication Design, Politecnico di Torino, 2024</p>
+            <p>MSc Communication Design, Politecnico di Milano, 2024–present</p>
+            <p>BSc Communication Design, Politecnico di Torino, 2021–2024</p>
+            <p>General English Intensive Program, EC English Language Centres, New York, 2021</p>
           </div>
           <div>
             <div className="section-label">Tools</div>
-            <p>Rhino, AutoCAD, Blender</p>
+            <p>Rhinoceros, AutoCAD, Blender</p>
             <p>InDesign, Illustrator, Photoshop</p>
             <p>After Effects, Premiere</p>
-            <p>Figma, Framer</p>
+            <p>Figma, Framer, Microsoft Office</p>
+          </div>
+          <div>
+            <div className="section-label">Languages</div>
+            <p>Italian, native</p>
+            <p>English, IELTS Band 7 (2024)</p>
           </div>
         </section>
 
         <section className="about-closing shell reveal">
           <p>Here&apos;s my CV.</p>
-          <a href="/Rossella_Magnani_CV.pdf" className="about-cv" download>
+          <a href="/Rossella_Magnani_CV.pdf" className="about-cv" download="Rossella_Magnani_CV.pdf">
             Download CV <span className="sr-only">(PDF, 2 MB)</span>
           </a>
         </section>
