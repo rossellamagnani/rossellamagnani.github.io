@@ -1614,9 +1614,15 @@ main .outcome-gallery--sovrapposizioni .outcome-gallery__grid figure.placeholder
 .orow__item { grid-column: var(--start) / span var(--span); justify-self: stretch; margin: 0 !important; width: 100% !important; max-width: none !important; }
 .orow__item.is-shifted { margin-top: min(16.7vw, 240px) !important; }
 .orow__item.is-shifted { margin-top: min(16.7vw, 240px); }
-main .orow figure.placeholder .placeholder__surface:has(> img, > video) { width: 100%; }
-main .orow figure.placeholder .placeholder__surface > img,
-main .orow figure.placeholder .placeholder__surface > video { width: 100%; height: auto; max-height: calc(100svh - 120px); object-fit: contain; }
+/* a picture fills its columns; when the window's height would make it too tall it shrinks, keeping its
+   shape, and sits in the middle of its columns (no empty bands beside it) */
+main .orow figure.placeholder .placeholder__surface:has(> img, > video) { width: fit-content; max-width: 100%; margin-inline: auto; }
+main .orow figure.placeholder .placeholder__surface > video { width: 100%; height: auto; max-height: calc(100svh - 120px); }
+main .orow figure.placeholder .placeholder__surface:has(> video) { width: 100%; }
+main .orow figure.placeholder:not(.is-cropped) .placeholder__surface > img {
+  width: min(100cqw, calc((100svh - 120px) * var(--ratio, 1.5))); max-width: none; height: auto; max-height: none;
+}
+main .orow figure.placeholder { container-type: inline-size; }
 .orow .placeholder__surface:not(:has(> img, > video)) { aspect-ratio: 16 / 9; }
 .orow .is-tall .placeholder__surface:not(:has(> img, > video)) { aspect-ratio: 2 / 3; }
 @media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
@@ -1645,4 +1651,36 @@ main .orow figure.placeholder.is-cropped .placeholder__surface > img {
 .sv-strip-copy { max-width: 56ch; margin: 0; }
 @media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .sv-deep .sv-text { margin-top: 56px; }
+}
+
+/* ------------------------------------------------------------------
+   One set of picture rules for every project page (outcome and deep dive), from the reference site:
+   - a 7-column grid with 8px gaps, as wide as the page's text
+   - a landscape picture alone: 5 columns; the first of a block in the middle, the next ones moving left
+     and right
+   - an upright picture: 2 columns beside a 4-column landscape one, sitting lower; 2 or 3 upright
+     pictures side by side; alone and first, 3 columns in the middle
+   - a very wide picture (a score): all 7 columns
+   - never taller than the window
+   - many small pictures (the training images): a wall of two rows drifting sideways
+------------------------------------------------------------------- */
+.research-row.accessibility { display: block; }
+.research-row.accessibility .outcome-rows,
+.process-score .outcome-rows { margin-top: clamp(32px, 4vw, 56px); }
+
+.image-wall { display: grid; gap: 8px; margin-top: clamp(40px, 5vw, 72px); overflow: hidden; }
+.image-wall:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.image-wall__row { overflow: hidden; }
+.image-wall__track { display: flex; gap: 8px; width: max-content; animation: wall-drift 90s linear infinite; }
+.image-wall__row.is-reverse .image-wall__track { animation-direction: reverse; }
+.image-wall__track img { display: block; height: clamp(240px, 38svh, 420px); width: auto; flex: none; }
+.image-wall:hover .image-wall__track, .image-wall:focus-within .image-wall__track { animation-play-state: paused; }
+@keyframes wall-drift { from { transform: translateX(0); } to { transform: translateX(calc(-50% - 4px)); } }
+@media (prefers-reduced-motion: reduce) {
+  .image-wall__row { overflow-x: auto; }
+  .image-wall__track { animation: none; }
+}
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .image-wall__track img { height: 220px; }
+  .image-wall__track { animation-duration: 60s; }
 }
