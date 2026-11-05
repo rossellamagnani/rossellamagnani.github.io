@@ -186,8 +186,9 @@ const caseStudies = [
     processDescription: 'Scroll sideways',
     // the deep dive has its own structure (see MarcoMagnaniDeep), with plates and pages from the brand manual
     manual: {
+      unveiling: { src: '/projects/marco-magnani-art/unveiling-bus-shelter.svg', alt: "Poster 'Trama IV' at a bus stop: a burgundy shape with a torn edge covers half of the portrait, leaving only the eyes and part of the face visible." },
       logotype: [{ src: '/projects/marco-magnani-art/logo-signature.svg', alt: "The artist's signature as found on the canvas, the starting point of the logotype." }],
-      pages: [1, 3, 5, 7, 8, 9, 13, 19, 21, 25, 33, 37, 39, 41, 42, 44, 45, 47, 48, 49, 50, 51, 52, 53, 54, 55, 60, 61, 63, 66, 67, 69, 71].map(n => ({
+      pages: [3, 5, 7, 8, 9, 13, 19, 21, 25, 33, 37, 39, 41, 42, 44, 45, 47, 48, 49, 50, 51, 52, 53, 54, 55, 60, 61, 63, 66, 67, 69, 71].map(n => ({
         src: `/projects/marco-magnani-art/manual/page-${String(n).padStart(2, '0')}.svg`,
         alt: `Brand manual, page ${n}.`,
       })),
@@ -846,7 +847,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
       editorial?: Pic[]
       book?: Pic[]
     }
-    manual?: { logotype: Pic[]; pages: Pic[] }
+    manual?: { logotype: Pic[]; pages: Pic[]; unveiling: Pic }
   }
   const deep = media.deep
   const [deepView, setDeepView] = useState(false)
@@ -1196,7 +1197,7 @@ function MarcoMagnaniDeep({
   manual,
 }: {
   project: (typeof caseStudies)[number]
-  manual: { logotype: ManualPic[]; pages: ManualPic[] }
+  manual: { logotype: ManualPic[]; pages: ManualPic[]; unveiling: ManualPic }
 }) {
   const [presence, , language, unveiling] = project.research
   const pictures = (list: ManualPic[], turn = 0) => (
@@ -1240,6 +1241,7 @@ function MarcoMagnaniDeep({
           <SectionHeading number="04">{unveiling.title}</SectionHeading>
           <p>{unveiling.copy}</p>
         </div>
+        {pictures([manual.unveiling], 2)}
       </section>
     </>
   )
