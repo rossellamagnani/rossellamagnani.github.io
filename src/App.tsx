@@ -186,9 +186,11 @@ const caseStudies = [
     processDescription: 'Scroll sideways',
     // the deep dive has its own structure (see MarcoMagnaniDeep), with plates and pages from the brand manual
     manual: {
+      // the logotype in three steps, shown one after the other while scrolling
       logotype: [
-        { src: '/projects/marco-magnani-art/logotype-construction.svg', alt: "Technical plate: the artist's signature as found on the canvas, and below it redrawn on a vector grid of axial lines and slanted guides." },
-        { src: '/projects/marco-magnani-art/logotype-contrast.svg', alt: 'The logotype in white on anthracite and in white over a detail of a painting.' },
+        { src: '/projects/marco-magnani-art/logo-signature.svg', alt: "The artist's signature as found on the canvas.", label: 'The signature' },
+        { src: '/projects/marco-magnani-art/logo-construction.svg', alt: 'The signature redrawn on a vector grid of axial lines and slanted guides.', label: 'The construction' },
+        { src: '/projects/marco-magnani-art/logo-on-painting.svg', alt: 'The finished logotype in white over a detail of a painting.', label: 'The logotype' },
       ],
       monogram: { src: '/projects/marco-magnani-art/monogram-grid.svg', alt: 'Technical plate: the M monogram drawn on its construction grid.' },
       colour: { src: '/projects/marco-magnani-art/colour-sampling.svg', alt: 'Two paintings with the five colours sampled from each: a range of blues from the blue lace cap, a range of reds from the red lace.' },
@@ -835,7 +837,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
       editorial?: Pic[]
       book?: Pic[]
     }
-    manual?: { logotype: Pic[]; monogram: Pic; colour: Pic; pages: Pic[] }
+    manual?: { logotype: (Pic & { label: string })[]; monogram: Pic; colour: Pic; pages: Pic[] }
   }
   const deep = media.deep
   const [deepView, setDeepView] = useState(false)
@@ -1177,6 +1179,51 @@ function SovrapposizioniDeep({
   )
 }
 
+// Pictures that replace one another while the page scrolls: the stage stays on screen and each step
+// fades into the next. With reduced motion the steps are simply shown one below the other.
+function LogoSteps({ steps }: { steps: { src: string; alt: string; label: string }[] }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [step, setStep] = useState(0)
+  useEffect(() => {
+    const el = ref.current
+    if (!el || prefersReducedMotion()) return
+    let frame = 0
+    const update = () => {
+      frame = 0
+      const r = el.getBoundingClientRect()
+      const progress = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - window.innerHeight)))
+      setStep(Math.min(steps.length - 1, Math.floor(progress * steps.length)))
+    }
+    const onScroll = () => {
+      if (!frame) frame = window.requestAnimationFrame(update)
+    }
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      if (frame) window.cancelAnimationFrame(frame)
+    }
+  }, [steps.length])
+  return (
+    <div className="logo-steps" ref={ref} style={{ '--steps': steps.length } as React.CSSProperties}>
+      <div className="logo-steps__stage">
+        <div className="logo-steps__frame">
+          {steps.map((item, index) => (
+            <figure className={`logo-steps__item ${index === step ? 'is-current' : ''}`} key={item.src}>
+              <img src={item.src} alt={item.alt} />
+              <figcaption>
+                <span>{String(index + 1).padStart(2, '0')}</span> {item.label}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // Marco Magnani Art's deep dive: texts in the usual column with their pictures large below, the
 // technical plates of the logotype and the monogram, the colour sampling, and the brand manual's pages
 // drifting in a wall
@@ -1186,7 +1233,7 @@ function MarcoMagnaniDeep({
   manual,
 }: {
   project: (typeof caseStudies)[number]
-  manual: { logotype: ManualPic[]; monogram: ManualPic; colour: ManualPic; pages: ManualPic[] }
+  manual: { logotype: (ManualPic & { label: string })[]; monogram: ManualPic; colour: ManualPic; pages: ManualPic[] }
 }) {
   const [presence, , language, unveiling] = project.research
   const pictures = (list: ManualPic[], turn = 0) => (
@@ -1206,7 +1253,7 @@ function MarcoMagnaniDeep({
           <SectionHeading number="02">{language.title}</SectionHeading>
           <p>{language.copy}</p>
         </div>
-        {pictures(manual.logotype)}
+        <LogoSteps steps={manual.logotype} />
 
         <div className="sv-text reveal">
           <SectionHeading number="03">The monogram</SectionHeading>
