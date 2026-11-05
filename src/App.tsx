@@ -187,8 +187,6 @@ const caseStudies = [
     // the deep dive has its own structure (see MarcoMagnaniDeep), with plates and pages from the brand manual
     manual: {
       logotype: [{ src: '/projects/marco-magnani-art/logo-signature.svg', alt: "The artist's signature as found on the canvas, the starting point of the logotype." }],
-      monogram: { src: '/projects/marco-magnani-art/monogram-grid.svg', alt: 'Technical plate: the M monogram drawn on its construction grid.' },
-      colour: { src: '/projects/marco-magnani-art/colour-sampling.svg', alt: 'Two paintings with the five colours sampled from each: a range of blues from the blue lace cap, a range of reds from the red lace.' },
       pages: [1, 3, 5, 7, 8, 9, 13, 19, 21, 25, 33, 37, 39, 41, 42, 44, 45, 47, 48, 49, 50, 51, 52, 53, 54, 55, 60, 61, 63, 66, 67, 69, 71].map(n => ({
         src: `/projects/marco-magnani-art/manual/page-${String(n).padStart(2, '0')}.svg`,
         alt: `Brand manual, page ${n}.`,
@@ -496,16 +494,32 @@ function useGrowOnScroll(dependency: unknown) {
   }, [dependency])
 }
 
-// Many small pictures shown as on the reference site: two rows that drift slowly sideways, in opposite
-// directions, each picture a good size. Hovering or focusing stops them; with reduced motion they stay
-// still and can be scrolled by hand.
-function ImageWall({ pictures, label }: { pictures: { src: string; alt: string }[]; label: string }) {
-  const half = Math.ceil(pictures.length / 2)
-  const rows = [pictures.slice(0, half), pictures.slice(half)]
+// Many small pictures shown as on the reference site: rows that drift slowly sideways, alternating
+// direction, each picture a good size. Keyboard focus stops them (hovering too, unless turned off);
+// with reduced motion they stay still and can be scrolled by hand.
+function ImageWall({
+  pictures,
+  label,
+  rows: rowCount = 2,
+  pauseOnHover = true,
+}: {
+  pictures: { src: string; alt: string }[]
+  label: string
+  rows?: number
+  pauseOnHover?: boolean
+}) {
+  const size = Math.ceil(pictures.length / rowCount)
+  const rows = Array.from({ length: rowCount }, (_, r) => pictures.slice(r * size, (r + 1) * size))
   return (
-    <div className="image-wall" role="group" aria-label={label} tabIndex={0}>
+    <div
+      className={`image-wall ${pauseOnHover ? 'pause-on-hover' : ''}`}
+      style={{ '--wall-rows': rowCount } as React.CSSProperties}
+      role="group"
+      aria-label={label}
+      tabIndex={0}
+    >
       {rows.map((row, r) => (
-        <div className={`image-wall__row ${r ? 'is-reverse' : ''}`} key={r}>
+        <div className={`image-wall__row ${r % 2 ? 'is-reverse' : ''}`} key={r}>
           <div className="image-wall__track">
             {[...row, ...row].map((pic, k) => (
               <img
@@ -832,7 +846,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
       editorial?: Pic[]
       book?: Pic[]
     }
-    manual?: { logotype: Pic[]; monogram: Pic; colour: Pic; pages: Pic[] }
+    manual?: { logotype: Pic[]; pages: Pic[] }
   }
   const deep = media.deep
   const [deepView, setDeepView] = useState(false)
@@ -1174,8 +1188,7 @@ function SovrapposizioniDeep({
   )
 }
 
-// Marco Magnani Art's deep dive: texts in the usual column with their pictures large below, the
-// scanned signature and the monogram plate, the colour sampling, and the brand manual's pages
+// Marco Magnani Art's deep dive: texts in the usual column, the scanned signature, the colour sampling, and the brand manual's pages
 // drifting in a wall
 type ManualPic = { src: string; alt: string }
 function MarcoMagnaniDeep({
@@ -1183,7 +1196,7 @@ function MarcoMagnaniDeep({
   manual,
 }: {
   project: (typeof caseStudies)[number]
-  manual: { logotype: ManualPic[]; monogram: ManualPic; colour: ManualPic; pages: ManualPic[] }
+  manual: { logotype: ManualPic[]; pages: ManualPic[] }
 }) {
   const [presence, , language, unveiling] = project.research
   const pictures = (list: ManualPic[], turn = 0) => (
@@ -1206,13 +1219,13 @@ function MarcoMagnaniDeep({
         {pictures(manual.logotype)}
 
         <div className="sv-text reveal">
-          <SectionHeading number="03">The monogram</SectionHeading>
+          <SectionHeading number="03">The brand manual</SectionHeading>
           <p>
-            Where the full logotype would be too small to read, the identity is reduced to a monogram taken
-            from the same signature, built on a construction grid and used in positive and negative.
+            Everything is collected in a brand manual: the brand and copy strategy, the messaging, the visual
+            guidelines for logotype, colour and typography, and the applications.
           </p>
         </div>
-        {pictures([manual.monogram], 1)}
+        <ImageWall pictures={manual.pages} label="Pages of the brand manual" rows={3} pauseOnHover={false} />
       </section>
 
       <section id="insight" className="insight reveal">
@@ -1227,16 +1240,6 @@ function MarcoMagnaniDeep({
           <SectionHeading number="04">{unveiling.title}</SectionHeading>
           <p>{unveiling.copy}</p>
         </div>
-        {pictures([manual.colour], 2)}
-
-        <div className="sv-text reveal">
-          <SectionHeading number="05">The brand manual</SectionHeading>
-          <p>
-            Everything is collected in a brand manual: the brand and copy strategy, the messaging, the visual
-            guidelines for logotype, colour and typography, and the applications.
-          </p>
-        </div>
-        <ImageWall pictures={manual.pages} label="Pages of the brand manual" />
       </section>
     </>
   )

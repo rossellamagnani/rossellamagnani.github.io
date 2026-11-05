@@ -1673,14 +1673,15 @@ main .orow figure.placeholder.is-cropped .placeholder__surface > img {
 .image-wall__row { overflow: hidden; }
 .image-wall__track { display: flex; gap: 8px; width: max-content; animation: wall-drift 90s linear infinite; }
 .image-wall__row.is-reverse .image-wall__track { animation-direction: reverse; }
-.image-wall__track img { display: block; height: clamp(240px, 38svh, 420px); width: auto; flex: none; }
-.image-wall:hover .image-wall__track, .image-wall:focus-within .image-wall__track { animation-play-state: paused; }
+/* the rows together fill about three quarters of the window */
+.image-wall__track img { display: block; height: clamp(160px, calc(76svh / var(--wall-rows, 2)), 420px); width: auto; flex: none; }
+.image-wall.pause-on-hover:hover .image-wall__track, .image-wall:focus-within .image-wall__track { animation-play-state: paused; }
 @keyframes wall-drift { from { transform: translateX(0); } to { transform: translateX(calc(-50% - 4px)); } }
 @media (prefers-reduced-motion: reduce) {
   .image-wall__row { overflow-x: auto; }
   .image-wall__track { animation: none; }
 }
 @media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
-  .image-wall__track img { height: 220px; }
+  .image-wall__track img { height: calc(440px / var(--wall-rows, 2)); }
   .image-wall__track { animation-duration: 60s; }
 }
