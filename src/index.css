@@ -1685,3 +1685,17 @@ main .orow figure.placeholder.is-cropped .placeholder__surface > img {
   .image-wall__track img { height: calc(440px / var(--wall-rows, 2)); }
   .image-wall__track { animation-duration: 60s; }
 }
+
+/* A cover shown only in part: the chosen area fills the opening's height, centred on a point */
+.hero .hero__media.is-cropped .placeholder__surface { position: relative; overflow: hidden; }
+.hero .hero__media.is-cropped .placeholder__surface > img {
+  position: absolute; top: calc(var(--crop-top) * 100%); left: 50%;
+  height: calc(var(--crop-scale) * 100%) !important; width: auto !important; max-width: none;
+  transform: translateX(calc(var(--crop-centre) * -100%)); object-fit: fill;
+}
+/* the cropped picture is taken out of the flow, so the opening keeps its own shape */
+.hero .hero__media.is-cropped figure.placeholder .placeholder__surface,
+figure.placeholder.hero__media.is-cropped .placeholder__surface { aspect-ratio: 4 / 5 !important; }
+@media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
+  figure.placeholder.hero__media.is-cropped .placeholder__surface { aspect-ratio: auto !important; }
+}

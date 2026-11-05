@@ -244,7 +244,22 @@ const caseStudies = [
     insight: 'Creativity becomes both a tool for resistance and a language for reconstruction.',
     processTitle: 'Giving form to a culture in transformation',
     processDescription: 'Scroll sideways through the editorial rhythm, interviews and visual narratives.',
-    images: ['/assets/projects/kyiv-6443891fe021dd66e35c18fd5dcd33f18db0d01e.png'],
+    // the GIF of the spreads from the current site: beside the title (on the left page) and as the outcome
+    cover: {
+      src: `${CURRENT_SITE}/_assets/v11/6443891fe021dd66e35c18fd5dcd33f18db0d01e.png`,
+      alt: "Animated spreads of Crossing Kyiv: handwritten texts over reportage photographs, such as 'She Has a Dream' by Irina Dzhus.",
+      // the frames sit on an empty border: fill the opening with the book only, centred on the left page
+      crop: [204, 168, 1524, 940, 1932, 1333] as const,
+      centre: 0.33,
+    },
+    outcome: [
+      {
+        src: `${CURRENT_SITE}/_assets/v11/6443891fe021dd66e35c18fd5dcd33f18db0d01e.png`,
+        alt: "Animated spreads of Crossing Kyiv: handwritten texts over reportage photographs, such as 'She Has a Dream' by Irina Dzhus.",
+        // the frames sit on an empty border: show only the open book (x, y, width, height of 1932 × 1333)
+        crop: [204, 168, 1524, 940, 1932, 1333] as const,
+      },
+    ],
   },
   {
     slug: 'brera-district',
@@ -400,6 +415,7 @@ function Placeholder({
   poster,
   style,
   autoPlay = false,
+  focus,
 }: {
   caption: string
   className?: string
@@ -409,6 +425,7 @@ function Placeholder({
   poster?: string
   style?: React.CSSProperties
   autoPlay?: boolean
+  focus?: string // where a cropped picture is anchored (CSS object-position)
 }) {
   // files ending in .mp4/.webm/.mov, or videos served by the current site (/_videos/...)
   const isVideo = Boolean(src && /\.(mp4|webm|mov)$|\/_videos\//i.test(src))
@@ -432,6 +449,7 @@ function Placeholder({
             <img
               src={src}
               alt={alt}
+              style={focus ? { objectPosition: focus } : undefined}
               // the picture's shape, so the layout can size it to fill its columns without getting taller than the window
               onLoad={event => {
                 const img = event.currentTarget
@@ -834,7 +852,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
   // pictures are optional per project; until a project has them its frames stay grey
   type Pic = { src: string; alt: string }
   const media = project as {
-    cover?: Pic
+    cover?: Pic & { focus?: string; crop?: readonly number[]; centre?: number }
     outcome?: (Pic & { tall?: boolean; crop?: readonly number[]; poster?: string; autoPlay?: boolean })[]
     deep?: {
       context?: Pic
@@ -904,10 +922,19 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
             </div>
           </div>
           <Placeholder
-            className="hero__media"
             caption={`${project.title}: main project visual`}
             src={media.cover?.src}
             alt={media.cover?.alt}
+            focus={media.cover?.focus}
+            className={media.cover?.crop ? 'hero__media is-cropped' : 'hero__media'}
+            style={
+              media.cover?.crop &&
+              ({
+                '--crop-scale': media.cover.crop[5] / media.cover.crop[3],
+                '--crop-top': -media.cover.crop[1] / media.cover.crop[3],
+                '--crop-centre': (media.cover.crop[0] + (media.cover.centre ?? 0.5) * media.cover.crop[2]) / media.cover.crop[4],
+              } as React.CSSProperties)
+            }
           />
         </section>
 
