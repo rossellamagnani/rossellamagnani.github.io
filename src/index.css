@@ -1717,3 +1717,26 @@ figure.placeholder.hero__media.is-cropped .placeholder__surface { aspect-ratio: 
   .hero .hero__media.is-whole .placeholder__surface > img { height: auto !important; width: 100% !important; max-height: none; }
   .hero .hero__media.is-whole .placeholder__surface { width: 100%; max-height: none; }
 }
+
+/* Next project: the name and, at the right, a small picture of that project */
+.next-project { grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 1fr auto; align-items: end; column-gap: 24px; }
+.next-project .next-project__label { grid-column: 1; grid-row: 1; align-self: end; }
+.next-project strong { grid-column: 1; grid-row: 2; }
+.next-project__image { grid-column: 2; grid-row: 1 / span 2; width: clamp(120px, 13.5vw, 194px); aspect-ratio: 194 / 224; overflow: hidden; background: #e2e0da; }
+.next-project__image img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .8s cubic-bezier(.22, 1, .36, 1); }
+.next-project:hover .next-project__image img { transform: scale(1.04); }
+.next-project i { display: none; }
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .next-project__image { width: 96px; }
+}
+@media (prefers-reduced-motion: reduce) { .next-project__image img { transition: none; } }
+
+/* Phone and upright iPad: every picture in its own row at full width, one under the other */
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .orow { grid-template-columns: minmax(0, 1fr); }
+  .orow__item, .orow__item.is-tall { grid-column: 1 !important; }
+  main .orow figure.placeholder .placeholder__surface:has(> img, > video) { width: 100%; }
+  main .orow figure.placeholder:not(.is-cropped) .placeholder__surface > img { width: 100% !important; height: auto; }
+  main .orow figure.placeholder .placeholder__surface > video { max-height: none; }
+  main .orow figure.placeholder.is-cropped .placeholder__surface:has(> img) { width: 100% !important; }
+}
