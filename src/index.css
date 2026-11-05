@@ -1725,12 +1725,21 @@ figure.placeholder.hero__media.is-cropped .placeholder__surface { aspect-ratio: 
 .next-project__image { grid-column: 2; grid-row: 1 / span 2; width: clamp(120px, 13.5vw, 194px); aspect-ratio: 194 / 224; overflow: hidden; background: #e2e0da; }
 .next-project__image img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .8s cubic-bezier(.22, 1, .36, 1); }
 .next-project:hover .next-project__image img { transform: scale(1.04); }
-.next-project .next-project__arrow { display: none; }
+/* the arrow is always there, after the name; on computers the picture of the next project sits at the right */
+.next-project { grid-template-columns: auto minmax(0, 1fr) auto; }
+.next-project .next-project__label { grid-column: 1 / 3; }
+.next-project strong { grid-column: 1; }
+.next-project .next-project__arrow { display: block; grid-column: 2; grid-row: 2; align-self: center; width: clamp(36px, 3.4vw, 52px); margin-left: clamp(16px, 2vw, 32px); transition: transform .4s cubic-bezier(.22, 1, .36, 1); }
+.next-project__arrow svg { display: block; width: 100%; height: auto; fill: currentColor; }
+.next-project:hover .next-project__arrow { transform: translateX(8px); }
+.next-project__image { grid-column: 3; }
 @media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .next-project__image { display: none; }
-  .next-project .next-project__arrow { display: block; grid-column: 2; grid-row: 2; align-self: center; width: 40px; }
-  .next-project__arrow svg { display: block; width: 100%; height: auto; fill: currentColor; }
+  .next-project { grid-template-columns: minmax(0, 1fr) auto; }
+  .next-project .next-project__label { grid-column: 1; }
+  .next-project .next-project__arrow { width: 40px; margin-left: 16px; }
 }
+@media (prefers-reduced-motion: reduce) { .next-project__arrow { transition: none; } }
 @media (prefers-reduced-motion: reduce) { .next-project__image img { transition: none; } }
 
 /* Phone and upright iPad: every picture in its own row at full width, one under the other */
