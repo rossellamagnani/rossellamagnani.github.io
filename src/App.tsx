@@ -21,9 +21,6 @@ const instruments = [
   },
 ]
 
-// Pictures and videos still served by the current site; to be replaced by local files in public/
-const CURRENT_SITE = 'https://rossellamagnani.figma.site'
-
 // `image` / `video`: the picture for each project in the home row, cropped to fill the frame;
 // `focus` moves the crop (CSS object-position); `crop` zooms into one area instead: x and y are
 // the centre of that area in % of the image, zoom how much larger than the frame's height it is drawn;
@@ -37,6 +34,9 @@ const projects: { title: string; type: string; slug: string; lang?: 'it'; image:
   { title: 'a drop of corruption', type: 'AI VIDEO · ART DIRECTION', slug: 'a-drop-of-corruption', image: '', video: 'https://rossellamagnani.figma.site/_videos/v1/4d1d4bed175820029240b41dd761342d8a2dc045' },
   { title: 'PRO Brera', type: 'SPECULATIVE DESIGN · SPATIAL', slug: 'brera-district', image: '/projects/pro-brera.svg', focus: '50% 0%' },
 ]
+
+// Pictures and videos still served by the current site; to be replaced by local files in public/
+const CURRENT_SITE = 'https://rossellamagnani.figma.site'
 
 const caseStudies = [
   {
@@ -80,14 +80,19 @@ const caseStudies = [
     insight: 'In the age of artificial intelligence, who or what is the artist?',
     processTitle: 'From visual memory to computational invention',
     processDescription: 'Scroll sideways',
-    images: [
-      '/assets/projects/sovrapposizioni-141ddc64b5b5362cf1d47cddb155b8aefeecc258.png',
-      '/assets/projects/sovrapposizioni-c363270d72b8e06db7aaf51c238bb3ea113733cd.png',
-      '/assets/projects/sovrapposizioni-1ce14e6bd4101af66b7e9fc69587eebdb8bb93cb.png',
-      '/assets/projects/sovrapposizioni-be04d60125a1b190f560c65f52d5480f9834d7c9.png',
-      '/assets/projects/sovrapposizioni-297d2bf3f77e804b239bcd73c5936df12ffa1fbf.png',
-      '/assets/projects/sovrapposizioni-7fc8b686031b4829a0921a509cd4b48571dd1787.png',
-    ],
+    // pictures from the current site: the opening beside the title, then the outcome (first one large)
+    cover: {
+      src: `${CURRENT_SITE}/_assets/v11/1ce14e6bd4101af66b7e9fc69587eebdb8bb93cb.png?h=2385`,
+      alt: 'Animated spreads of the Sovrapposizioni book: inside pages on a clean grid with modern typography.',
+    },
+    outcome: [
+      ['141ddc64b5b5362cf1d47cddb155b8aefeecc258.png?w=1600', 'The Sovrapposizioni exhibition at MEET Digital Culture Center, Milan: a visitor looks at AI-generated works inspired by great masters.'],
+      ['c363270d72b8e06db7aaf51c238bb3ea113733cd.png?w=1400', 'The exhibition: a visitor walks past the AI-generated works.'],
+      ['be04d60125a1b190f560c65f52d5480f9834d7c9.png?h=1400', "Backlit poster for the exhibition: an AI reinterpretation of a classical painting and the question 'If art speaks to you, does it matter who made it?'"],
+      ['297d2bf3f77e804b239bcd73c5936df12ffa1fbf.png?w=1400', 'Inside pages of the book showing the training dataset: a grid of photographs of flowers and shells used to teach the generative algorithm.'],
+      ['7fc8b686031b4829a0921a509cd4b48571dd1787.png?w=1400', 'The cover of the Sovrapposizioni book: a natural image reworked through digital pixelation.'],
+      ['41c75cf2b7142255a806a952c7894c13d0421120.png?w=1400', 'Entrance tickets for the exhibition, with vertical barcodes, the title in an elegant serif and details of the AI-generated works.'],
+    ].map(([file, alt]) => ({ src: `${CURRENT_SITE}/_assets/v11/${file}`, alt })),
   },
   {
     slug: 'marco-magnani-art',
@@ -604,6 +609,8 @@ function ContactMenu() {
 }
 
 function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
+  // pictures are optional per project; until a project has them its frames stay grey
+  const media = project as { cover?: { src: string; alt: string }; outcome?: { src: string; alt: string }[] }
   const [deepView, setDeepView] = useState(false)
   const projectIndex = projects.findIndex(item => item.slug === project.slug)
   const nextProject = projects[(projectIndex + 1) % projects.length]
@@ -660,6 +667,8 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
           <Placeholder
             className="hero__media"
             caption={`${project.title}: main project visual`}
+            src={media.cover?.src}
+            alt={media.cover?.alt}
           />
         </section>
 
@@ -829,12 +838,14 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
               className="outcome-gallery__hero"
               play
               caption={project.slug === 'a-drop-of-corruption' ? `${project.title}: video` : `${project.title}: main outcome`}
+              src={media.outcome?.[0]?.src}
+              alt={media.outcome?.[0]?.alt}
             />
             {project.slug !== 'a-drop-of-corruption' && (
               <div className="outcome-gallery__grid">
-                <Placeholder caption={`${project.title}: outcome detail 01`} />
-                <Placeholder caption={`${project.title}: outcome detail 02`} />
-                <Placeholder caption={`${project.title}: outcome detail 03`} />
+                {media.outcome
+                  ? media.outcome.slice(1).map(({ src, alt }) => <Placeholder key={src} caption={alt} alt={alt} src={src} />)
+                  : ['01', '02', '03'].map(n => <Placeholder key={n} caption={`${project.title}: outcome detail ${n}`} />)}
               </div>
             )}
           </div>
