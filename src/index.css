@@ -1602,3 +1602,26 @@ main .process-strip figure.placeholder .placeholder__surface > img { height: 100
 main .outcome-gallery--sovrapposizioni .outcome-gallery__grid figure.placeholder .placeholder__surface:has(> img) { width: 100%; }
 main .outcome-gallery--sovrapposizioni .outcome-gallery__grid figure.placeholder .placeholder__surface > img { width: 100%; max-height: none; }
 .outcome-gallery--sovrapposizioni .outcome-gallery__hero { --start: 0; }
+
+/* ------------------------------------------------------------------
+   Outcome pictures, as on the reference site: a 7-column grid with 8px gaps, one or two pictures
+   per row, wide rows of air between them; in a pair the second picture sits lower
+------------------------------------------------------------------- */
+.outcome-rows { margin-top: clamp(40px, 5vw, 72px); }
+.orow { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); column-gap: 8px; align-items: start; }
+.orow + .orow { margin-top: min(18vw, 260px); }
+.orow__item { grid-column: var(--start) / span var(--span); justify-self: stretch; margin: 0 !important; width: 100% !important; max-width: none !important; }
+.orow__item.is-shifted { margin-top: min(16.7vw, 240px) !important; }
+.orow__item.is-shifted { margin-top: min(16.7vw, 240px); }
+main .orow figure.placeholder .placeholder__surface:has(> img, > video) { width: 100%; }
+main .orow figure.placeholder .placeholder__surface > img,
+main .orow figure.placeholder .placeholder__surface > video { width: 100%; height: auto; max-height: calc(100svh - 120px); object-fit: contain; }
+.orow .placeholder__surface:not(:has(> img, > video)) { aspect-ratio: 16 / 9; }
+.orow .is-tall .placeholder__surface:not(:has(> img, > video)) { aspect-ratio: 2 / 3; }
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .orow { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 8px; }
+  .orow + .orow { margin-top: 8px; }
+  .orow__item { grid-column: span 2; }
+  .orow__item.is-tall { grid-column: span 1; }
+  .orow__item.is-shifted { margin-top: 0 !important; }
+}

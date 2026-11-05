@@ -89,23 +89,24 @@ const caseStudies = [
       {
         src: `${CURRENT_SITE}/_assets/v11/1ce14e6bd4101af66b7e9fc69587eebdb8bb93cb.png?h=2385`,
         alt: 'Animated spreads of the Sovrapposizioni book: inside pages on a clean grid with modern typography.',
+        tall: true,
       },
-      // the exhibition and its printed pieces; `tall` pictures take one column of the grid, the others two
+      // the exhibition and its printed pieces, ordered so landscape and upright pictures alternate (see OutcomeRows)
       ...[
         ['exhibition-corridor', 'The exhibition at MEET: two works on the wall and a visitor passing by the wayfinding.'],
+        ['poster-backlit', 'Backlit exhibition poster at night.', 'tall'],
         ['posters-street', 'A row of exhibition posters along a street wall.'],
         ['poster-tree', 'Exhibition poster under a tree.', 'tall'],
         ['poster-stand', 'Exhibition poster on a street stand.', 'tall'],
-        ['poster-backlit', 'Backlit exhibition poster at night.', 'tall'],
         ['banners', 'Exhibition banners hanging between the columns of a building.'],
         ['tickets-1', 'Two entrance tickets on concrete.', 'tall'],
-        ['tickets-2', 'Two more entrance tickets with other works.', 'tall'],
         ['box-closed', 'The editorial object: a cardboard box tied with string.'],
+        ['tickets-2', 'Two more entrance tickets with other works.', 'tall'],
         ['box-open', 'The open box holding the brochure and the postcards.'],
-        ['booklets', 'The brochure and two postcards in their sleeves.'],
         ['brochure-folded', 'The brochure standing half open.', 'tall'],
         ['brochure-open', 'The brochure fully unfolded.', 'tall'],
         ['print-apple', 'A print of the green apple work hanging on the wall.', 'tall'],
+        ['booklets', 'The brochure and two postcards in their sleeves.'],
         ['postcard-portrait', 'A postcard of a portrait in its sleeve.', 'tall'],
         ['card-text', "The text card of the work 'Luce sul fiume'.", 'tall'],
         ['postcard-lake', 'A postcard of the lake work.', 'tall'],
@@ -355,6 +356,7 @@ function Placeholder({
   src,
   alt = '',
   poster,
+  style,
 }: {
   caption: string
   className?: string
@@ -362,11 +364,12 @@ function Placeholder({
   src?: string
   alt?: string
   poster?: string
+  style?: React.CSSProperties
 }) {
   // files ending in .mp4/.webm/.mov, or videos served by the current site (/_videos/...)
   const isVideo = Boolean(src && /\.(mp4|webm|mov)$|\/_videos\//i.test(src))
   return (
-    <figure className={`placeholder ${className}`}>
+    <figure className={`placeholder ${className}`} style={style}>
       <div className="placeholder__surface">
         {src ? (
           isVideo ? (
@@ -393,7 +396,7 @@ function Placeholder({
 // Case study images form from top to bottom once they enter the screen; the animation always runs
 // to the end on its own. Grouped images (cards, pairs, process strip) start one after another
 const GROW_SELECTOR = '.placeholder__surface:not(.hero__media .placeholder__surface)'
-const GROUP_SELECTOR = '.instrument-grid, .paired-media, .process-strip'
+const GROUP_SELECTOR = '.instrument-grid, .paired-media, .process-strip, .orow'
 
 function useGrowOnScroll(dependency: unknown) {
   useEffect(() => {
@@ -428,6 +431,67 @@ function useGrowOnScroll(dependency: unknown) {
     })
     return () => observer.disconnect()
   }, [dependency])
+}
+
+// Outcome pictures laid out as on the reference site: a 7-column grid with 8px gaps, one or two
+// pictures per row and a lot of air between rows. Landscape pictures take 5 columns (moving between
+// left, centre and right); an upright one takes 2 and sits beside a 4-column landscape one, lower down;
+// two or three upright ones share a row.
+type OutcomePic = { src?: string; alt?: string; caption: string; tall?: boolean; poster?: string }
+function OutcomeRows({ items }: { items: OutcomePic[] }) {
+  type Cell = OutcomePic & { start: number; span: number; shift?: boolean }
+  const rows: Cell[][] = []
+  const wideStarts = [2, 1, 3]
+  let wideTurn = 0
+  let pairTurn = 0
+  let i = 0
+  while (i < items.length) {
+    const a = items[i]
+    const b = items[i + 1]
+    if (i === 0 && a.tall) {
+      rows.push([{ ...a, start: 3, span: 3 }])
+      i += 1
+    } else if (i === 0 || (!a.tall && (!b || !b.tall || items[i + 2]?.tall))) {
+      rows.push([{ ...a, start: wideStarts[wideTurn++ % 3], span: 5 }])
+      i += 1
+    } else if (a.tall && b?.tall) {
+      const run = items[i + 2]?.tall ? 3 : 2
+      const starts = run === 3 ? [1, 3, 5] : [3, 5]
+      rows.push(items.slice(i, i + run).map((item, k) => ({ ...item, start: starts[k], span: 2 })))
+      i += run
+    } else if (b) {
+      const [tall, wide] = a.tall ? [a, b] : [b, a]
+      const tallLeft = pairTurn++ % 2 === 1
+      rows.push(
+        tallLeft
+          ? [{ ...tall, start: 1, span: 2 }, { ...wide, start: 4, span: 4, shift: true }]
+          : [{ ...wide, start: 1, span: 4 }, { ...tall, start: 6, span: 2, shift: true }],
+      )
+      i += 2
+    } else {
+      rows.push([{ ...a, start: 3, span: 3 }])
+      i += 1
+    }
+  }
+  return (
+    <div className="outcome-rows">
+      {rows.map((row, r) => (
+        <div className="orow" key={r}>
+          {row.map(cell => (
+            <Placeholder
+              key={cell.src ?? `${r}-${cell.start}`}
+              className={`orow__item ${cell.shift ? 'is-shifted' : ''} ${cell.tall ? 'is-tall' : ''}`}
+              caption={cell.caption}
+              alt={cell.alt}
+              src={cell.src}
+              poster={cell.poster}
+              style={{ '--start': cell.start, '--span': cell.span } as React.CSSProperties}
+            />
+          ))}
+        </div>
+      ))}
+    </div>
+  )
 }
 
 // Text that rises line by line from behind a mask when it comes into view. Each visual line moves
@@ -883,22 +947,18 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
           <div className={`outcome-gallery outcome-gallery--${project.slug} reveal`}>
             <span className="outcome-gallery__number">03</span>
             <h2><Lines text={project.summary} /></h2>
-            <Placeholder
-              className="outcome-gallery__hero"
-              play
-              caption={project.slug === 'a-drop-of-corruption' ? `${project.title}: video` : `${project.title}: main outcome`}
-              src={media.outcome?.[0]?.src}
-              alt={media.outcome?.[0]?.alt}
+            <OutcomeRows
+              items={
+                media.outcome
+                  ? media.outcome.map(({ src, alt, tall }) => ({ src, alt, tall, caption: alt }))
+                  : project.slug === 'a-drop-of-corruption'
+                    ? [{ caption: `${project.title}: video` }]
+                    : [
+                        { caption: `${project.title}: main outcome` },
+                        ...['01', '02', '03'].map(n => ({ caption: `${project.title}: outcome detail ${n}` })),
+                      ]
+              }
             />
-            {project.slug !== 'a-drop-of-corruption' && (
-              <div className="outcome-gallery__grid">
-                {media.outcome
-                  ? media.outcome.slice(1).map(({ src, alt, tall }) => (
-                      <Placeholder key={src} className={tall ? 'is-tall' : 'is-wide'} caption={alt} alt={alt} src={src} />
-                    ))
-                  : ['01', '02', '03'].map(n => <Placeholder key={n} caption={`${project.title}: outcome detail ${n}`} />)}
-              </div>
-            )}
           </div>
         </section>
 
@@ -1502,25 +1562,24 @@ function CaseStudy() {
           <div className="outcome-gallery outcome-gallery--oltre-lascolto reveal">
             <span className="outcome-gallery__number">03</span>
             <h2><Lines text="Designing with, not only for, the senses." /></h2>
-            <Placeholder
-              className="outcome-gallery__hero"
-              caption="Oltre l'ascolto, the video"
-              src={`${CURRENT_SITE}/_videos/v1/e3a098ddfc758683570663837c6b6866fe367e72`}
-              poster="/projects/oltre-video-poster.svg"
+            <OutcomeRows
+              items={[
+                {
+                  caption: "Oltre l'ascolto, the video",
+                  src: `${CURRENT_SITE}/_videos/v1/e3a098ddfc758683570663837c6b6866fe367e72`,
+                  poster: '/projects/oltre-video-poster.svg',
+                },
+                ...[
+                  ['abcbde4a04da3d0a883fd34057859888cf28a9d8.png?w=1856', 'White 3D models and black information cards with Braille text: the models recreate the forms of the post-war sound instruments, with tactile patterns that picture sound waves.'],
+                  ['bbf10eb90d1050a64d40fdf081e3f2009b6a418d.png?w=1400', 'A hand exploring a raised tactile surface that turns sound frequencies into physical patterns for people with visual impairments.'],
+                  ['95cbff86f40b1d8561570829aa040e732fa7de85.png?w=1400', 'Two hands exploring the raised tactile surface.'],
+                  ['49535040979dbc77bca4c8fa489f5480c70725c7.png?w=1400', 'Close-up of the raised artefacts and their textures, wavy lines, steps and overlapping squares, that stand for sound transformations.'],
+                  ['5237067cdf6730e1966641a547a72380feaaefcb.png?w=1000', 'The Tempophon artefact seen from above: a historic sound technology reinterpreted as a tactile object.', 'tall'],
+                  ['02424f99ca12d8d0378e9df1b0575b98f1b9ef15.png?w=1000', 'The Speed Variator artefact seen from above.', 'tall'],
+                  ['b7a5b08984d94b8175c039fc1d0de8b70a0f7a1a.png?w=1000', 'The Amplitude Modulator artefact seen from above.', 'tall'],
+                ].map(([file, alt, tall]) => ({ src: `${CURRENT_SITE}/_assets/v11/${file}`, alt, caption: alt, tall: Boolean(tall) })),
+              ]}
             />
-            <div className="outcome-gallery__grid">
-              {[
-                ['abcbde4a04da3d0a883fd34057859888cf28a9d8.png?w=1856', 'White 3D models and black information cards with Braille text: the models recreate the forms of the post-war sound instruments, with tactile patterns that picture sound waves.'],
-                ['bbf10eb90d1050a64d40fdf081e3f2009b6a418d.png?w=1400', 'A hand exploring a raised tactile surface that turns sound frequencies into physical patterns for people with visual impairments.'],
-                ['95cbff86f40b1d8561570829aa040e732fa7de85.png?w=1400', 'Two hands exploring the raised tactile surface.'],
-                ['49535040979dbc77bca4c8fa489f5480c70725c7.png?w=1400', 'Close-up of the raised artefacts and their textures, wavy lines, steps and overlapping squares, that stand for sound transformations.'],
-                ['5237067cdf6730e1966641a547a72380feaaefcb.png?w=1000', 'The Tempophon artefact seen from above: a historic sound technology reinterpreted as a tactile object.'],
-                ['02424f99ca12d8d0378e9df1b0575b98f1b9ef15.png?w=1000', 'The Speed Variator artefact seen from above.'],
-                ['b7a5b08984d94b8175c039fc1d0de8b70a0f7a1a.png?w=1000', 'The Amplitude Modulator artefact seen from above.'],
-              ].map(([file, alt]) => (
-                <Placeholder key={file} caption={alt} alt={alt} src={`${CURRENT_SITE}/_assets/v11/${file}`} />
-              ))}
-            </div>
           </div>
         </section>
 
