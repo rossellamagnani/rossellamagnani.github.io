@@ -870,7 +870,7 @@ function ContactMenu() {
 }
 
 // The closing row of a project page: the next project's name with a small picture of it, as on the
-// reference site; the last project leads back to the first
+// reference site (an arrow instead on phones); the last project leads back to the first
 function NextProject({ project }: { project: (typeof projects)[number] }) {
   const still = project.video ? undefined : project.image
   const poster = project.slug === 'a-drop-of-corruption' ? '/projects/a-drop-of-corruption/video-poster.svg' : undefined
@@ -878,6 +878,12 @@ function NextProject({ project }: { project: (typeof projects)[number] }) {
     <a id="next-project" className="next-project reveal" href={`/${project.slug}`}>
       <span className="next-project__label">Next project</span>
       <strong lang={project.lang}><Lines text={project.title} /></strong>
+      <i className="next-project__arrow" aria-hidden="true">
+        <svg viewBox="0 0 180 120">
+          <path d="M0 51h151v18H0z" />
+          <path d="M82 0h19c14 27 38 45 79 51v18c-41 6-65 24-79 51H82c13-29 34-49 65-60C116 49 95 29 82 0Z" />
+        </svg>
+      </i>
       <span className="next-project__image" aria-hidden="true">
         {still || poster ? (
           <img src={still || poster} alt="" style={{ objectPosition: project.focus ?? (project.crop ? `${project.crop.x}% ${project.crop.y}%` : undefined) }} />
