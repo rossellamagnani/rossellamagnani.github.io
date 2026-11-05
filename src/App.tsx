@@ -351,7 +351,20 @@ const caseStudies = [
     insight: 'Turn the aesthetics of error into a language for exposing the hidden cost of human greed.',
     processTitle: 'From raw resource to irreversible contamination',
     processDescription: 'Scroll sideways through the generative frames, color transitions and glitch language.',
-    images: [] as string[],
+    // the title video from the home: beside the title, playing silently, and below with its controls
+    cover: {
+      src: `${CURRENT_SITE}/_videos/v1/4d1d4bed175820029240b41dd761342d8a2dc045`,
+      alt: "Title animation of 'a drop of corruption': black lettering appearing and breaking apart on a red ground.",
+      poster: '/projects/a-drop-of-corruption/video-poster.svg',
+      loopSilently: true,
+    },
+    outcome: [
+      {
+        src: `${CURRENT_SITE}/_videos/v1/4d1d4bed175820029240b41dd761342d8a2dc045`,
+        alt: "Title animation of 'a drop of corruption': black lettering appearing and breaking apart on a red ground.",
+        poster: '/projects/a-drop-of-corruption/video-poster.svg',
+      },
+    ],
   },
 ]
 
@@ -415,6 +428,7 @@ function Placeholder({
   style,
   autoPlay = false,
   focus,
+  controls = true,
 }: {
   caption: string
   className?: string
@@ -425,6 +439,7 @@ function Placeholder({
   style?: React.CSSProperties
   autoPlay?: boolean
   focus?: string // where a cropped picture is anchored (CSS object-position)
+  controls?: boolean // a silent looping video beside a title needs none
 }) {
   // files ending in .mp4/.webm/.mov, or videos served by the current site (/_videos/...)
   const isVideo = Boolean(src && /\.(mp4|webm|mov)$|\/_videos\//i.test(src))
@@ -436,7 +451,7 @@ function Placeholder({
             <video
               src={src}
               poster={poster}
-              controls
+              controls={controls}
               playsInline
               preload="metadata"
               aria-label={alt || caption}
@@ -851,7 +866,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
   // pictures are optional per project; until a project has them its frames stay grey
   type Pic = { src: string; alt: string }
   const media = project as {
-    cover?: Pic & { focus?: string; crop?: readonly number[] }
+    cover?: Pic & { focus?: string; crop?: readonly number[]; poster?: string; loopSilently?: boolean }
     outcome?: (Pic & { tall?: boolean; crop?: readonly number[]; poster?: string; autoPlay?: boolean })[]
     deep?: {
       context?: Pic
@@ -925,6 +940,9 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
             src={media.cover?.src}
             alt={media.cover?.alt}
             focus={media.cover?.focus}
+            poster={media.cover?.poster}
+            autoPlay={media.cover?.loopSilently}
+            controls={!media.cover?.loopSilently}
             className={media.cover?.crop ? 'hero__media is-cropped' : 'hero__media'}
             style={
               media.cover?.crop &&
