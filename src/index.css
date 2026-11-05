@@ -1584,3 +1584,17 @@ main figure.placeholder:not(.hero__media) .placeholder__surface > video {
   width: auto; max-width: 100%; max-height: calc(100svh - 160px);
 }
 .research-row > .placeholder.research-wide .placeholder__surface { margin-inline: auto; }
+
+/* Sovrapposizioni deep dive: the training collage across the block; backstage photographs in the
+   sideways strip, all at one height and their own width */
+.research-collage { margin: 32px 0 40px; }
+main figure.research-collage .placeholder__surface:has(> img) { width: 100%; }
+main figure.research-collage .placeholder__surface > img { width: 100%; max-height: none; }
+.research-collage figcaption { display: none; }
+.process-strip .placeholder:has(img) { min-width: 0 !important; flex: none; width: max-content; }
+main .process-strip figure.placeholder .placeholder__surface:has(> img) { width: max-content; height: min(64svh, 640px); }
+main .process-strip figure.placeholder .placeholder__surface > img { height: 100%; width: auto; max-width: none; max-height: none; }
+.process-strip .placeholder:has(img) figcaption { display: none; }
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  main .process-strip figure.placeholder .placeholder__surface:has(> img) { height: 52svh; }
+}
