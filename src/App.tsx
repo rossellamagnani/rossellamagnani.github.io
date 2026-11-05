@@ -184,6 +184,20 @@ const caseStudies = [
     insight: 'Treat every artwork as a structural presence capable of defining a space.',
     processTitle: 'From artistic gesture to identity system',
     processDescription: 'Scroll sideways',
+    // the deep dive has its own structure (see MarcoMagnaniDeep), with plates and pages from the brand manual
+    manual: {
+      logotype: [
+        { src: '/projects/marco-magnani-art/logotype-construction.svg', alt: "Technical plate: the artist's signature as found on the canvas, and below it redrawn on a vector grid of axial lines and slanted guides." },
+        { src: '/projects/marco-magnani-art/logotype-clear-space.svg', alt: "Technical plate: the logotype's clear space, as wide as the letter o on every side." },
+        { src: '/projects/marco-magnani-art/logotype-contrast.svg', alt: 'The logotype in white on anthracite, in anthracite on white, and in white over a detail of a painting.' },
+      ],
+      monogram: { src: '/projects/marco-magnani-art/monogram-grid.svg', alt: 'Technical plate: the M monogram drawn on its construction grid, with the positive and negative favicons.' },
+      colour: { src: '/projects/marco-magnani-art/colour-sampling.svg', alt: 'Two paintings with the five colours sampled from each: a range of blues from the blue lace cap, a range of reds from the red lace.' },
+      pages: [1, 3, 5, 7, 8, 9, 13, 19, 21, 25, 33, 37, 39, 41, 42, 44, 45, 47, 48, 49, 50, 51, 52, 53, 54, 55, 60, 61, 63, 66, 67, 69, 71].map(n => ({
+        src: `/projects/marco-magnani-art/manual/page-${String(n).padStart(2, '0')}.svg`,
+        alt: `Brand manual, page ${n}.`,
+      })),
+    },
     // pictures from the current site: the opening beside the title, then the outcome
     cover: {
       src: `${CURRENT_SITE}/_assets/v11/6eb7ffe7a5b70424dcb96a2ca56a52145979e5ba.png?w=1600`,
@@ -822,6 +836,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
       editorial?: Pic[]
       book?: Pic[]
     }
+    manual?: { logotype: Pic[]; monogram: Pic; colour: Pic; pages: Pic[] }
   }
   const deep = media.deep
   const [deepView, setDeepView] = useState(false)
@@ -950,6 +965,8 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
 
           {project.slug === 'sovrapposizioni' && deep?.works ? (
             <SovrapposizioniDeep project={project} deep={deep} />
+          ) : media.manual ? (
+            <MarcoMagnaniDeep project={project} manual={media.manual} />
           ) : (
           <>
           <section id="research" className="section shell research">
@@ -1156,6 +1173,74 @@ function SovrapposizioniDeep({
             {deep.editorial?.map(({ src, alt }) => <Placeholder key={src} caption={alt} alt={alt} src={src} />)}
           </div>
         </div>
+      </section>
+    </>
+  )
+}
+
+// Marco Magnani Art's deep dive: texts in the usual column with their pictures large below, the
+// technical plates of the logotype and the monogram, the colour sampling, and the brand manual's pages
+// drifting in a wall
+type ManualPic = { src: string; alt: string }
+function MarcoMagnaniDeep({
+  project,
+  manual,
+}: {
+  project: (typeof caseStudies)[number]
+  manual: { logotype: ManualPic[]; monogram: ManualPic; colour: ManualPic; pages: ManualPic[] }
+}) {
+  const [presence, , language, unveiling] = project.research
+  const pictures = (list: ManualPic[], turn = 0) => (
+    <OutcomeRows turn={turn} items={list.map(pic => ({ ...pic, caption: pic.alt }))} />
+  )
+  return (
+    <>
+      <section id="research" className="section shell research sv-deep">
+        <div className="section-label reveal">Research</div>
+
+        <div className="sv-text reveal">
+          <SectionHeading number="01">{presence.title}</SectionHeading>
+          <p>{presence.copy}</p>
+        </div>
+
+        <div className="sv-text reveal">
+          <SectionHeading number="02">{language.title}</SectionHeading>
+          <p>{language.copy}</p>
+        </div>
+        {pictures(manual.logotype)}
+
+        <div className="sv-text reveal">
+          <SectionHeading number="03">The monogram</SectionHeading>
+          <p>
+            Where the full logotype would be too small to read, the identity is reduced to a monogram taken
+            from the same signature, built on a construction grid and used in positive and negative.
+          </p>
+        </div>
+        {pictures([manual.monogram], 1)}
+      </section>
+
+      <section id="insight" className="insight reveal">
+        <div className="shell insight__inner">
+          <div className="section-label">Key insight</div>
+          <p><Lines text={project.insight} /></p>
+        </div>
+      </section>
+
+      <section className="section shell research sv-deep">
+        <div className="sv-text reveal">
+          <SectionHeading number="04">{unveiling.title}</SectionHeading>
+          <p>{unveiling.copy}</p>
+        </div>
+        {pictures([manual.colour], 2)}
+
+        <div className="sv-text reveal">
+          <SectionHeading number="05">The brand manual</SectionHeading>
+          <p>
+            Everything is collected in a brand manual: the brand and copy strategy, the messaging, the visual
+            guidelines for logotype, colour and typography, and the applications.
+          </p>
+        </div>
+        <ImageWall pictures={manual.pages} label="Pages of the brand manual" />
       </section>
     </>
   )
