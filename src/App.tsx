@@ -195,7 +195,7 @@ const caseStudies = [
       { src: `${CURRENT_SITE}/_assets/v11/5d9b11bc037a4a2698c0dbd7a2e7532c76307bb8.png?w=1600`, alt: 'Brochures laid out in rows: deep red covers and inside pages with the portraits.' },
       { src: `${CURRENT_SITE}/_assets/v11/4ca5cedeb374b25dbecc4c62cdf6921008b37d0d.png?w=1600`, alt: 'Business cards floating: a detail of a portrait on the front, the signature logo on the dark back.' },
       { src: `${CURRENT_SITE}/_assets/v11/3c30026e91ed20dbc517151c07bbd9802d1f0992.png?w=1600`, alt: "The book 'Anatomia della trama', with a blue cover torn open on a portrait, on a table by a window." },
-      { src: `${CURRENT_SITE}/_videos/v1/d5d628227812bc5ee2142d2a7eebae121bfcb7e5`, alt: 'The website on a laptop and a phone: a full-screen detail of a portrait and the menu of works.', poster: '/projects/marco-magnani-art/website-poster.svg' },
+      { src: `${CURRENT_SITE}/_videos/v1/d5d628227812bc5ee2142d2a7eebae121bfcb7e5`, alt: 'The website on a laptop and a phone: a full-screen detail of a portrait and the menu of works.', poster: '/projects/marco-magnani-art/website-poster.svg', autoPlay: true },
     ],
   },
   {
@@ -365,6 +365,21 @@ function CustomCursor() {
   )
 }
 
+// Plays a muted video while at least half of it is on screen, pauses it otherwise
+function playWhileVisible(video: HTMLVideoElement | null) {
+  if (!video || prefersReducedMotion()) return
+  video.muted = true
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (!video.isConnected) return observer.disconnect()
+      if (entry.isIntersecting) video.play().catch(() => {})
+      else video.pause()
+    },
+    { threshold: 0.5 },
+  )
+  observer.observe(video)
+}
+
 // Pass `src` (and `alt`) to show a real image or video; the frame then takes the file's own proportions.
 // `poster` is the frame a video shows before it starts. Without `src` a grey placeholder is shown.
 function Placeholder({
@@ -375,6 +390,7 @@ function Placeholder({
   alt = '',
   poster,
   style,
+  autoPlay = false,
 }: {
   caption: string
   className?: string
@@ -383,6 +399,7 @@ function Placeholder({
   alt?: string
   poster?: string
   style?: React.CSSProperties
+  autoPlay?: boolean
 }) {
   // files ending in .mp4/.webm/.mov, or videos served by the current site (/_videos/...)
   const isVideo = Boolean(src && /\.(mp4|webm|mov)$|\/_videos\//i.test(src))
@@ -391,7 +408,17 @@ function Placeholder({
       <div className="placeholder__surface">
         {src ? (
           isVideo ? (
-            <video src={src} poster={poster} controls playsInline preload="metadata" aria-label={alt || caption} />
+            <video
+              src={src}
+              poster={poster}
+              controls
+              playsInline
+              preload="metadata"
+              aria-label={alt || caption}
+              // a silent video can start on its own: muted and looping, only while it is on screen,
+              // never with reduced motion; the controls stay to pause it
+              {...(autoPlay && { muted: true, loop: true, ref: playWhileVisible })}
+            />
           ) : (
             <img
               src={src}
@@ -492,7 +519,7 @@ function ImageWall({ pictures, label }: { pictures: { src: string; alt: string }
 // two or three upright ones share a row.
 // `crop` shows only part of a picture: [x, y, width, height, picture width, picture height] in pixels
 // `full` spreads a very wide picture (a score, a panorama) across all seven columns
-type OutcomePic = { src?: string; alt?: string; caption: string; tall?: boolean; full?: boolean; poster?: string; crop?: readonly number[] }
+type OutcomePic = { src?: string; alt?: string; caption: string; tall?: boolean; full?: boolean; poster?: string; autoPlay?: boolean; crop?: readonly number[] }
 function OutcomeRows({ items, turn = 0 }: { items: OutcomePic[]; turn?: number }) {
   type Cell = OutcomePic & { start: number; span: number; shift?: boolean }
   const rows: Cell[][] = []
@@ -543,6 +570,7 @@ function OutcomeRows({ items, turn = 0 }: { items: OutcomePic[]; turn?: number }
               alt={cell.alt}
               src={cell.src}
               poster={cell.poster}
+              autoPlay={cell.autoPlay}
               style={
                 {
                   '--start': cell.start,
@@ -782,7 +810,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
   type Pic = { src: string; alt: string }
   const media = project as {
     cover?: Pic
-    outcome?: (Pic & { tall?: boolean; crop?: readonly number[]; poster?: string })[]
+    outcome?: (Pic & { tall?: boolean; crop?: readonly number[]; poster?: string; autoPlay?: boolean })[]
     deep?: {
       context?: Pic
       framework?: Pic
@@ -1035,7 +1063,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
             <OutcomeRows
               items={
                 media.outcome
-                  ? media.outcome.map(({ src, alt, tall, crop, poster }) => ({ src, alt, tall, crop, poster, caption: alt }))
+                  ? media.outcome.map(({ src, alt, tall, crop, poster, autoPlay }) => ({ src, alt, tall, crop, poster, autoPlay, caption: alt }))
                   : project.slug === 'a-drop-of-corruption'
                     ? [{ caption: `${project.title}: video` }]
                     : [
