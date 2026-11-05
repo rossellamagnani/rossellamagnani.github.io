@@ -1573,6 +1573,10 @@ main.is-deep .reading-mode { padding-bottom: 0; }
 /* Every picture and video in the project pages fits the screen's height: never taller than the
    window, so it can always be seen whole without scrolling */
 main figure.placeholder:not(.hero__media) .placeholder__surface:has(> img, > video) { width: fit-content; max-width: 100%; }
+/* the instrument photographs keep their fixed frame: a frame sized from its own picture and a
+   picture sized from its frame can resolve to zero width in Safari */
+main .instrument-card figure.placeholder:not(.hero__media) .placeholder__surface:has(> img) { width: 100%; }
+main .instrument-card figure.placeholder:not(.hero__media) .placeholder__surface > img { width: 100%; height: 100%; max-height: none; object-fit: cover; }
 main figure.placeholder:not(.hero__media) .placeholder__surface > img,
 main figure.placeholder:not(.hero__media) .placeholder__surface > video {
   width: auto; max-width: 100%; max-height: calc(100svh - 160px);

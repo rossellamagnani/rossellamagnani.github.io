@@ -375,6 +375,8 @@ function useGrowOnScroll(dependency: unknown) {
           if (img && !img.complete) {
             img.addEventListener('load', form, { once: true })
             img.addEventListener('error', form, { once: true })
+            // never leave a picture hidden: form it anyway if loading takes too long or the event is missed
+            window.setTimeout(form, 2500)
           } else form()
         }),
       { rootMargin: '0px 0px -12% 0px' },
