@@ -1684,25 +1684,3 @@ main .orow figure.placeholder.is-cropped .placeholder__surface > img {
   .image-wall__track img { height: 220px; }
   .image-wall__track { animation-duration: 60s; }
 }
-
-/* Logotype in three steps: the stage stays on screen while the section scrolls past and each picture
-   fades into the next (see LogoSteps) */
-.logo-steps { height: calc(var(--steps) * 100svh); margin-top: clamp(24px, 3vw, 48px); }
-.logo-steps__stage { position: sticky; top: 0; height: 100svh; display: flex; align-items: center; justify-content: center; }
-.logo-steps__frame { position: relative; width: min(100%, 1040px, calc((100svh - 160px) * 2.69)); aspect-ratio: 1560 / 580; }
-.logo-steps__item { position: absolute; inset: 0; margin: 0; opacity: 0; will-change: opacity, filter; }
-.logo-steps__item.is-current:first-child { opacity: 1; }
-.logo-steps__item img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.logo-steps__caption {
-  position: absolute; left: 0; top: calc(100% + 14px); margin: 0; color: var(--muted);
-  font-family: var(--font-label); font-size: 12px; letter-spacing: .04em; text-transform: uppercase;
-}
-.logo-steps__caption span { color: var(--ink); margin-right: 8px; }
-@media (prefers-reduced-motion: reduce) {
-  .logo-steps { height: auto; }
-  .logo-steps__stage { position: static; height: auto; display: block; }
-  .logo-steps__frame { aspect-ratio: auto; display: grid; gap: 48px; width: min(100%, 1040px); margin-inline: auto; }
-  .logo-steps__item { position: relative; opacity: 1 !important; filter: none !important; }
-  .logo-steps__caption { display: none; }
-  .logo-steps__item img { height: auto; }
-}
