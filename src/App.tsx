@@ -1179,20 +1179,34 @@ function SovrapposizioniDeep({
   )
 }
 
-// Pictures that replace one another while the page scrolls: the stage stays on screen and each step
-// fades into the next. With reduced motion the steps are simply shown one below the other.
+// Pictures that turn into one another while the page scrolls: the stage stays on screen and the
+// scroll itself blends each picture into the next, so the change follows the hand. With reduced motion
+// the steps are simply shown one below the other.
 function LogoSteps({ steps }: { steps: { src: string; alt: string; label: string }[] }) {
   const ref = useRef<HTMLDivElement>(null)
   const [step, setStep] = useState(0)
   useEffect(() => {
     const el = ref.current
     if (!el || prefersReducedMotion()) return
+    const items = Array.from(el.querySelectorAll<HTMLElement>('.logo-steps__item'))
     let frame = 0
+    let shown = -1
     const update = () => {
       frame = 0
       const r = el.getBoundingClientRect()
       const progress = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - window.innerHeight)))
-      setStep(Math.min(steps.length - 1, Math.floor(progress * steps.length)))
+      const position = progress * (steps.length - 1) // 0 … last, fractional between two pictures
+      items.forEach((item, index) => {
+        // fully visible near its own step, dissolving into the next one in between
+        const distance = Math.abs(position - index)
+        const t = Math.min(1, Math.max(0, 1 - (distance - 0.2) / 0.6))
+        const eased = t * t * (3 - 2 * t) // smoothstep: the change starts and ends gently
+        item.style.opacity = eased.toFixed(3)
+        // a soft blur while a picture comes or goes keeps the two signatures from showing as a double image
+        item.style.filter = eased > 0.995 ? '' : `blur(${((1 - eased) * 8).toFixed(1)}px)`
+      })
+      const nearest = Math.round(position)
+      if (nearest !== shown) setStep((shown = nearest))
     }
     const onScroll = () => {
       if (!frame) frame = window.requestAnimationFrame(update)
@@ -1213,11 +1227,11 @@ function LogoSteps({ steps }: { steps: { src: string; alt: string; label: string
           {steps.map((item, index) => (
             <figure className={`logo-steps__item ${index === step ? 'is-current' : ''}`} key={item.src}>
               <img src={item.src} alt={item.alt} />
-              <figcaption>
-                <span>{String(index + 1).padStart(2, '0')}</span> {item.label}
-              </figcaption>
             </figure>
           ))}
+          <p className="logo-steps__caption" aria-hidden="true">
+            <span>{String(step + 1).padStart(2, '0')}</span> {steps[step].label}
+          </p>
         </div>
       </div>
     </div>
