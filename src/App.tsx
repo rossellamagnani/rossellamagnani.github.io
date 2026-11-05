@@ -184,12 +184,18 @@ const caseStudies = [
     insight: 'Treat every artwork as a structural presence capable of defining a space.',
     processTitle: 'From artistic gesture to identity system',
     processDescription: 'Scroll sideways',
-    images: [
-      '/assets/projects/marcomagnaniart-6eb7ffe7a5b70424dcb96a2ca56a52145979e5ba.png',
-      '/assets/projects/marcomagnaniart-bb40d17840c8d7e5b4d49a7db280b8ec149e2914.png',
-      '/assets/projects/marcomagnaniart-4ac58ee616c59d31b2af83ca40a9d6f8c4d7fdf5.png',
-      '/assets/projects/marcomagnaniart-5d9b11bc037a4a2698c0dbd7a2e7532c76307bb8.png',
-      '/assets/projects/marcomagnaniart-4ca5cedeb374b25dbecc4c62cdf6921008b37d0d.png',
+    // pictures from the current site: the opening beside the title, then the outcome
+    cover: {
+      src: `${CURRENT_SITE}/_assets/v11/6eb7ffe7a5b70424dcb96a2ca56a52145979e5ba.png?w=1600`,
+      alt: 'Marco Magnani Art on the facade of a modern art gallery: large red posters with the artist’s portraits, the signature logo and the dates.',
+    },
+    outcome: [
+      { src: `${CURRENT_SITE}/_assets/v11/bb40d17840c8d7e5b4d49a7db280b8ec149e2914.png?w=1600`, alt: "Poster for the exhibition 'Trame' in an underground passage, with people walking past." },
+      { src: `${CURRENT_SITE}/_assets/v11/4ac58ee616c59d31b2af83ca40a9d6f8c4d7fdf5.png?w=1600`, alt: "Backlit billboard 'La trama come confine' with a detail of a portrait framed by an irregular window." },
+      { src: `${CURRENT_SITE}/_assets/v11/5d9b11bc037a4a2698c0dbd7a2e7532c76307bb8.png?w=1600`, alt: 'Brochures laid out in rows: deep red covers and inside pages with the portraits.' },
+      { src: `${CURRENT_SITE}/_assets/v11/4ca5cedeb374b25dbecc4c62cdf6921008b37d0d.png?w=1600`, alt: 'Business cards floating: a detail of a portrait on the front, the signature logo on the dark back.' },
+      { src: `${CURRENT_SITE}/_assets/v11/3c30026e91ed20dbc517151c07bbd9802d1f0992.png?w=1600`, alt: "The book 'Anatomia della trama', with a blue cover torn open on a portrait, on a table by a window." },
+      { src: `${CURRENT_SITE}/_videos/v1/d5d628227812bc5ee2142d2a7eebae121bfcb7e5`, alt: 'The website on a laptop and a phone: a full-screen detail of a portrait and the menu of works.', poster: '/projects/marco-magnani-art/website-poster.svg' },
     ],
   },
   {
@@ -776,7 +782,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
   type Pic = { src: string; alt: string }
   const media = project as {
     cover?: Pic
-    outcome?: (Pic & { tall?: boolean; crop?: readonly number[] })[]
+    outcome?: (Pic & { tall?: boolean; crop?: readonly number[]; poster?: string })[]
     deep?: {
       context?: Pic
       framework?: Pic
@@ -1029,7 +1035,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
             <OutcomeRows
               items={
                 media.outcome
-                  ? media.outcome.map(({ src, alt, tall, crop }) => ({ src, alt, tall, crop, caption: alt }))
+                  ? media.outcome.map(({ src, alt, tall, crop, poster }) => ({ src, alt, tall, crop, poster, caption: alt }))
                   : project.slug === 'a-drop-of-corruption'
                     ? [{ caption: `${project.title}: video` }]
                     : [
