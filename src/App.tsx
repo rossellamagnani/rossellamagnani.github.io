@@ -313,7 +313,7 @@ const caseStudies = [
     cover: {
       src: '/projects/pro-brera.svg',
       alt: 'P.R.O. Brera poster with its headline in red and black.',
-      focus: '50% 0%',
+      whole: true, // shown in its own proportions, not cropped to the opening
     },
     outcome: [
       { src: `${CURRENT_SITE}/_assets/v11/58c8100e224e9ccc35d44f0d3186a07855659b74.png?w=1600`, alt: 'Animated set of P.R.O. Brera posters: brutalist typography, symbolic icons and a raw graphic style.' },
@@ -873,7 +873,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
   // pictures are optional per project; until a project has them its frames stay grey
   type Pic = { src: string; alt: string }
   const media = project as {
-    cover?: Pic & { focus?: string; crop?: readonly number[]; poster?: string; loopSilently?: boolean }
+    cover?: Pic & { focus?: string; crop?: readonly number[]; poster?: string; loopSilently?: boolean; whole?: boolean }
     outcome?: (Pic & { tall?: boolean; crop?: readonly number[]; poster?: string; autoPlay?: boolean })[]
     deep?: {
       context?: Pic
@@ -889,6 +889,8 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
     manual?: { logotype: Pic[]; pages: Pic[]; unveiling: Pic }
   }
   const deep = media.deep
+  // projects without the optional deep dive (no research material shown)
+  const noDeepDive = ['crossing-kyiv', 'a-drop-of-corruption', 'brera-district'].includes(project.slug)
   const [deepView, setDeepView] = useState(false)
   const projectIndex = projects.findIndex(item => item.slug === project.slug)
   const nextProject = projects[(projectIndex + 1) % projects.length]
@@ -915,7 +917,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
   useGrowOnScroll(deepView)
 
   return (
-    <main className={`case ${deepView || project.slug === 'crossing-kyiv' || project.slug === 'a-drop-of-corruption' ? 'is-deep' : ''}`}>
+    <main className={`case ${deepView || noDeepDive ? 'is-deep' : ''}`}>
       <SiteHeader />
 
       <article id="content" tabIndex={-1}>
@@ -950,7 +952,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
             poster={media.cover?.poster}
             autoPlay={media.cover?.loopSilently}
             controls={!media.cover?.loopSilently}
-            className={media.cover?.crop ? 'hero__media is-cropped' : 'hero__media'}
+            className={`hero__media ${media.cover?.crop ? 'is-cropped' : ''} ${media.cover?.whole ? 'is-whole' : ''}`}
             style={
               media.cover?.crop &&
               ({
@@ -993,7 +995,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
           </div>
         </section>
 
-        {project.slug !== 'crossing-kyiv' && project.slug !== 'a-drop-of-corruption' && (
+        {!noDeepDive && (
           <section className="reading-mode shell reveal" aria-label="Reading mode">
             <button
               type="button"
@@ -1010,7 +1012,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
           </section>
         )}
 
-        {project.slug !== 'crossing-kyiv' && project.slug !== 'a-drop-of-corruption' && (
+        {!noDeepDive && (
         <div className="expanded-research deep-content">
           <section id="challenge" className="section shell challenge reveal">
             <div className="section-label">Challenge</div>
