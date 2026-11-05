@@ -78,57 +78,25 @@ const caseStudies = [
       },
     ],
     insight: 'In the age of artificial intelligence, who or what is the artist?',
-    processTitle: 'The book',
+    processTitle: 'From visual memory to computational invention',
     processDescription: 'Scroll sideways',
     // pictures from the current site: the opening beside the title, then the outcome (first one large)
     cover: {
       src: `${CURRENT_SITE}/_assets/v11/141ddc64b5b5362cf1d47cddb155b8aefeecc258.png?w=1600`,
       alt: 'The Sovrapposizioni exhibition at MEET Digital Culture Center, Milan: a visitor looks at AI-generated works inspired by great masters.',
     },
+    // the pictures of the project on the current site (the exhibition photo is already beside the title)
     outcome: [
-      {
-        src: `${CURRENT_SITE}/_assets/v11/1ce14e6bd4101af66b7e9fc69587eebdb8bb93cb.png?h=2385`,
-        alt: 'Animated spreads of the Sovrapposizioni book: inside pages on a clean grid with modern typography.',
-        tall: true,
-      },
-      // the exhibition and its printed pieces, ordered so landscape and upright pictures alternate (see OutcomeRows)
-      ...[
-        ['exhibition-corridor', 'The exhibition at MEET: two works on the wall and a visitor passing by the wayfinding.'],
-        ['poster-backlit', 'Backlit exhibition poster at night.', 'tall'],
-        ['posters-street', 'A row of exhibition posters along a street wall.'],
-        ['poster-tree', 'Exhibition poster under a tree.', 'tall'],
-        ['poster-stand', 'Exhibition poster on a street stand.', 'tall'],
-        ['banners', 'Exhibition banners hanging between the columns of a building.'],
-        ['tickets-1', 'Two entrance tickets on concrete.', 'tall'],
-        ['box-closed', 'The editorial object: a cardboard box tied with string.'],
-        ['tickets-2', 'Two more entrance tickets with other works.', 'tall'],
-        ['box-open', 'The open box holding the brochure and the postcards.'],
-        ['brochure-folded', 'The brochure standing half open.', 'tall'],
-        ['brochure-open', 'The brochure fully unfolded.', 'tall'],
-        ['print-apple', 'A print of the green apple work hanging on the wall.', 'tall'],
-        ['booklets', 'The brochure and two postcards in their sleeves.'],
-        ['postcard-portrait', 'A postcard of a portrait in its sleeve.', 'tall'],
-        ['card-text', "The text card of the work 'Luce sul fiume'.", 'tall'],
-        ['postcard-lake', 'A postcard of the lake work.', 'tall'],
-        ['postcards', 'The full set of postcards fanned out.'],
-      ].map(([name, alt, tall]) => ({ src: `/projects/sovrapposizioni/${name}.svg`, alt, tall: Boolean(tall) })),
-    ],
-    // pictures for the deep dive, from the project presentation
+      ['1ce14e6bd4101af66b7e9fc69587eebdb8bb93cb.png?h=2385', 'Animated spreads of the Sovrapposizioni book: inside pages on a clean grid with modern typography.', 'tall'],
+      ['c363270d72b8e06db7aaf51c238bb3ea113733cd.png?w=1600', 'The exhibition at MEET Digital Culture Center: a visitor walks past the AI-generated works.'],
+      ['be04d60125a1b190f560c65f52d5480f9834d7c9.png?h=1400', "Backlit poster for the exhibition: an AI reinterpretation of a classical painting and the question 'If art speaks to you, does it matter who made it?'", 'tall'],
+      ['297d2bf3f77e804b239bcd73c5936df12ffa1fbf.png?w=1600', 'Inside pages of the book showing the training dataset: a grid of photographs of flowers and shells used to teach the generative algorithm.'],
+      ['7fc8b686031b4829a0921a509cd4b48571dd1787.png?w=1600', 'The cover of the Sovrapposizioni book: a natural image reworked through digital pixelation.'],
+      ['41c75cf2b7142255a806a952c7894c13d0421120.png?w=1600', 'Entrance tickets for the exhibition, with vertical barcodes, the title in an elegant serif and details of the AI-generated works.'],
+    ].map(([file, alt, tall]) => ({ src: `${CURRENT_SITE}/_assets/v11/${file}`, alt, tall: Boolean(tall) })),
+    // pictures for the deep dive, from the project presentation; the others stay grey until chosen
     deep: {
-      context: { src: '/projects/sovrapposizioni/painting-vase.svg', alt: 'One of the AI-generated works: a vase of flowers on a patterned table, in the manner of Matisse.' },
       framework: { src: '/projects/sovrapposizioni/training-collage.svg', alt: 'The images generated while training the AI, grouped by master: Kusama, Hockney, Warhol, Monet, Modigliani, Canaletto, Murakami and Degas.' },
-      cards: [
-        { src: '/projects/sovrapposizioni/painting-pool.svg', alt: 'AI-generated work: a swimming pool in front of a modernist house, in the manner of Hockney.' },
-        { src: '/projects/sovrapposizioni/painting-lake.svg', alt: 'AI-generated work: boats on a lake among trees, in an impressionist manner.' },
-        { src: '/projects/sovrapposizioni/brochure.svg', alt: 'The Sovrapposizioni book, closed, with its pixelated cover.' },
-      ],
-      pair: [],
-      // the photographed book, in the strip that scrolls sideways
-      backstage: [
-        ['book-cover', 'The book opened on a pixelated landscape.'],
-        ['book-dataset', 'The book opened on the training dataset of flowers and shells.'],
-        ['book-artists', 'The book opened on the artists and works section.'],
-      ].map(([name, alt]) => ({ src: `/projects/sovrapposizioni/${name}.svg`, alt })),
     },
   },
   {
@@ -714,7 +682,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
   const media = project as {
     cover?: Pic
     outcome?: (Pic & { tall?: boolean })[]
-    deep?: { context: Pic; framework: Pic; cards: Pic[]; pair: Pic[]; backstage: Pic[] }
+    deep?: { context?: Pic; framework?: Pic; cards?: Pic[]; pair?: Pic[]; backstage?: Pic[] }
   }
   const deep = media.deep
   const [deepView, setDeepView] = useState(false)
@@ -865,7 +833,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
                   </div>
                 )}
               </div>
-              <Placeholder caption={`${project.title}: research context`} src={deep?.context.src} alt={deep?.context.alt} />
+              <Placeholder caption={`${project.title}: research context`} src={deep?.context?.src} alt={deep?.context?.alt} />
             </div>
 
             <div className="research-block reveal">
@@ -877,13 +845,13 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
                     ? "Three directions turned the artist's practice into a visual system." : project.slug === 'brera-district' ? 'Three findings shaped the narrative of the project.'
                   : 'The main research directions that informed the project’s visual and conceptual language.'}
               </p>
-              {deep && (
+              {deep?.framework && (
                 <Placeholder className="research-collage" caption="Images generated while training the AI" src={deep.framework.src} alt={deep.framework.alt} />
               )}
               <div className="instrument-grid">
                 {researchCards.map((item, index) => (
                   <article className="instrument-card" key={item.title}>
-                    <Placeholder caption={`${project.title}: ${item.title}`} src={deep?.cards[index]?.src} alt={deep?.cards[index]?.alt} />
+                    <Placeholder caption={`${project.title}: ${item.title}`} src={deep?.cards?.[index]?.src} alt={deep?.cards?.[index]?.alt} />
                     <div className="instrument-card__body">
                       <h3><Lines text={item.title} /></h3>
                       <p>{item.copy}</p>
@@ -904,10 +872,10 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
                     'Replace this text with the final research findings and explain how they were translated into the design outcome.'}
                 </p>
               </div>
-              {(!deep || deep.pair.length > 0) && (
+              {(!deep?.pair || deep.pair.length > 0) && (
                 <div className="paired-media">
-                  <Placeholder caption={`${project.title}: design development`} src={deep?.pair[0]?.src} alt={deep?.pair[0]?.alt} />
-                  <Placeholder caption={`${project.title}: tests and iterations`} src={deep?.pair[1]?.src} alt={deep?.pair[1]?.alt} />
+                  <Placeholder caption={`${project.title}: design development`} src={deep?.pair?.[0]?.src} alt={deep?.pair?.[0]?.alt} />
+                  <Placeholder caption={`${project.title}: tests and iterations`} src={deep?.pair?.[1]?.src} alt={deep?.pair?.[1]?.alt} />
                 </div>
               )}
             </div>
@@ -928,7 +896,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
                 <p>{project.processDescription} →</p>
               </div>
               <div className="process-strip" tabIndex={0} role="region" aria-label="Process images, scroll sideways">
-                {deep
+                {deep?.backstage
                   ? deep.backstage.map(({ src, alt }) => <Placeholder key={src} caption={alt} alt={alt} src={src} />)
                   : Array.from({ length: 5 }, (_, index) => (
                       <Placeholder
