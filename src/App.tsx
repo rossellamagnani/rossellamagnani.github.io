@@ -87,13 +87,19 @@ const caseStudies = [
     },
     // the pictures of the project on the current site (the exhibition photo is already beside the title)
     outcome: [
-      ['1ce14e6bd4101af66b7e9fc69587eebdb8bb93cb.png?h=2385', 'Animated spreads of the Sovrapposizioni book: inside pages on a clean grid with modern typography.', 'tall'],
+      ['1ce14e6bd4101af66b7e9fc69587eebdb8bb93cb.png?h=2385', 'Animated spreads of the Sovrapposizioni book: inside pages on a clean grid with modern typography.'],
       ['c363270d72b8e06db7aaf51c238bb3ea113733cd.png?w=1600', 'The exhibition at MEET Digital Culture Center: a visitor walks past the AI-generated works.'],
       ['be04d60125a1b190f560c65f52d5480f9834d7c9.png?h=1400', "Backlit poster for the exhibition: an AI reinterpretation of a classical painting and the question 'If art speaks to you, does it matter who made it?'", 'tall'],
       ['297d2bf3f77e804b239bcd73c5936df12ffa1fbf.png?w=1600', 'Inside pages of the book showing the training dataset: a grid of photographs of flowers and shells used to teach the generative algorithm.'],
       ['7fc8b686031b4829a0921a509cd4b48571dd1787.png?w=1600', 'The cover of the Sovrapposizioni book: a natural image reworked through digital pixelation.'],
       ['41c75cf2b7142255a806a952c7894c13d0421120.png?w=1600', 'Entrance tickets for the exhibition, with vertical barcodes, the title in an elegant serif and details of the AI-generated works.'],
-    ].map(([file, alt, tall]) => ({ src: `${CURRENT_SITE}/_assets/v11/${file}`, alt, tall: Boolean(tall) })),
+    ].map(([file, alt, tall], index) => ({
+      src: `${CURRENT_SITE}/_assets/v11/${file}`,
+      alt,
+      tall: Boolean(tall),
+      // the GIF's frames sit on a wide empty border: show only the book (x, y, width, height of 2048 × 2560)
+      crop: index === 0 ? ([211, 466, 1631, 1626, 2048, 2560] as const) : undefined,
+    })),
     // pictures for the deep dive, from the project presentation; the others stay grey until chosen
     deep: {
       framework: { src: '/projects/sovrapposizioni/training-collage.svg', alt: 'The images generated while training the AI, grouped by master: Kusama, Hockney, Warhol, Monet, Modigliani, Canaletto, Murakami and Degas.' },
@@ -405,7 +411,8 @@ function useGrowOnScroll(dependency: unknown) {
 // pictures per row and a lot of air between rows. Landscape pictures take 5 columns (moving between
 // left, centre and right); an upright one takes 2 and sits beside a 4-column landscape one, lower down;
 // two or three upright ones share a row.
-type OutcomePic = { src?: string; alt?: string; caption: string; tall?: boolean; poster?: string }
+// `crop` shows only part of a picture: [x, y, width, height, picture width, picture height] in pixels
+type OutcomePic = { src?: string; alt?: string; caption: string; tall?: boolean; poster?: string; crop?: readonly number[] }
 function OutcomeRows({ items }: { items: OutcomePic[] }) {
   type Cell = OutcomePic & { start: number; span: number; shift?: boolean }
   const rows: Cell[][] = []
@@ -448,12 +455,23 @@ function OutcomeRows({ items }: { items: OutcomePic[] }) {
           {row.map(cell => (
             <Placeholder
               key={cell.src ?? `${r}-${cell.start}`}
-              className={`orow__item ${cell.shift ? 'is-shifted' : ''} ${cell.tall ? 'is-tall' : ''}`}
+              className={`orow__item ${cell.shift ? 'is-shifted' : ''} ${cell.tall ? 'is-tall' : ''} ${cell.crop ? 'is-cropped' : ''}`}
               caption={cell.caption}
               alt={cell.alt}
               src={cell.src}
               poster={cell.poster}
-              style={{ '--start': cell.start, '--span': cell.span } as React.CSSProperties}
+              style={
+                {
+                  '--start': cell.start,
+                  '--span': cell.span,
+                  ...(cell.crop && {
+                    '--crop-ratio': `${cell.crop[2]} / ${cell.crop[3]}`,
+                    '--crop-w': `${(cell.crop[4] / cell.crop[2]) * 100}%`,
+                    '--crop-x': `${(-cell.crop[0] / cell.crop[2]) * 100}%`,
+                    '--crop-y': `${(-cell.crop[1] / cell.crop[3]) * 100}%`,
+                  }),
+                } as React.CSSProperties
+              }
             />
           ))}
         </div>
@@ -681,7 +699,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
   type Pic = { src: string; alt: string }
   const media = project as {
     cover?: Pic
-    outcome?: (Pic & { tall?: boolean })[]
+    outcome?: (Pic & { tall?: boolean; crop?: readonly number[] })[]
     deep?: { context?: Pic; framework?: Pic; cards?: Pic[]; pair?: Pic[]; backstage?: Pic[] }
   }
   const deep = media.deep
@@ -918,7 +936,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
             <OutcomeRows
               items={
                 media.outcome
-                  ? media.outcome.map(({ src, alt, tall }) => ({ src, alt, tall, caption: alt }))
+                  ? media.outcome.map(({ src, alt, tall, crop }) => ({ src, alt, tall, crop, caption: alt }))
                   : project.slug === 'a-drop-of-corruption'
                     ? [{ caption: `${project.title}: video` }]
                     : [

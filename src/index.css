@@ -1626,3 +1626,13 @@ main .orow figure.placeholder .placeholder__surface > video { width: 100%; heigh
   .orow__item.is-tall { grid-column: span 1; }
   .orow__item.is-shifted { margin-top: 0 !important; }
 }
+
+/* A picture shown only in part (see OutcomeRows `crop`): as large as fits the screen, centred in its cell */
+main .orow figure.placeholder.is-cropped .placeholder__surface:has(> img) {
+  position: relative; overflow: hidden; aspect-ratio: var(--crop-ratio) !important;
+  width: min(100%, calc((100svh - 120px) * var(--crop-ratio))) !important; margin-inline: auto;
+}
+main .orow figure.placeholder.is-cropped .placeholder__surface > img {
+  position: absolute; left: var(--crop-x); top: var(--crop-y);
+  width: var(--crop-w) !important; max-width: none !important; height: auto !important; max-height: none !important;
+}
