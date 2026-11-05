@@ -188,10 +188,9 @@ const caseStudies = [
     manual: {
       logotype: [
         { src: '/projects/marco-magnani-art/logotype-construction.svg', alt: "Technical plate: the artist's signature as found on the canvas, and below it redrawn on a vector grid of axial lines and slanted guides." },
-        { src: '/projects/marco-magnani-art/logotype-clear-space.svg', alt: "Technical plate: the logotype's clear space, as wide as the letter o on every side." },
-        { src: '/projects/marco-magnani-art/logotype-contrast.svg', alt: 'The logotype in white on anthracite, in anthracite on white, and in white over a detail of a painting.' },
+        { src: '/projects/marco-magnani-art/logotype-contrast.svg', alt: 'The logotype in white on anthracite and in white over a detail of a painting.' },
       ],
-      monogram: { src: '/projects/marco-magnani-art/monogram-grid.svg', alt: 'Technical plate: the M monogram drawn on its construction grid, with the positive and negative favicons.' },
+      monogram: { src: '/projects/marco-magnani-art/monogram-grid.svg', alt: 'Technical plate: the M monogram drawn on its construction grid.' },
       colour: { src: '/projects/marco-magnani-art/colour-sampling.svg', alt: 'Two paintings with the five colours sampled from each: a range of blues from the blue lace cap, a range of reds from the red lace.' },
       pages: [1, 3, 5, 7, 8, 9, 13, 19, 21, 25, 33, 37, 39, 41, 42, 44, 45, 47, 48, 49, 50, 51, 52, 53, 54, 55, 60, 61, 63, 66, 67, 69, 71].map(n => ({
         src: `/projects/marco-magnani-art/manual/page-${String(n).padStart(2, '0')}.svg`,
