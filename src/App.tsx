@@ -309,13 +309,20 @@ const caseStudies = [
     insight: 'To make a community visible again, the project asks it to hide.',
     processTitle: 'Reclaiming Brera from below',
     processDescription: 'Scroll sideways',
-    images: [
-      '/assets/projects/brera-58c8100e224e9ccc35d44f0d3186a07855659b74.png',
-      '/assets/projects/brera-57bab36a08aed2786ddbf00062fdc3ef33573a50.png',
-      '/assets/projects/brera-63e7e0759317c54cc177e658b5a3be5d185e5f9f.png',
-      '/assets/projects/brera-01a3bfaf62511e4738302c2aaf3605d8443d0260.png',
-      '/assets/projects/brera-a75a152e3bb77dbc00210ce9034b4be06d42e903.png',
-      '/assets/projects/brera-3a3c3f74080467c9ff20fb31d83bb71e7b24ac74.png',
+    // beside the title: the home poster, anchored on its headline; then the pictures from the current site
+    cover: {
+      src: '/projects/pro-brera.svg',
+      alt: 'P.R.O. Brera poster with its headline in red and black.',
+      focus: '50% 0%',
+    },
+    outcome: [
+      { src: `${CURRENT_SITE}/_assets/v11/58c8100e224e9ccc35d44f0d3186a07855659b74.png?w=1600`, alt: 'Animated set of P.R.O. Brera posters: brutalist typography, symbolic icons and a raw graphic style.' },
+      { src: `${CURRENT_SITE}/_assets/v11/a75a152e3bb77dbc00210ce9034b4be06d42e903.png?w=1200`, alt: 'P.R.O. Brera sticker: a graphic reinterpretation of the Virgin Mary with a finger on her lips, asking for silence.', tall: true },
+      { src: `${CURRENT_SITE}/_assets/v11/f78bdcfdf158e072effb28c238562975e84939f9.png?w=1200`, alt: 'P.R.O. Brera sticker: a pointing finger inside a circle, a cryptic wayfinding sign.', tall: true },
+      { src: `${CURRENT_SITE}/_assets/v11/db9e367a9ecef44b22e0c49636940f1ac8c130df.png?w=1600`, alt: "The collective's manifesto posted on a wooden door: red and black text listing the students' five demands." },
+      { src: `${CURRENT_SITE}/_assets/v11/63e7e0759317c54cc177e658b5a3be5d185e5f9f.png?w=1600`, alt: 'Hands leafing through the P.R.O. Brera fanzine: an engraving-style illustration on one side, a graphic page on the other.' },
+      { src: `${CURRENT_SITE}/_assets/v11/01a3bfaf62511e4738302c2aaf3605d8443d0260.png?w=1600`, alt: 'Folding map of the secret underground route, with its points of interest.' },
+      { src: `${CURRENT_SITE}/_assets/v11/3a3c3f74080467c9ff20fb31d83bb71e7b24ac74.png?h=1400`, alt: 'A blue street sign in Milan covered in stickers, with the round P.R.O. Brera sticker at its centre.', tall: true },
     ],
   },
   {
