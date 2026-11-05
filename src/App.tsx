@@ -78,7 +78,7 @@ const caseStudies = [
       },
     ],
     insight: 'In the age of artificial intelligence, who or what is the artist?',
-    processTitle: 'Backstage',
+    processTitle: 'The book',
     processDescription: 'Scroll sideways',
     // pictures from the current site: the opening beside the title, then the outcome (first one large)
     cover: {
@@ -90,6 +90,27 @@ const caseStudies = [
         src: `${CURRENT_SITE}/_assets/v11/1ce14e6bd4101af66b7e9fc69587eebdb8bb93cb.png?h=2385`,
         alt: 'Animated spreads of the Sovrapposizioni book: inside pages on a clean grid with modern typography.',
       },
+      // the exhibition and its printed pieces; `tall` pictures take one column of the grid, the others two
+      ...[
+        ['exhibition-corridor', 'The exhibition at MEET: two works on the wall and a visitor passing by the wayfinding.'],
+        ['posters-street', 'A row of exhibition posters along a street wall.'],
+        ['poster-tree', 'Exhibition poster under a tree.', 'tall'],
+        ['poster-stand', 'Exhibition poster on a street stand.', 'tall'],
+        ['poster-backlit', 'Backlit exhibition poster at night.', 'tall'],
+        ['banners', 'Exhibition banners hanging between the columns of a building.'],
+        ['tickets-1', 'Two entrance tickets on concrete.', 'tall'],
+        ['tickets-2', 'Two more entrance tickets with other works.', 'tall'],
+        ['box-closed', 'The editorial object: a cardboard box tied with string.'],
+        ['box-open', 'The open box holding the brochure and the postcards.'],
+        ['booklets', 'The brochure and two postcards in their sleeves.'],
+        ['brochure-folded', 'The brochure standing half open.', 'tall'],
+        ['brochure-open', 'The brochure fully unfolded.', 'tall'],
+        ['print-apple', 'A print of the green apple work hanging on the wall.', 'tall'],
+        ['postcard-portrait', 'A postcard of a portrait in its sleeve.', 'tall'],
+        ['card-text', "The text card of the work 'Luce sul fiume'.", 'tall'],
+        ['postcard-lake', 'A postcard of the lake work.', 'tall'],
+        ['postcards', 'The full set of postcards fanned out.'],
+      ].map(([name, alt, tall]) => ({ src: `/projects/sovrapposizioni/${name}.svg`, alt, tall: Boolean(tall) })),
     ],
     // pictures for the deep dive, from the project presentation
     deep: {
@@ -98,34 +119,14 @@ const caseStudies = [
       cards: [
         { src: '/projects/sovrapposizioni/painting-pool.svg', alt: 'AI-generated work: a swimming pool in front of a modernist house, in the manner of Hockney.' },
         { src: '/projects/sovrapposizioni/painting-lake.svg', alt: 'AI-generated work: boats on a lake among trees, in an impressionist manner.' },
-        { src: '/projects/sovrapposizioni/box-open.svg', alt: 'The editorial object: an open cardboard box holding the brochure and the postcards.' },
+        { src: '/projects/sovrapposizioni/brochure.svg', alt: 'The Sovrapposizioni book, closed, with its pixelated cover.' },
       ],
-      pair: [
-        { src: '/projects/sovrapposizioni/posters-street.svg', alt: 'A row of exhibition posters along a street wall.' },
-        { src: '/projects/sovrapposizioni/banners.svg', alt: 'Exhibition banners hanging between the columns of a building.' },
-      ],
+      pair: [],
+      // the photographed book, in the strip that scrolls sideways
       backstage: [
-        ['exhibition-corridor', 'The exhibition at MEET: two works on the wall and a visitor passing by the wayfinding.'],
-        ['poster-tree', 'Exhibition poster under a tree.'],
-        ['poster-stand', 'Exhibition poster on a street stand.'],
-        ['poster-backlit', 'Backlit exhibition poster at night.'],
-        ['tickets-1', 'Two entrance tickets on concrete.'],
-        ['tickets-2', 'Two more entrance tickets with other works.'],
-        ['box-closed', 'The closed cardboard box tied with string.'],
-        ['booklets', 'The brochure and two postcards in their sleeves.'],
         ['book-cover', 'The book opened on a pixelated landscape.'],
         ['book-dataset', 'The book opened on the training dataset of flowers and shells.'],
         ['book-artists', 'The book opened on the artists and works section.'],
-        ['brochure', 'The brochure, closed.'],
-        ['brochure-folded', 'The brochure standing half open.'],
-        ['brochure-open', 'The brochure fully unfolded.'],
-        ['print-apple', 'A print of the green apple work hanging on the wall.'],
-        ['postcard-portrait', 'A postcard of a portrait in its sleeve.'],
-        ['card-text', "The text card of the work 'Luce sul fiume'."],
-        ['postcard-lake', 'A postcard of the lake work.'],
-        ['postcards', 'The full set of postcards fanned out.'],
-        ['making-ruler', 'Making the box: cutter and ruler on cardboard.'],
-        ['making-bag', 'Making the box: sleeves, string and ruler on the table.'],
       ].map(([name, alt]) => ({ src: `/projects/sovrapposizioni/${name}.svg`, alt })),
     },
   },
@@ -648,7 +649,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
   type Pic = { src: string; alt: string }
   const media = project as {
     cover?: Pic
-    outcome?: Pic[]
+    outcome?: (Pic & { tall?: boolean })[]
     deep?: { context: Pic; framework: Pic; cards: Pic[]; pair: Pic[]; backstage: Pic[] }
   }
   const deep = media.deep
@@ -839,10 +840,12 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
                     'Replace this text with the final research findings and explain how they were translated into the design outcome.'}
                 </p>
               </div>
-              <div className="paired-media">
-                <Placeholder caption={`${project.title}: design development`} src={deep?.pair[0]?.src} alt={deep?.pair[0]?.alt} />
-                <Placeholder caption={`${project.title}: tests and iterations`} src={deep?.pair[1]?.src} alt={deep?.pair[1]?.alt} />
-              </div>
+              {(!deep || deep.pair.length > 0) && (
+                <div className="paired-media">
+                  <Placeholder caption={`${project.title}: design development`} src={deep?.pair[0]?.src} alt={deep?.pair[0]?.alt} />
+                  <Placeholder caption={`${project.title}: tests and iterations`} src={deep?.pair[1]?.src} alt={deep?.pair[1]?.alt} />
+                </div>
+              )}
             </div>
           </section>
 
@@ -890,7 +893,9 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
             {project.slug !== 'a-drop-of-corruption' && (
               <div className="outcome-gallery__grid">
                 {media.outcome
-                  ? media.outcome.slice(1).map(({ src, alt }) => <Placeholder key={src} caption={alt} alt={alt} src={src} />)
+                  ? media.outcome.slice(1).map(({ src, alt, tall }) => (
+                      <Placeholder key={src} className={tall ? 'is-tall' : 'is-wide'} caption={alt} alt={alt} src={src} />
+                    ))
                   : ['01', '02', '03'].map(n => <Placeholder key={n} caption={`${project.title}: outcome detail ${n}`} />)}
               </div>
             )}
