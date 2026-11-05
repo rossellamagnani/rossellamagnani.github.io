@@ -1439,10 +1439,6 @@ function About() {
               'Branding and editorial: developed visual identities, editorial projects and multimedia content for crowdfunding campaigns, from concept to final cut.',
               'Cultural and social initiatives: managed digital and physical touchpoints for cultural and social impact projects.',
             ]],
-            ['Visual Designer', 'Loro Piana Global Summit', '2024', [
-              'Event visual system: designed the presentation graphics for the global summit of a luxury brand, in line with its identity and addressed to executive stakeholders.',
-              'Live event: managed the delivery of digital assets and visual content during live broadcasts, working under real-time pressure.',
-            ]],
             ['Communication Design Intern', 'DCode, Turin', '2024', [
               'Designed brand identities, custom patterns and pitch presentations for corporate and luxury clients (300 hours).',
             ]],
