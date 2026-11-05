@@ -266,7 +266,7 @@ const caseStudies = [
     lead: 'Making the invisible student community of Brera visible again.',
     type: 'Speculative design, editorial, spatial design',
     year: '2024',
-    context: 'Academic project · Politecnico di Milano',
+    context: 'One-week academic project · Politecnico di Milano',
     summary:
       'A hidden collective, made visible through posters, stickers, a fanzine and an underground map.',
     quickSteps: [
