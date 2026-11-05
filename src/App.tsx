@@ -100,9 +100,31 @@ const caseStudies = [
       // the GIF's frames sit on a wide empty border: show only the book (x, y, width, height of 2048 × 2560)
       crop: index === 0 ? ([211, 466, 1631, 1626, 2048, 2560] as const) : undefined,
     })),
-    // pictures for the deep dive, from the project presentation; the others stay grey until chosen
+    // the deep dive has its own structure (see SovrapposizioniDeep), with pictures from the project presentation
     deep: {
       framework: { src: '/projects/sovrapposizioni/training-collage.svg', alt: 'The images generated while training the AI, grouped by master: Kusama, Hockney, Warhol, Monet, Modigliani, Canaletto, Murakami and Degas.' },
+      works: [
+        { src: '/projects/sovrapposizioni/painting-pool.svg', alt: 'AI-generated work: a swimming pool in front of a modernist house, in the manner of Hockney.' },
+        { src: '/projects/sovrapposizioni/painting-lake.svg', alt: 'AI-generated work: boats on a lake among trees, in an impressionist manner.' },
+      ],
+      editorial: [
+        ['postcard-portrait', 'A postcard of a portrait in its translucent sleeve.'],
+        ['postcard-lake', 'The postcard of the lake work.'],
+        ['card-text', "The text card of the work 'Luce sul fiume', with how to scan it."],
+        ['box-open', 'The open cardboard box holding the brochure, with the dates, venue and curators.'],
+        ['box-closed', 'The cardboard box closed and tied with string.'],
+        ['book-artists', "The book opened on the chapter 'Artisti e opere', beside a postcard in its sleeve."],
+        ['brochure-folded', 'The brochure standing half open.'],
+        ['brochure-open', 'The brochure fully unfolded, with the works and the texts of the exhibition.'],
+        ['print-apple', 'A print of the green apple work hanging from two clips.'],
+      ].map(([name, alt]) => ({ src: `/projects/sovrapposizioni/${name}.svg`, alt })),
+      city: [
+        ['posters-street', 'A row of exhibition posters along a street wall.'],
+        ['poster-tree', 'Exhibition poster under a tree.', 'tall'],
+        ['poster-backlit', 'Backlit exhibition poster at night.', 'tall'],
+        ['banners', 'Exhibition banners hanging between the columns of a building.'],
+        ['tickets-2', 'Two entrance tickets with other works.', 'tall'],
+      ].map(([name, alt, tall]) => ({ src: `/projects/sovrapposizioni/${name}.svg`, alt, tall: Boolean(tall) })),
     },
   },
   {
@@ -700,7 +722,16 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
   const media = project as {
     cover?: Pic
     outcome?: (Pic & { tall?: boolean; crop?: readonly number[] })[]
-    deep?: { context?: Pic; framework?: Pic; cards?: Pic[]; pair?: Pic[]; backstage?: Pic[] }
+    deep?: {
+      context?: Pic
+      framework?: Pic
+      cards?: Pic[]
+      pair?: Pic[]
+      backstage?: Pic[]
+      works?: Pic[]
+      editorial?: Pic[]
+      city?: (Pic & { tall?: boolean })[]
+    }
   }
   const deep = media.deep
   const [deepView, setDeepView] = useState(false)
@@ -827,6 +858,10 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
             </blockquote>
           </section>
 
+          {project.slug === 'sovrapposizioni' && deep?.works ? (
+            <SovrapposizioniDeep project={project} deep={deep} />
+          ) : (
+          <>
           <section id="research" className="section shell research">
             <div className="section-label reveal">Research</div>
 
@@ -925,6 +960,8 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
               </div>
             </div>
           </section>
+          </>
+          )}
         </div>
         )}
 
@@ -964,6 +1001,74 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
         <span>© {new Date().getFullYear()} Rossella Magnani</span>
       </footer>
     </main>
+  )
+}
+
+// Sovrapposizioni's deep dive: training the AI with the collage of generated images, two works beside
+// the texts on authorship and dialogue, the editorial object in a sideways strip, the exhibition in the city
+function SovrapposizioniDeep({
+  project,
+  deep,
+}: {
+  project: (typeof caseStudies)[number]
+  deep: { framework?: { src: string; alt: string }; works?: { src: string; alt: string }[]; editorial?: { src: string; alt: string }[]; city?: { src: string; alt: string; tall?: boolean }[] }
+}) {
+  const [authorship, masters, dialogue, beyond, translation] = project.research
+  return (
+    <>
+      <section id="research" className="section shell research sv-deep">
+        <div className="section-label reveal">Research</div>
+
+        <div className="sv-training reveal">
+          <div className="research-copy">
+            <SectionHeading number="01">{masters.title}</SectionHeading>
+            <p>{masters.copy}</p>
+          </div>
+          {deep.framework && (
+            <Placeholder className="research-collage" caption="Images generated while training the AI" src={deep.framework.src} alt={deep.framework.alt} />
+          )}
+        </div>
+
+        {[authorship, dialogue].map((text, index) => (
+          <div className={`sv-work reveal ${index % 2 ? 'is-flipped' : ''}`} key={text.title}>
+            <Placeholder caption={text.title} src={deep.works?.[index]?.src} alt={deep.works?.[index]?.alt} />
+            <div className="research-copy">
+              <SectionHeading number={String(index + 2).padStart(2, '0')}>{text.title}</SectionHeading>
+              <p>{text.copy}</p>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      <section id="insight" className="insight reveal">
+        <div className="shell insight__inner">
+          <div className="section-label">Key insight</div>
+          <p><Lines text={project.insight} /></p>
+        </div>
+      </section>
+
+      <section id="process" className="section process reveal">
+        <div className="process-sticky">
+          <div className="shell process__head">
+            <div className="section-label">04</div>
+            <h2><Lines text={beyond.title} /></h2>
+            <p className="sv-strip-copy">{beyond.copy}</p>
+            <p>Scroll sideways →</p>
+          </div>
+          <div className="process-strip" tabIndex={0} role="region" aria-label="The editorial object, scroll sideways">
+            {deep.editorial?.map(({ src, alt }) => <Placeholder key={src} caption={alt} alt={alt} src={src} />)}
+          </div>
+        </div>
+      </section>
+
+      <section className="section shell sv-city reveal">
+        <div className="research-copy">
+          <SectionHeading number="05">{translation.title}</SectionHeading>
+          <p>{translation.copy}</p>
+        </div>
+        {deep.city && <OutcomeRows items={deep.city.map(pic => ({ ...pic, caption: pic.alt }))} />}
+      </section>
+    </>
   )
 }
 
