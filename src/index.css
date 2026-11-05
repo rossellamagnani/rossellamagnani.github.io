@@ -1686,12 +1686,13 @@ main .orow figure.placeholder.is-cropped .placeholder__surface > img {
   .image-wall__track { animation-duration: 60s; }
 }
 
-/* A cover shown only in part: the chosen area fills the opening's height, centred on a point */
-.hero .hero__media.is-cropped .placeholder__surface { position: relative; overflow: hidden; }
+/* A cover shown only in part: the chosen area is scaled to cover the whole opening (no border shows)
+   and centred in it */
+.hero .hero__media.is-cropped .placeholder__surface { position: relative; overflow: hidden; container-type: size; }
 .hero .hero__media.is-cropped .placeholder__surface > img {
-  position: absolute; top: calc(var(--crop-top) * 100%); left: 50%;
-  height: calc(var(--crop-scale) * 100%) !important; width: auto !important; max-width: none;
-  transform: translateX(calc(var(--crop-centre) * -100%)); object-fit: fill;
+  position: absolute; top: 50%; left: 50%; width: auto !important; max-width: none; max-height: none; object-fit: fill;
+  height: max(calc(var(--crop-h) * 100cqh), calc(var(--crop-w) * 100cqw)) !important;
+  transform: translate(calc(var(--crop-cx) * -100%), calc(var(--crop-cy) * -100%));
 }
 /* the cropped picture is taken out of the flow, so the opening keeps its own shape */
 .hero .hero__media.is-cropped figure.placeholder .placeholder__surface,

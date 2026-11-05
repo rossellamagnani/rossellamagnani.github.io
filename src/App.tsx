@@ -244,13 +244,12 @@ const caseStudies = [
     insight: 'Creativity becomes both a tool for resistance and a language for reconstruction.',
     processTitle: 'Giving form to a culture in transformation',
     processDescription: 'Scroll sideways through the editorial rhythm, interviews and visual narratives.',
-    // the GIF of the spreads from the current site: beside the title (on the left page) and as the outcome
+    // beside the title: the home picture, zoomed onto the left page so no border shows; the GIF goes below
     cover: {
-      src: `${CURRENT_SITE}/_assets/v11/6443891fe021dd66e35c18fd5dcd33f18db0d01e.png`,
-      alt: "Animated spreads of Crossing Kyiv: handwritten texts over reportage photographs, such as 'She Has a Dream' by Irina Dzhus.",
-      // the frames sit on an empty border: fill the opening with the book only, centred on the left page
-      crop: [204, 168, 1524, 940, 1932, 1333] as const,
-      centre: 0.33,
+      src: `${CURRENT_SITE}/_assets/v11/80b5605660174fa81e94a9085663a9f9c21554d2.png?w=1600`,
+      alt: "The left page of the spread 'She Has a Dream': handwritten lines over a photograph of branches.",
+      // the left page (x, y, width, height of 1932 × 1333)
+      crop: [280, 175, 680, 925, 1932, 1333] as const,
     },
     outcome: [
       {
@@ -852,7 +851,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
   // pictures are optional per project; until a project has them its frames stay grey
   type Pic = { src: string; alt: string }
   const media = project as {
-    cover?: Pic & { focus?: string; crop?: readonly number[]; centre?: number }
+    cover?: Pic & { focus?: string; crop?: readonly number[] }
     outcome?: (Pic & { tall?: boolean; crop?: readonly number[]; poster?: string; autoPlay?: boolean })[]
     deep?: {
       context?: Pic
@@ -930,9 +929,10 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
             style={
               media.cover?.crop &&
               ({
-                '--crop-scale': media.cover.crop[5] / media.cover.crop[3],
-                '--crop-top': -media.cover.crop[1] / media.cover.crop[3],
-                '--crop-centre': (media.cover.crop[0] + (media.cover.centre ?? 0.5) * media.cover.crop[2]) / media.cover.crop[4],
+                '--crop-h': media.cover.crop[5] / media.cover.crop[3],
+                '--crop-w': media.cover.crop[5] / media.cover.crop[2],
+                '--crop-cx': (media.cover.crop[0] + media.cover.crop[2] / 2) / media.cover.crop[4],
+                '--crop-cy': (media.cover.crop[1] + media.cover.crop[3] / 2) / media.cover.crop[5],
               } as React.CSSProperties)
             }
           />
