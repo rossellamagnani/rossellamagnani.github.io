@@ -82,11 +82,11 @@ const caseStudies = [
     processDescription: 'Scroll sideways',
     // pictures from the current site: the opening beside the title, then the outcome (first one large)
     cover: {
-      src: `${CURRENT_SITE}/_assets/v11/1ce14e6bd4101af66b7e9fc69587eebdb8bb93cb.png?h=2385`,
-      alt: 'Animated spreads of the Sovrapposizioni book: inside pages on a clean grid with modern typography.',
+      src: `${CURRENT_SITE}/_assets/v11/141ddc64b5b5362cf1d47cddb155b8aefeecc258.png?w=1600`,
+      alt: 'The Sovrapposizioni exhibition at MEET Digital Culture Center, Milan: a visitor looks at AI-generated works inspired by great masters.',
     },
     outcome: [
-      ['141ddc64b5b5362cf1d47cddb155b8aefeecc258.png?w=1600', 'The Sovrapposizioni exhibition at MEET Digital Culture Center, Milan: a visitor looks at AI-generated works inspired by great masters.'],
+      ['1ce14e6bd4101af66b7e9fc69587eebdb8bb93cb.png?h=2385', 'Animated spreads of the Sovrapposizioni book: inside pages on a clean grid with modern typography.'],
       ['c363270d72b8e06db7aaf51c238bb3ea113733cd.png?w=1400', 'The exhibition: a visitor walks past the AI-generated works.'],
       ['be04d60125a1b190f560c65f52d5480f9834d7c9.png?h=1400', "Backlit poster for the exhibition: an AI reinterpretation of a classical painting and the question 'If art speaks to you, does it matter who made it?'"],
       ['297d2bf3f77e804b239bcd73c5936df12ffa1fbf.png?w=1400', 'Inside pages of the book showing the training dataset: a grid of photographs of flowers and shells used to teach the generative algorithm.'],
