@@ -25,8 +25,8 @@ const instruments = [
 // `image` / `video`: the picture for each project in the home row, cropped to fill the frame;
 // `focus` moves the crop (CSS object-position); `crop` zooms into one area instead: x and y are
 // the centre of that area in % of the image, zoom how much larger than the frame's height it is drawn;
-// `whole` shows the entire image, uncropped, on a plain background (for cut-out shapes such as a sticker). For now they are taken from the current site
-// (rossellamagnani.figma.site); once the files are uploaded to public/, point these to the local copies.
+// `whole` shows the entire image, uncropped, on a plain background (for cut-out shapes such as a sticker).
+// Every picture and video is a file in public/ (public/media/ for those that came from the old Figma site).
 // The site can live in a sub-folder (GitHub Pages serves it at /<repository>/): every internal link
 // and every file in /public goes through these two helpers
 const BASE = import.meta.env.BASE_URL
@@ -36,16 +36,14 @@ const asset = <T extends string | undefined>(src: T): T =>
 
 const projects: { title: string; type: string; slug: string; lang?: 'it'; image: string; video?: string; focus?: string; whole?: boolean; crop?: { x: number; y: number; zoom: number } }[] = [
   { title: 'Oltre la teca di vetro', type: 'EXHIBITION DESIGN · ACCESSIBILITY', slug: 'oltre-la-teca', lang: 'it', image: '/projects/oltre-la-teca/librarian.svg', focus: '62% 50%' },
-  { title: "Oltre l'ascolto", type: 'MULTISENSORY DESIGN · ACCESSIBILITY', slug: 'oltre-lascolto', lang: 'it', image: 'https://rossellamagnani.figma.site/_assets/v11/176474d4960ebe154d49f3d2840823b84d71f931.png' },
-  { title: 'Sovrapposizioni', type: 'EXHIBITION DESIGN · AI', slug: 'sovrapposizioni', lang: 'it', image: 'https://rossellamagnani.figma.site/_assets/v11/141ddc64b5b5362cf1d47cddb155b8aefeecc258.png?w=1536' },
-  { title: 'Marco Magnani Art', type: 'BRAND IDENTITY · ART DIRECTION', slug: 'marco-magnani-art', image: 'https://rossellamagnani.figma.site/_assets/v11/6eb7ffe7a5b70424dcb96a2ca56a52145979e5ba.png?w=1536' },
-  { title: 'Crossing Kyiv', type: 'EDITORIAL DESIGN · CULTURAL PROJECT', slug: 'crossing-kyiv', image: 'https://rossellamagnani.figma.site/_assets/v11/80b5605660174fa81e94a9085663a9f9c21554d2.png?w=1536', crop: { x: 30.2, y: 47.8, zoom: 1.65 } },
-  { title: 'a drop of corruption', type: 'AI VIDEO · ART DIRECTION', slug: 'a-drop-of-corruption', image: '', video: 'https://rossellamagnani.figma.site/_videos/v1/4d1d4bed175820029240b41dd761342d8a2dc045' },
+  { title: "Oltre l'ascolto", type: 'MULTISENSORY DESIGN · ACCESSIBILITY', slug: 'oltre-lascolto', lang: 'it', image: '/media/176474d496.gif' },
+  { title: 'Sovrapposizioni', type: 'EXHIBITION DESIGN · AI', slug: 'sovrapposizioni', lang: 'it', image: '/media/141ddc64b5.jpg' },
+  { title: 'Marco Magnani Art', type: 'BRAND IDENTITY · ART DIRECTION', slug: 'marco-magnani-art', image: '/media/6eb7ffe7a5.jpg' },
+  { title: 'Crossing Kyiv', type: 'EDITORIAL DESIGN · CULTURAL PROJECT', slug: 'crossing-kyiv', image: '/media/80b5605660.jpg', crop: { x: 30.2, y: 47.8, zoom: 1.65 } },
+  { title: 'a drop of corruption', type: 'AI VIDEO · ART DIRECTION', slug: 'a-drop-of-corruption', image: '', video: '/media/4d1d4bed17.mp4' },
   { title: 'PRO Brera', type: 'SPECULATIVE DESIGN · SPATIAL', slug: 'brera-district', image: '/projects/pro-brera.svg', focus: '50% 0%' },
 ]
 
-// Pictures and videos still served by the current site; to be replaced by local files in public/
-const CURRENT_SITE = 'https://rossellamagnani.figma.site'
 
 const caseStudies = [
   {
@@ -156,25 +154,25 @@ const caseStudies = [
     processDescription: 'Scroll sideways',
     // pictures from the current site: the opening beside the title, then the outcome (first one large)
     cover: {
-      src: `${CURRENT_SITE}/_assets/v11/141ddc64b5b5362cf1d47cddb155b8aefeecc258.png?w=1600`,
+      src: `/media/141ddc64b5.jpg`,
       alt: 'Visualisation of the Sovrapposizioni exhibition at MEET Digital Culture Center, Milan: a visitor looks at AI-generated works inspired by great masters.',
     },
     // outcome: the book GIF, then the exhibition (pictures from the current site and from the presentation)
     outcome: [
       {
-        src: `${CURRENT_SITE}/_assets/v11/1ce14e6bd4101af66b7e9fc69587eebdb8bb93cb.png?h=2385`,
+        src: `/media/1ce14e6bd4.gif`,
         alt: 'Animated spreads of the Sovrapposizioni book: inside pages on a clean grid with modern typography.',
         // the GIF's frames sit on a wide empty border: show only the book (x, y, width, height of 2048 × 2560)
         crop: [211, 466, 1631, 1626, 2048, 2560] as const,
       },
-      { src: `${CURRENT_SITE}/_assets/v11/c363270d72b8e06db7aaf51c238bb3ea113733cd.png?w=1600`, alt: 'Visualisation of the exhibition at MEET Digital Culture Center: a visitor walks past the AI-generated works.' },
+      { src: `/media/c363270d72.jpg`, alt: 'Visualisation of the exhibition at MEET Digital Culture Center: a visitor walks past the AI-generated works.' },
       { src: '/projects/sovrapposizioni/posters-street.svg', alt: 'A row of exhibition posters along a street wall.' },
-      { src: `${CURRENT_SITE}/_assets/v11/be04d60125a1b190f560c65f52d5480f9834d7c9.png?h=1400`, alt: "Exhibition poster on a street stand: an AI reinterpretation of a classical painting and the question 'If art speaks to you, does it matter who made it?'", tall: true },
+      { src: `/media/be04d60125.jpg`, alt: "Exhibition poster on a street stand: an AI reinterpretation of a classical painting and the question 'If art speaks to you, does it matter who made it?'", tall: true },
       { src: '/projects/sovrapposizioni/poster-tree.svg', alt: 'Exhibition poster under a tree.', tall: true },
       { src: '/projects/sovrapposizioni/poster-backlit.svg', alt: 'Backlit exhibition poster at night.', tall: true },
       { src: '/projects/sovrapposizioni/banners.svg', alt: 'Exhibition banners hanging between the columns of a building.' },
       { src: '/projects/sovrapposizioni/tickets-2.svg', alt: 'Two entrance tickets with works from the exhibition.', tall: true },
-      { src: `${CURRENT_SITE}/_assets/v11/41c75cf2b7142255a806a952c7894c13d0421120.png?w=1600`, alt: 'Entrance tickets for the exhibition, with vertical barcodes, the title in an elegant serif and details of the AI-generated works.' },
+      { src: `/media/41c75cf2b7.jpg`, alt: 'Entrance tickets for the exhibition, with vertical barcodes, the title in an elegant serif and details of the AI-generated works.' },
     ],
     // the deep dive has its own structure (see SovrapposizioniDeep), with pictures from the project presentation
     deep: {
@@ -200,8 +198,8 @@ const caseStudies = [
       ],
       // the book, large, before the strip
       book: [
-        { src: `${CURRENT_SITE}/_assets/v11/297d2bf3f77e804b239bcd73c5936df12ffa1fbf.png?w=1600`, alt: 'Inside pages of the book showing the training dataset: a grid of photographs of flowers and shells used to teach the generative algorithm.' },
-        { src: `${CURRENT_SITE}/_assets/v11/7fc8b686031b4829a0921a509cd4b48571dd1787.png?w=1600`, alt: 'The cover of the Sovrapposizioni book: a natural image reworked through digital pixelation.' },
+        { src: `/media/297d2bf3f7.jpg`, alt: 'Inside pages of the book showing the training dataset: a grid of photographs of flowers and shells used to teach the generative algorithm.' },
+        { src: `/media/7fc8b68603.jpg`, alt: 'The cover of the Sovrapposizioni book: a natural image reworked through digital pixelation.' },
       ],
       // the editorial object in the order it is opened: the box, the brochure, the book, the postcards, the print
       editorial: [
@@ -274,15 +272,15 @@ const caseStudies = [
     },
     // pictures from the current site: the opening beside the title, then the outcome
     cover: {
-      src: `${CURRENT_SITE}/_assets/v11/6eb7ffe7a5b70424dcb96a2ca56a52145979e5ba.png?w=1600`,
+      src: `/media/6eb7ffe7a5.jpg`,
       alt: 'Marco Magnani Art on the facade of a modern art gallery: large red posters with the artist’s portraits, the signature logo and the dates.',
     },
     outcome: [
-      { src: `${CURRENT_SITE}/_assets/v11/bb40d17840c8d7e5b4d49a7db280b8ec149e2914.png?w=1600`, alt: "Poster for the exhibition 'Trame' in an underground passage, with people walking past." },
-      { src: `${CURRENT_SITE}/_assets/v11/4ac58ee616c59d31b2af83ca40a9d6f8c4d7fdf5.png?w=1600`, alt: "Backlit billboard 'La trama come confine' with a detail of a portrait framed by an irregular window." },
-      { src: `${CURRENT_SITE}/_assets/v11/5d9b11bc037a4a2698c0dbd7a2e7532c76307bb8.png?w=1600`, alt: 'Brochures laid out in rows: deep red covers and inside pages with the portraits.' },
-      { src: `${CURRENT_SITE}/_assets/v11/4ca5cedeb374b25dbecc4c62cdf6921008b37d0d.png?w=1600`, alt: 'Business cards floating: a detail of a portrait on the front, the signature logo on the dark back.' },
-      { src: `${CURRENT_SITE}/_assets/v11/3c30026e91ed20dbc517151c07bbd9802d1f0992.png?w=1600`, alt: "The book 'Anatomia della trama', with a blue cover torn open on a portrait, on a table by a window." },
+      { src: `/media/bb40d17840.jpg`, alt: "Poster for the exhibition 'Trame' in an underground passage, with people walking past." },
+      { src: `/media/4ac58ee616.jpg`, alt: "Backlit billboard 'La trama come confine' with a detail of a portrait framed by an irregular window." },
+      { src: `/media/5d9b11bc03.jpg`, alt: 'Brochures laid out in rows: deep red covers and inside pages with the portraits.' },
+      { src: `/media/4ca5cedeb3.jpg`, alt: 'Business cards floating: a detail of a portrait on the front, the signature logo on the dark back.' },
+      { src: `/media/3c30026e91.jpg`, alt: "The book 'Anatomia della trama', with a blue cover torn open on a portrait, on a table by a window." },
     ],
     website: 'https://www.marcomagnani.art',
   },
@@ -330,14 +328,14 @@ const caseStudies = [
     processDescription: 'Scroll sideways through the editorial rhythm, interviews and visual narratives.',
     // beside the title: the home picture, zoomed onto the left page so no border shows; the GIF goes below
     cover: {
-      src: `${CURRENT_SITE}/_assets/v11/80b5605660174fa81e94a9085663a9f9c21554d2.png?w=1600`,
+      src: `/media/80b5605660.jpg`,
       alt: "The left page of the spread 'She Has a Dream': handwritten lines over a photograph of branches.",
       // the left page (x, y, width, height of 1932 × 1333)
       crop: [280, 175, 680, 925, 1932, 1333] as const,
     },
     outcome: [
       {
-        src: `${CURRENT_SITE}/_assets/v11/6443891fe021dd66e35c18fd5dcd33f18db0d01e.png`,
+        src: `/media/6443891fe0.gif`,
         alt: "Animated spreads of Crossing Kyiv: handwritten texts over reportage photographs, such as 'She Has a Dream' by Irina Dzhus.",
         // the frames sit on an empty border: show only the open book (x, y, width, height of 1932 × 1333)
         crop: [204, 168, 1524, 940, 1932, 1333] as const,
@@ -397,13 +395,13 @@ const caseStudies = [
       whole: true, // shown in its own proportions, not cropped to the opening
     },
     outcome: [
-      { src: `${CURRENT_SITE}/_assets/v11/58c8100e224e9ccc35d44f0d3186a07855659b74.png?w=1600`, alt: 'Animated set of P.R.O. Brera posters: brutalist typography, symbolic icons and a raw graphic style.' },
-      { src: `${CURRENT_SITE}/_assets/v11/a75a152e3bb77dbc00210ce9034b4be06d42e903.png?w=1200`, alt: 'P.R.O. Brera sticker: a graphic reinterpretation of the Virgin Mary with a finger on her lips, asking for silence.', tall: true },
-      { src: `${CURRENT_SITE}/_assets/v11/f78bdcfdf158e072effb28c238562975e84939f9.png?w=1200`, alt: 'P.R.O. Brera sticker: a pointing finger inside a circle, a cryptic wayfinding sign.', tall: true },
-      { src: `${CURRENT_SITE}/_assets/v11/db9e367a9ecef44b22e0c49636940f1ac8c130df.png?w=1600`, alt: "The collective's manifesto posted on a wooden door: red and black text listing the students' five demands." },
-      { src: `${CURRENT_SITE}/_assets/v11/63e7e0759317c54cc177e658b5a3be5d185e5f9f.png?w=1600`, alt: 'Hands leafing through the P.R.O. Brera fanzine: an engraving-style illustration on one side, a graphic page on the other.' },
-      { src: `${CURRENT_SITE}/_assets/v11/01a3bfaf62511e4738302c2aaf3605d8443d0260.png?w=1600`, alt: 'Folding map of the secret underground route, with its points of interest.' },
-      { src: `${CURRENT_SITE}/_assets/v11/3a3c3f74080467c9ff20fb31d83bb71e7b24ac74.png?h=1400`, alt: 'A blue street sign in Milan covered in stickers, with the round P.R.O. Brera sticker at its centre.', tall: true },
+      { src: `/media/58c8100e22.gif`, alt: 'Animated set of P.R.O. Brera posters: brutalist typography, symbolic icons and a raw graphic style.' },
+      { src: `/media/a75a152e3b.png`, alt: 'P.R.O. Brera sticker: a graphic reinterpretation of the Virgin Mary with a finger on her lips, asking for silence.', tall: true },
+      { src: `/media/f78bdcfdf1.png`, alt: 'P.R.O. Brera sticker: a pointing finger inside a circle, a cryptic wayfinding sign.', tall: true },
+      { src: `/media/db9e367a9e.jpg`, alt: "The collective's manifesto posted on a wooden door: red and black text listing the students' five demands." },
+      { src: `/media/63e7e07593.jpg`, alt: 'Hands leafing through the P.R.O. Brera fanzine: an engraving-style illustration on one side, a graphic page on the other.' },
+      { src: `/media/01a3bfaf62.jpg`, alt: 'Folding map of the secret underground route, with its points of interest.' },
+      { src: `/media/3a3c3f7408.jpg`, alt: 'A blue street sign in Milan covered in stickers, with the round P.R.O. Brera sticker at its centre.', tall: true },
     ],
   },
   {
@@ -446,14 +444,14 @@ const caseStudies = [
     processDescription: 'Scroll sideways through the generative frames, color transitions and glitch language.',
     // the title video from the home: beside the title, playing silently, and below with its controls
     cover: {
-      src: `${CURRENT_SITE}/_videos/v1/4d1d4bed175820029240b41dd761342d8a2dc045`,
+      src: `/media/4d1d4bed17.mp4`,
       alt: "Title animation of 'a drop of corruption': black lettering appearing and breaking apart on a red ground.",
       poster: '/projects/a-drop-of-corruption/video-poster.svg',
       loopSilently: true,
     },
     outcome: [
       {
-        src: `${CURRENT_SITE}/_videos/v1/4d1d4bed175820029240b41dd761342d8a2dc045`,
+        src: `/media/4d1d4bed17.mp4`,
         alt: "Title animation of 'a drop of corruption': black lettering appearing and breaking apart on a red ground.",
         poster: '/projects/a-drop-of-corruption/video-poster.svg',
       },
@@ -2019,7 +2017,7 @@ function CaseStudy() {
           <Placeholder
             className="hero__media"
             caption="Two textured spheres in motion, from the project's animation"
-            src={`${CURRENT_SITE}/_assets/v11/176474d4960ebe154d49f3d2840823b84d71f931.png`}
+            src={`/media/176474d496.gif`}
           />
         </section>
 
@@ -2195,18 +2193,18 @@ function CaseStudy() {
               items={[
                 {
                   caption: "Oltre l'ascolto, the video",
-                  src: `${CURRENT_SITE}/_videos/v1/e3a098ddfc758683570663837c6b6866fe367e72`,
+                  src: '/media/e3a098ddfc.mp4',
                   poster: '/projects/oltre-video-poster.svg',
                 },
                 ...[
-                  ['abcbde4a04da3d0a883fd34057859888cf28a9d8.png?w=1856', 'White 3D models and black information cards with Braille text: the models recreate the forms of the post-war sound instruments, with tactile patterns that picture sound waves.'],
-                  ['bbf10eb90d1050a64d40fdf081e3f2009b6a418d.png?w=1400', 'A hand exploring a raised tactile surface that turns sound frequencies into physical patterns for people with visual impairments.'],
-                  ['95cbff86f40b1d8561570829aa040e732fa7de85.png?w=1400', 'Two hands exploring the raised tactile surface.'],
-                  ['49535040979dbc77bca4c8fa489f5480c70725c7.png?w=1400', 'Close-up of the raised artefacts and their textures, wavy lines, steps and overlapping squares, that stand for sound transformations.'],
-                  ['5237067cdf6730e1966641a547a72380feaaefcb.png?w=1000', 'The Tempophon artefact seen from above: a historic sound technology reinterpreted as a tactile object.', 'tall'],
-                  ['02424f99ca12d8d0378e9df1b0575b98f1b9ef15.png?w=1000', 'The Speed Variator artefact seen from above.', 'tall'],
-                  ['b7a5b08984d94b8175c039fc1d0de8b70a0f7a1a.png?w=1000', 'The Amplitude Modulator artefact seen from above.', 'tall'],
-                ].map(([file, alt, tall]) => ({ src: `${CURRENT_SITE}/_assets/v11/${file}`, alt, caption: alt, tall: Boolean(tall) })),
+                  ['abcbde4a04', 'White 3D models and black information cards with Braille text: the models recreate the forms of the post-war sound instruments, with tactile patterns that picture sound waves.'],
+                  ['bbf10eb90d', 'A hand exploring a raised tactile surface that turns sound frequencies into physical patterns for people with visual impairments.'],
+                  ['95cbff86f4', 'Two hands exploring the raised tactile surface.'],
+                  ['4953504097', 'Close-up of the raised artefacts and their textures, wavy lines, steps and overlapping squares, that stand for sound transformations.'],
+                  ['5237067cdf', 'The Tempophon artefact seen from above: a historic sound technology reinterpreted as a tactile object.', 'tall'],
+                  ['02424f99ca', 'The Speed Variator artefact seen from above.', 'tall'],
+                  ['b7a5b08984', 'The Amplitude Modulator artefact seen from above.', 'tall'],
+                ].map(([file, alt, tall]) => ({ src: `/media/${file}.jpg`, alt, caption: alt, tall: Boolean(tall) })),
               ]}
             />
           </div>

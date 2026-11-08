@@ -1,4 +1,5 @@
 # Publishes the portfolio on GitHub Pages at https://<owner>.github.io/<repository>/
+# (or at https://<owner>.github.io/ when the repository is named <owner>.github.io)
 # One-time setup in the repository: Settings > Pages > Build and deployment > Source: GitHub Actions
 name: Publish on GitHub Pages
 
@@ -30,9 +31,12 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Build
-        run: pnpm build
+        # a repository named <owner>.github.io is served at the root of that address, any other at /<repository>/
+        run: |
+          if [[ "$REPO" == *.github.io ]]; then export BASE_PATH=/; else export BASE_PATH="/$REPO/"; fi
+          pnpm build
         env:
-          BASE_PATH: /${{ github.event.repository.name }}/
+          REPO: ${{ github.event.repository.name }}
       - name: One page per address, so links to a project open directly
         run: |
           for page in about oltre-la-teca oltre-lascolto sovrapposizioni marco-magnani-art crossing-kyiv brera-district a-drop-of-corruption; do

@@ -147,3 +147,6 @@
 
 # The CV is stored directly in git (not LFS) so it is served with the site
 public/Rossella_Magnani_CV.pdf -filter -diff -merge binary
+
+# Pictures and videos of the site, stored directly in git (not LFS) so GitHub Pages can serve them
+public/media/** -filter -diff -merge binary
