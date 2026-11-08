@@ -442,7 +442,7 @@ const caseStudies = [
     insight: 'Turn the aesthetics of error into a language for exposing the hidden cost of human greed.',
     processTitle: 'From raw resource to irreversible contamination',
     processDescription: 'Scroll sideways through the generative frames, color transitions and glitch language.',
-    // the title video from the home: beside the title, playing silently, and below with its controls
+    // beside the title the short title animation, playing silently; below, the whole video with its controls
     cover: {
       src: `/media/4d1d4bed17.mp4`,
       alt: "Title animation of 'a drop of corruption': black lettering appearing and breaking apart on a red ground.",
@@ -451,8 +451,8 @@ const caseStudies = [
     },
     outcome: [
       {
-        src: `/media/4d1d4bed17.mp4`,
-        alt: "Title animation of 'a drop of corruption': black lettering appearing and breaking apart on a red ground.",
+        src: '/media/64b7ce092d.mp4',
+        alt: "The full video 'a drop of corruption' (52 seconds): from monochrome landscapes to bursts of yellow fuel and red contamination, through glitches and collage shifts.",
         poster: '/projects/a-drop-of-corruption/video-poster.svg',
       },
     ],
