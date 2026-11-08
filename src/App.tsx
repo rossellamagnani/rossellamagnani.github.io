@@ -28,7 +28,7 @@ const instruments = [
 // `whole` shows the entire image, uncropped, on a plain background (for cut-out shapes such as a sticker). For now they are taken from the current site
 // (rossellamagnani.figma.site); once the files are uploaded to public/, point these to the local copies.
 const projects: { title: string; type: string; slug: string; lang?: 'it'; image: string; video?: string; focus?: string; whole?: boolean; crop?: { x: number; y: number; zoom: number } }[] = [
-  { title: 'Oltre la teca di vetro', type: 'EXHIBITION DESIGN · ACCESSIBILITY', slug: 'oltre-la-teca', lang: 'it', image: '/projects/oltre-la-teca/timeline-book.svg', focus: '45% 50%' },
+  { title: 'Oltre la teca di vetro', type: 'EXHIBITION DESIGN · ACCESSIBILITY', slug: 'oltre-la-teca', lang: 'it', image: '/projects/oltre-la-teca/librarian.svg', focus: '62% 50%' },
   { title: "Oltre l'ascolto", type: 'MULTISENSORY DESIGN · ACCESSIBILITY', slug: 'oltre-lascolto', lang: 'it', image: 'https://rossellamagnani.figma.site/_assets/v11/176474d4960ebe154d49f3d2840823b84d71f931.png' },
   { title: 'Sovrapposizioni', type: 'EXHIBITION DESIGN · AI', slug: 'sovrapposizioni', lang: 'it', image: 'https://rossellamagnani.figma.site/_assets/v11/141ddc64b5b5362cf1d47cddb155b8aefeecc258.png?w=1536' },
   { title: 'Marco Magnani Art', type: 'BRAND IDENTITY · ART DIRECTION', slug: 'marco-magnani-art', image: 'https://rossellamagnani.figma.site/_assets/v11/6eb7ffe7a5b70424dcb96a2ca56a52145979e5ba.png?w=1536' },
@@ -929,8 +929,6 @@ function ContactMenu() {
 // The closing row of a project page: the next project's name with a small picture of it, as on the
 // reference site (an arrow instead on phones); the last project leads back to the first
 function NextProject({ project }: { project: (typeof projects)[number] }) {
-  const still = project.video ? undefined : project.image
-  const poster = project.slug === 'a-drop-of-corruption' ? '/projects/a-drop-of-corruption/video-poster.svg' : undefined
   return (
     <a id="next-project" className="next-project reveal" href={`/${project.slug}`}>
       <span className="next-project__label">Next project</span>
@@ -941,11 +939,6 @@ function NextProject({ project }: { project: (typeof projects)[number] }) {
           <path d="M82 0h19c14 27 38 45 79 51v18c-41 6-65 24-79 51H82c13-29 34-49 65-60C116 49 95 29 82 0Z" />
         </svg>
       </i>
-      <span className="next-project__image" aria-hidden="true">
-        {still || poster ? (
-          <img src={still || poster} alt="" style={{ objectPosition: project.focus ?? (project.crop ? `${project.crop.x}% ${project.crop.y}%` : undefined) }} />
-        ) : null}
-      </span>
     </a>
   )
 }
@@ -1371,6 +1364,7 @@ function TecaPlan() {
           </button>
         ))}
       </div>
+      <div className="teca-plan__side">
       <ol className="teca-plan__legend">
         {TECA_STATIONS.map((item, index) => (
           <li key={item.name}>
@@ -1384,6 +1378,7 @@ function TecaPlan() {
         <span>{String(current + 1).padStart(2, '0')}</span>
         <strong>{station.name}</strong>
         <p>{station.copy}</p>
+      </div>
       </div>
     </div>
   )

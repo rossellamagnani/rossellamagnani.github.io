@@ -1719,29 +1719,17 @@ figure.placeholder.hero__media.is-cropped .placeholder__surface { aspect-ratio: 
   .hero .hero__media.is-whole .placeholder__surface { width: 100%; max-height: none; }
 }
 
-/* Next project: the name and, at the right, a small picture of that project */
-.next-project { grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 1fr auto; align-items: end; column-gap: 24px; }
-.next-project .next-project__label { grid-column: 1; grid-row: 1; align-self: end; }
+/* Next project: the label, then the name with the arrow right after it, on every device */
+.next-project { grid-template-columns: minmax(0, max-content) auto; grid-template-rows: auto auto; justify-content: start; align-items: center; column-gap: clamp(16px, 2vw, 32px); }
+.next-project .next-project__label { grid-column: 1 / -1; grid-row: 1; }
 .next-project strong { grid-column: 1; grid-row: 2; }
-.next-project__image { grid-column: 2; grid-row: 1 / span 2; width: clamp(120px, 13.5vw, 194px); aspect-ratio: 194 / 224; overflow: hidden; background: #e2e0da; }
-.next-project__image img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .8s cubic-bezier(.22, 1, .36, 1); }
-.next-project:hover .next-project__image img { transform: scale(1.04); }
-/* the arrow is always there, after the name; on computers the picture of the next project sits at the right */
-.next-project { grid-template-columns: auto minmax(0, 1fr) auto; }
-.next-project .next-project__label { grid-column: 1 / 3; }
-.next-project strong { grid-column: 1; }
-.next-project .next-project__arrow { display: block; grid-column: 2; grid-row: 2; align-self: center; width: clamp(36px, 3.4vw, 52px); margin-left: clamp(16px, 2vw, 32px); transition: transform .4s cubic-bezier(.22, 1, .36, 1); }
+.next-project .next-project__arrow { display: block; grid-column: 2; grid-row: 2; align-self: center; width: clamp(36px, 3.4vw, 52px); margin: 0; transition: transform .4s cubic-bezier(.22, 1, .36, 1); }
 .next-project__arrow svg { display: block; width: 100%; height: auto; fill: currentColor; }
 .next-project:hover .next-project__arrow { transform: translateX(8px); }
-.next-project__image { grid-column: 3; }
 @media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
-  .next-project__image { display: none; }
-  .next-project { grid-template-columns: minmax(0, 1fr) auto; }
-  .next-project .next-project__label { grid-column: 1; }
-  .next-project .next-project__arrow { width: 40px; margin-left: 16px; }
+  .next-project .next-project__arrow { width: 36px; }
 }
 @media (prefers-reduced-motion: reduce) { .next-project__arrow { transition: none; } }
-@media (prefers-reduced-motion: reduce) { .next-project__image img { transition: none; } }
 
 /* Phone and upright iPad: every picture in its own row at full width, one under the other */
 @media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
@@ -1818,4 +1806,12 @@ figure.placeholder.hero__media.is-cropped .placeholder__surface { aspect-ratio: 
   .teca-plan__entrance { display: none; }
   .teca-plan__legend { justify-content: flex-start; flex-direction: column; gap: 2px; }
   .teca-plan__station { text-align: left; }
+}
+
+/* Plan: on computers the map at the left, the legend and the station at the right */
+@media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
+  .teca-plan { display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(260px, 1fr); gap: clamp(32px, 4vw, 72px); align-items: center; }
+  .teca-plan__map { width: 100%; margin: 0; }
+  .teca-plan__legend { margin: 0; flex-direction: column; justify-content: flex-start; gap: 4px; }
+  .teca-plan__station { margin: 28px 0 0; padding-top: 24px; border-top: 1px solid var(--line); text-align: left; max-width: none; min-height: 200px; }
 }
