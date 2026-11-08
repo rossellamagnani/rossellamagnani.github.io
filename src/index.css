@@ -1732,15 +1732,9 @@ figure.placeholder.hero__media.is-cropped .placeholder__surface { aspect-ratio: 
   transition: transform .4s cubic-bezier(.22, 1, .36, 1);
 }
 .next-project:hover .next-project__arrow { color: var(--ink); transform: translateX(6px); text-decoration: none; }
-/* the title is made of word boxes (for the reveal animation), which a text underline skips:
-   the hover underline is a line drawn under the whole title instead */
-.next-project strong .lines { position: relative; display: inline-block; }
-.next-project strong .lines::after {
-  content: ''; position: absolute; left: 0; right: 0; bottom: -.04em; height: 1px; background: currentColor;
-  transform: scaleX(0); transform-origin: left; transition: transform .4s cubic-bezier(.22, 1, .36, 1);
-}
-.next-project:hover strong .lines::after, .next-project:focus-visible strong .lines::after { transform: scaleX(1); }
-@media (prefers-reduced-motion: reduce) { .next-project strong .lines::after { transition: none; } }
+.next-project__title { text-decoration: underline; text-decoration-color: transparent; text-decoration-thickness: 1px; text-underline-offset: .14em; transition: text-decoration-color .3s ease; }
+.next-project:hover .next-project__title, .next-project:focus-visible .next-project__title { text-decoration-color: currentColor; }
+@media (prefers-reduced-motion: reduce) { .next-project__title { transition: none; } }
 @media (prefers-reduced-motion: reduce) { .next-project__arrow { transition: none; } }
 
 /* Phone and upright iPad: every picture in its own row at full width, one under the other */
@@ -1878,3 +1872,13 @@ figure.placeholder.hero__media.is-cropped .placeholder__surface { aspect-ratio: 
 .site-link { display: flex; width: 100%; margin-top: clamp(48px, 6vw, 96px); text-decoration: none; color: var(--ink); border-top: 0; border-bottom: 0; }
 .site-link:hover i { transform: translate(3px, -3px); }
 .site-link i { transition: transform .3s ease; font-style: normal; }
+
+/* The site's arrow (an inline SVG): as tall as the text around it, on its baseline */
+.arrow { display: inline-block; width: 1em; height: 1em; vertical-align: -.12em; overflow: visible; }
+.next-project .next-project__arrow { display: flex; align-items: center; }
+.next-project .next-project__arrow .arrow { width: .8em; height: .8em; vertical-align: middle; }
+.site-link i .arrow { width: 1em; height: 1em; }
+.approach__arrow .arrow { width: 18px; height: 18px; }
+
+/* Sovrapposizioni, design translation: the "Scroll sideways" hint goes under the text, not on top of it */
+.process__head p.process__hint { grid-row: 3; margin-top: 12px; }
