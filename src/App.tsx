@@ -276,8 +276,8 @@ const caseStudies = [
       { src: `${CURRENT_SITE}/_assets/v11/5d9b11bc037a4a2698c0dbd7a2e7532c76307bb8.png?w=1600`, alt: 'Brochures laid out in rows: deep red covers and inside pages with the portraits.' },
       { src: `${CURRENT_SITE}/_assets/v11/4ca5cedeb374b25dbecc4c62cdf6921008b37d0d.png?w=1600`, alt: 'Business cards floating: a detail of a portrait on the front, the signature logo on the dark back.' },
       { src: `${CURRENT_SITE}/_assets/v11/3c30026e91ed20dbc517151c07bbd9802d1f0992.png?w=1600`, alt: "The book 'Anatomia della trama', with a blue cover torn open on a portrait, on a table by a window." },
-      { src: `${CURRENT_SITE}/_videos/v1/d5d628227812bc5ee2142d2a7eebae121bfcb7e5`, alt: 'The website on a laptop and a phone: a full-screen detail of a portrait and the menu of works.', poster: '/projects/marco-magnani-art/website-poster.svg', autoPlay: true },
     ],
+    website: 'https://www.marcomagnani.art',
   },
   {
     slug: 'crossing-kyiv',
@@ -621,24 +621,26 @@ function ImageWall({
   label,
   rows: rowCount = 2,
   pauseOnHover = true,
+  slow = false,
 }: {
   pictures: { src: string; alt: string }[]
   label: string
   rows?: number
   pauseOnHover?: boolean
+  slow?: boolean // drifts more slowly on phones
 }) {
   const size = Math.ceil(pictures.length / rowCount)
   const rows = Array.from({ length: rowCount }, (_, r) => pictures.slice(r * size, (r + 1) * size))
   return (
     <div
-      className={`image-wall ${pauseOnHover ? 'pause-on-hover' : ''}`}
+      className={`image-wall ${pauseOnHover ? 'pause-on-hover' : ''} ${slow ? 'is-slow' : ''}`}
       style={{ '--wall-rows': rowCount } as React.CSSProperties}
       role="group"
       aria-label={label}
+      tabIndex={0}
     >
       {rows.map((row, r) => (
-        // each row can take the focus, so that on phones it can also be scrolled from the keyboard
-        <div className={`image-wall__row ${r % 2 ? 'is-reverse' : ''}`} key={r} tabIndex={0} role="group" aria-label={rowCount > 1 ? `${label}, row ${r + 1}` : label}>
+        <div className={`image-wall__row ${r % 2 ? 'is-reverse' : ''}`} key={r}>
           <div className="image-wall__track">
             {[...row, ...row].map((pic, k) => (
               <img
@@ -1241,6 +1243,15 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
                       ]
               }
             />
+            {'website' in project && project.website && (
+              <a className="reading-action site-link" href={project.website} target="_blank" rel="noopener noreferrer">
+                <span>
+                  <strong>Visit the website</strong>
+                  <small>{project.website.replace(/^https?:\/\//, '')} · opens in a new tab</small>
+                </span>
+                <i aria-hidden="true">↗</i>
+              </a>
+            )}
           </div>
         </section>
 
@@ -1443,7 +1454,7 @@ function TecaDeep({
       <section id="research" className="section shell research sv-deep">
         <div className="section-label reveal">Research</div>
         {text('01', existing)}
-        <ImageWall pictures={teca.existing} label="Photographs of the existing exhibition" rows={2} pauseOnHover={false} />
+        <ImageWall pictures={teca.existing} label="Photographs of the existing exhibition" rows={2} pauseOnHover={false} slow />
         {text('02', approach)}
         <div className="approaches reveal">
           {[
@@ -1481,7 +1492,14 @@ function TecaDeep({
       <section className="section shell research sv-deep">
         {text('04', identity)}
         <TypeSpecimen />
-        {pictures(teca.identity)}
+        <div className="only-wide">{pictures(teca.identity)}</div>
+        <div className="only-narrow">
+          {pictures([
+            { src: '/projects/oltre-la-teca/grid-vertical.svg', alt: 'The grid of the vertical panel: audio guide number, Italian and English titles and texts, all set on the module x.' },
+            { src: '/projects/oltre-la-teca/grid-tactile.svg', alt: 'The grid of the tactile panel: audio guide icon and number, Italian and English text, Braille and the tactile reproduction.' },
+            { src: '/projects/oltre-la-teca/grid-text.svg', alt: 'The text block of the tactile panel: at most 55 characters per line, x-height 5 mm, line spacing 12.7 mm.' },
+          ])}
+        </div>
         {text('05', space)}
         <TecaPlan />
         {pictures(teca.space, 2)}
