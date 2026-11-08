@@ -2,6 +2,8 @@
 @import 'tailwindcss';
 
 :root {
+  /* light only: phone browsers must not apply their automatic dark mode */
+  color-scheme: only light;
   --paper: #ffffff;
   --ink: #111111;
   --accent: #111111;
@@ -11,7 +13,7 @@
 }
 
 @layer base {
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; background: #ffffff; }
   body {
     background: var(--paper);
     color: var(--ink);
