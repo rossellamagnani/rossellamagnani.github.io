@@ -843,7 +843,7 @@ function SiteHeader({ skipTo = 'content', children }: { skipTo?: string; childre
 }
 
 const introduction =
-  'Communication designer working on exhibitions, events and multisensory experiences designed for the widest possible audience.'
+  'Communication designer working on exhibitions and multisensory experiences designed for the widest possible audience.'
 
 // Phone only: three lines that open a menu and turn into a cross to close it. The menu shows the
 // introduction under the name and About, Email and LinkedIn at the bottom left.
