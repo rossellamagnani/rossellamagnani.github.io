@@ -27,6 +27,13 @@ const instruments = [
 // the centre of that area in % of the image, zoom how much larger than the frame's height it is drawn;
 // `whole` shows the entire image, uncropped, on a plain background (for cut-out shapes such as a sticker). For now they are taken from the current site
 // (rossellamagnani.figma.site); once the files are uploaded to public/, point these to the local copies.
+// The site can live in a sub-folder (GitHub Pages serves it at /<repository>/): every internal link
+// and every file in /public goes through these two helpers
+const BASE = import.meta.env.BASE_URL
+const link = (path: string) => BASE + path.replace(/^\//, '')
+const asset = <T extends string | undefined>(src: T): T =>
+  (src && src.startsWith('/') && !src.startsWith('//') && !src.startsWith(BASE) ? BASE + src.slice(1) : src) as T
+
 const projects: { title: string; type: string; slug: string; lang?: 'it'; image: string; video?: string; focus?: string; whole?: boolean; crop?: { x: number; y: number; zoom: number } }[] = [
   { title: 'Oltre la teca di vetro', type: 'EXHIBITION DESIGN · ACCESSIBILITY', slug: 'oltre-la-teca', lang: 'it', image: '/projects/oltre-la-teca/librarian.svg', focus: '62% 50%' },
   { title: "Oltre l'ascolto", type: 'MULTISENSORY DESIGN · ACCESSIBILITY', slug: 'oltre-lascolto', lang: 'it', image: 'https://rossellamagnani.figma.site/_assets/v11/176474d4960ebe154d49f3d2840823b84d71f931.png' },
@@ -535,8 +542,8 @@ function Placeholder({
         {src ? (
           isVideo ? (
             <video
-              src={src}
-              poster={poster}
+              src={asset(src)}
+              poster={asset(poster)}
               controls={controls}
               playsInline
               preload="metadata"
@@ -547,7 +554,7 @@ function Placeholder({
             />
           ) : (
             <img
-              src={src}
+              src={asset(src)}
               alt={alt}
               style={focus ? { objectPosition: focus } : undefined}
               // the picture's shape, so the layout can size it to fill its columns without getting taller than the window
@@ -645,7 +652,7 @@ function ImageWall({
             {[...row, ...row].map((pic, k) => (
               <img
                 key={k}
-                src={pic.src}
+                src={asset(pic.src)}
                 alt={k < row.length ? pic.alt : ''}
                 aria-hidden={k >= row.length || undefined}
                 draggable={false}
@@ -822,12 +829,12 @@ function SiteHeader({ skipTo = 'content', children }: { skipTo?: string; childre
       <a href={`#${skipTo}`} className="skip-link" onClick={skip}>
         Skip to content
       </a>
-      <a href="/" className="brand">
+      <a href={link('/')} className="brand">
         Rossella Magnani
       </a>
       <nav aria-label="Primary navigation">
         {children}
-        <a href="/about">About</a>
+        <a href={link('/about')}>About</a>
         <ContactMenu />
       </nav>
       <PhoneMenu />
@@ -879,7 +886,7 @@ function PhoneMenu() {
       </button>
       <div ref={panelRef} id="phone-menu" className="phone-menu" hidden={!open}>
         <p className="phone-menu__intro">{introduction}</p>
-        <a href="/about" onClick={() => setOpen(false)}>
+        <a href={link('/about')} onClick={() => setOpen(false)}>
           About
         </a>
         <a href="mailto:magnanirossella02@gmail.com" onClick={() => setOpen(false)}>
@@ -954,7 +961,7 @@ function ContactMenu() {
 // reference site (an arrow instead on phones); the last project leads back to the first
 function NextProject({ project }: { project: (typeof projects)[number] }) {
   return (
-    <a id="next-project" className="next-project reveal" href={`/${project.slug}`}>
+    <a id="next-project" className="next-project reveal" href={link(`/${project.slug}`)}>
       <span className="next-project__label">Next project</span>
       <strong lang={project.lang}>
         <Lines text={project.title} />
@@ -1737,7 +1744,7 @@ function About() {
 
         <section className="about-closing shell reveal">
           <p>Here&apos;s my CV.</p>
-          <a href="/Rossella_Magnani_CV.pdf" className="about-cv" download="Rossella_Magnani_CV.pdf">
+          <a href={asset('/Rossella_Magnani_CV.pdf')} className="about-cv" download="Rossella_Magnani_CV.pdf">
             Download CV <span className="sr-only">(PDF, 2 MB)</span>
           </a>
         </section>
@@ -1914,7 +1921,7 @@ function Home() {
             {projects.map(project => (
               <a
                 className="hm-card"
-                href={`/${project.slug}`}
+                href={link(`/${project.slug}`)}
                 data-cursor-label
                 key={project.title}
                 draggable={false}
@@ -1929,7 +1936,7 @@ function Home() {
                 <span className={`hm-image ${project.whole ? 'hm-image--whole' : ''}`} aria-hidden="true">
                   {project.video ? (
                     <video
-                      src={project.video}
+                      src={asset(project.video)}
                       muted
                       loop
                       playsInline
@@ -1939,7 +1946,7 @@ function Home() {
                     />
                   ) : project.image ? (
                     <img
-                      src={project.image}
+                      src={asset(project.image)}
                       alt=""
                       draggable={false}
                       className={project.crop ? 'hm-image__crop' : undefined}
@@ -2031,7 +2038,7 @@ function CaseStudy() {
               { name: 'Rai Pubblica Utilità', logo: '/logos/rai-pubblica-utilita.svg', height: 44 },
             ].map(({ name, logo, height }) => (
               <li key={name}>
-                <img src={logo} alt={name} style={{ '--logo-h': `${height}px` } as React.CSSProperties} />
+                <img src={asset(logo)} alt={name} style={{ '--logo-h': `${height}px` } as React.CSSProperties} />
               </li>
             ))}
           </ul>
@@ -2216,7 +2223,7 @@ function CaseStudy() {
 }
 
 export default function App() {
-  const path = window.location.pathname.replace(/^\/|\/$/g, '')
+  const path = window.location.pathname.slice(BASE.length - 1).replace(/^\/|\/$/g, '')
   const project = caseStudies.find(item => item.slug === path)
   const pageName = path === 'about' ? 'About' : path === 'oltre-lascolto' ? "Oltre l'ascolto" : project?.title
   useEffect(() => {
