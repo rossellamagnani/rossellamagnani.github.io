@@ -1742,7 +1742,7 @@ function About() {
 
         <section className="about-closing shell reveal">
           <p>Here&apos;s my CV.</p>
-          <a href={asset('/Rossella_Magnani_CV.pdf')} className="about-cv" download="Rossella_Magnani_CV.pdf">
+          <a href={asset('/CV_Rossella_Magnani.pdf')} className="about-cv" download="CV Rossella Magnani.pdf">
             Download CV <span className="sr-only">(PDF, 2 MB)</span>
           </a>
         </section>
