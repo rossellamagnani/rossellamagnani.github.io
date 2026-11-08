@@ -45,3 +45,5 @@ Speculative and editorial design: a fictional underground student collective wit
 ## a drop of corruption (/a-drop-of-corruption) (2024, group workshop with David Szauder)
 
 An experimental AI video on corporate greed and environmental damage, made in one week. Role: image generation and animation, shared by the group.
+
+Site: https://rossellamagnani.github.io/
