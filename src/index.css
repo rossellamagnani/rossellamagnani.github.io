@@ -1732,7 +1732,15 @@ figure.placeholder.hero__media.is-cropped .placeholder__surface { aspect-ratio: 
   transition: transform .4s cubic-bezier(.22, 1, .36, 1);
 }
 .next-project:hover .next-project__arrow { color: var(--ink); transform: translateX(6px); text-decoration: none; }
-.next-project:hover strong > span { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
+/* the title is made of word boxes (for the reveal animation), which a text underline skips:
+   the hover underline is a line drawn under the whole title instead */
+.next-project strong .lines { position: relative; display: inline-block; }
+.next-project strong .lines::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -.04em; height: 1px; background: currentColor;
+  transform: scaleX(0); transform-origin: left; transition: transform .4s cubic-bezier(.22, 1, .36, 1);
+}
+.next-project:hover strong .lines::after, .next-project:focus-visible strong .lines::after { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce) { .next-project strong .lines::after { transition: none; } }
 @media (prefers-reduced-motion: reduce) { .next-project__arrow { transition: none; } }
 
 /* Phone and upright iPad: every picture in its own row at full width, one under the other */
