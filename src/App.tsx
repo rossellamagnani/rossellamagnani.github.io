@@ -1246,8 +1246,8 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
             {'website' in project && project.website && (
               <a className="reading-action site-link" href={project.website} target="_blank" rel="noopener noreferrer">
                 <span>
-                  <strong>Visit the website</strong>
-                  <small>{project.website.replace(/^https?:\/\//, '')} · opens in a new tab</small>
+                  <strong>Visit the website<span className="sr-only"> (opens in a new tab)</span></strong>
+                  <small>{project.website.replace(/^https?:\/\//, '')}</small>
                 </span>
                 <i aria-hidden="true">↗</i>
               </a>

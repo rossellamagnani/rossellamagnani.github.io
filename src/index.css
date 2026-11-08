@@ -1865,6 +1865,6 @@ figure.placeholder.hero__media.is-cropped .placeholder__surface { aspect-ratio: 
 }
 
 /* Link to a project's live website, styled like the "Got more time?" control */
-.site-link { display: flex; width: 100%; margin-top: clamp(48px, 6vw, 96px); text-decoration: none; color: var(--ink); }
+.site-link { display: flex; width: 100%; margin-top: clamp(48px, 6vw, 96px); text-decoration: none; color: var(--ink); border-top: 0; border-bottom: 0; }
 .site-link:hover i { transform: translate(3px, -3px); }
 .site-link i { transition: transform .3s ease; font-style: normal; }
