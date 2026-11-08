@@ -635,10 +635,10 @@ function ImageWall({
       style={{ '--wall-rows': rowCount } as React.CSSProperties}
       role="group"
       aria-label={label}
-      tabIndex={0}
     >
       {rows.map((row, r) => (
-        <div className={`image-wall__row ${r % 2 ? 'is-reverse' : ''}`} key={r}>
+        // each row can take the focus, so that on phones it can also be scrolled from the keyboard
+        <div className={`image-wall__row ${r % 2 ? 'is-reverse' : ''}`} key={r} tabIndex={0} role="group" aria-label={rowCount > 1 ? `${label}, row ${r + 1}` : label}>
           <div className="image-wall__track">
             {[...row, ...row].map((pic, k) => (
               <img

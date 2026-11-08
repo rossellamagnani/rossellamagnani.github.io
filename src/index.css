@@ -1670,7 +1670,7 @@ main .orow figure.placeholder.is-cropped .placeholder__surface > img {
 .process-score .outcome-rows { margin-top: clamp(32px, 4vw, 56px); }
 
 .image-wall { display: grid; gap: 8px; margin-top: clamp(40px, 5vw, 72px); overflow: hidden; }
-.image-wall:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.image-wall:focus-visible, .image-wall__row:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 .image-wall__row { overflow: hidden; }
 .image-wall__track { display: flex; gap: 8px; width: max-content; animation: wall-drift 90s linear infinite; }
 .image-wall__row.is-reverse .image-wall__track { animation-direction: reverse; }
@@ -1816,4 +1816,31 @@ figure.placeholder.hero__media.is-cropped .placeholder__surface { aspect-ratio: 
   .teca-plan__map { width: 100%; margin: 0; }
   .teca-plan__legend { margin: 0; flex-direction: column; justify-content: flex-start; gap: 4px; }
   .teca-plan__station { margin: 28px 0 0; padding-top: 24px; border-top: 1px solid var(--line); text-align: left; max-width: none; min-height: 200px; }
+}
+
+/* Phone and iPad portrait: the walls of pictures no longer drift on their own; each row is a strip
+   to drag sideways with the finger (the repeated copy used for the endless loop is hidden) */
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .image-wall__row { overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; }
+  .image-wall__row::-webkit-scrollbar { display: none; }
+  .image-wall__track { animation: none; transform: none; padding-inline: 16px; }
+  .image-wall__track img { scroll-snap-align: start; scroll-margin-inline: 16px; }
+  .image-wall__track img[aria-hidden="true"] { display: none; }
+  .image-wall { margin-inline: -16px; }
+}
+
+/* Phone and iPad portrait: body text one step larger */
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .quick-read__title > p,
+  .quick-read__steps p,
+  .challenge__copy p,
+  .research-copy p,
+  .research-block p.intro,
+  .instrument-card p,
+  .principles p,
+  .about-table__detail li,
+  .about-section > div > p,
+  .teca-plan__station p,
+  .process-sticky .shell > p { font-size: 16px; line-height: 1.6; }
+  .fact p, .reading-action small { font-size: 15px; }
 }
