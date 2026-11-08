@@ -34,6 +34,17 @@ const link = (path: string) => BASE + path.replace(/^\//, '')
 const asset = <T extends string | undefined>(src: T): T =>
   (src && src.startsWith('/') && !src.startsWith('//') && !src.startsWith(BASE) ? BASE + src.slice(1) : src) as T
 
+// One arrow for the whole site, drawn with straight lines so it looks the same on every system
+// (the → character takes the shape of each font, with curved strokes in Helvetica Neue)
+function Arrow({ direction = 'right', className = '' }: { direction?: 'right' | 'down' | 'up-right'; className?: string }) {
+  const rotate = direction === 'down' ? 90 : direction === 'up-right' ? -45 : 0
+  return (
+    <svg className={`arrow ${className}`} viewBox="0 0 24 24" aria-hidden="true" focusable="false" style={rotate ? { transform: `rotate(${rotate}deg)` } : undefined}>
+      <path d="M2 12H21M14 5L21 12L14 19" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter" />
+    </svg>
+  )
+}
+
 const projects: { title: string; type: string; slug: string; lang?: 'it'; image: string; video?: string; focus?: string; whole?: boolean; crop?: { x: number; y: number; zoom: number } }[] = [
   { title: 'Oltre la teca di vetro', type: 'EXHIBITION DESIGN · ACCESSIBILITY', slug: 'oltre-la-teca', lang: 'it', image: '/projects/oltre-la-teca/librarian.svg', focus: '62% 50%' },
   { title: "Oltre l'ascolto", type: 'MULTISENSORY DESIGN · ACCESSIBILITY', slug: 'oltre-lascolto', lang: 'it', image: '/media/176474d496.gif' },
@@ -962,8 +973,8 @@ function NextProject({ project }: { project: (typeof projects)[number] }) {
     <a id="next-project" className="next-project reveal" href={link(`/${project.slug}`)}>
       <span className="next-project__label">Next project</span>
       <strong lang={project.lang}>
-        <Lines text={project.title} />
-        <i className="next-project__arrow" aria-hidden="true">→</i>
+        <span className="next-project__title">{project.title}</span>
+        <i className="next-project__arrow" aria-hidden="true"><Arrow /></i>
       </strong>
     </a>
   )
@@ -1212,7 +1223,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
               <div className="shell process__head">
                 <div className="section-label">Process</div>
                 <h2><Lines text={project.processTitle} /></h2>
-                <p>{project.processDescription} →</p>
+                <p>{project.processDescription} <Arrow /></p>
               </div>
               <div className="process-strip" tabIndex={0} role="region" aria-label="Process images, scroll sideways">
                 {deep?.backstage
@@ -1254,7 +1265,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
                   <strong>Visit the website<span className="sr-only"> (opens in a new tab)</span></strong>
                   <small>{project.website.replace(/^https?:\/\//, '')}</small>
                 </span>
-                <i aria-hidden="true">↗</i>
+                <i aria-hidden="true"><Arrow direction="up-right" /></i>
               </a>
             )}
           </div>
@@ -1326,7 +1337,7 @@ function SovrapposizioniDeep({
             <div className="section-label">05</div>
             <h2><Lines text={translation.title} /></h2>
             <p className="sv-strip-copy">{translation.copy}</p>
-            <p>Scroll sideways →</p>
+            <p className="process__hint">Scroll sideways <Arrow /></p>
           </div>
           <div className="process-strip" tabIndex={0} role="region" aria-label="The editorial object, scroll sideways">
             {deep.editorial?.map(({ src, alt }) => <Placeholder key={src} caption={alt} alt={alt} src={src} />)}
@@ -1470,13 +1481,13 @@ function TecaDeep({
               <h3>{name}</h3>
               <p className="approach__who">{who}</p>
               <p className="approach__step"><span>First question</span>{first}</p>
-              <span className="approach__arrow" aria-hidden="true">↓</span>
+              <span className="approach__arrow" aria-hidden="true"><Arrow direction="down" /></span>
               <p className="approach__step"><span>Second question</span>{second}</p>
             </div>
           ))}
         </div>
         {text('03', principles)}
-        <p className="principles__hint" aria-hidden="true">Scroll sideways →</p>
+        <p className="principles__hint" aria-hidden="true">Scroll sideways <Arrow /></p>
         <ol className="principles reveal" tabIndex={0} aria-label="The thirteen principles, scroll sideways">
           {TECA_PRINCIPLES.map(([title, copy]) => (
             <li key={title}>
