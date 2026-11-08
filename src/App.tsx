@@ -933,12 +933,7 @@ function NextProject({ project }: { project: (typeof projects)[number] }) {
     <a id="next-project" className="next-project reveal" href={`/${project.slug}`}>
       <span className="next-project__label">Next project</span>
       <strong lang={project.lang}><Lines text={project.title} /></strong>
-      <i className="next-project__arrow" aria-hidden="true">
-        <svg viewBox="0 0 180 120">
-          <path d="M0 51h151v18H0z" />
-          <path d="M82 0h19c14 27 38 45 79 51v18c-41 6-65 24-79 51H82c13-29 34-49 65-60C116 49 95 29 82 0Z" />
-        </svg>
-      </i>
+      <i className="next-project__arrow" aria-hidden="true">→</i>
     </a>
   )
 }

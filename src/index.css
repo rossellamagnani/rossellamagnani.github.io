@@ -1719,16 +1719,17 @@ figure.placeholder.hero__media.is-cropped .placeholder__surface { aspect-ratio: 
   .hero .hero__media.is-whole .placeholder__surface { width: 100%; max-height: none; }
 }
 
-/* Next project: the label, then the name with the arrow right after it, on every device */
-.next-project { grid-template-columns: minmax(0, max-content) auto; grid-template-rows: auto auto; justify-content: start; align-items: center; column-gap: clamp(16px, 2vw, 32px); }
-.next-project .next-project__label { grid-column: 1 / -1; grid-row: 1; }
+/* Next project: the label, the name, and at the right a text arrow like the "+" of "Got more time?" */
+.next-project { grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto auto; justify-content: stretch; align-items: center; column-gap: 24px; }
+.next-project .next-project__label { grid-column: 1; grid-row: 1; }
 .next-project strong { grid-column: 1; grid-row: 2; }
-.next-project .next-project__arrow { display: block; grid-column: 2; grid-row: 2; align-self: center; width: clamp(36px, 3.4vw, 52px); margin: 0; transition: transform .4s cubic-bezier(.22, 1, .36, 1); }
-.next-project__arrow svg { display: block; width: 100%; height: auto; fill: currentColor; }
-.next-project:hover .next-project__arrow { transform: translateX(8px); }
-@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
-  .next-project .next-project__arrow { width: 36px; }
+.next-project .next-project__arrow {
+  display: block; grid-column: 2; grid-row: 2; align-self: center; width: auto; margin: 0;
+  color: var(--ink); font-style: normal; font-size: 28px; font-weight: 300; line-height: 1;
+  transition: transform .4s cubic-bezier(.22, 1, .36, 1);
 }
+.next-project:hover .next-project__arrow { color: var(--ink); transform: translateX(6px); }
+.next-project:hover strong { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
 @media (prefers-reduced-motion: reduce) { .next-project__arrow { transition: none; } }
 
 /* Phone and upright iPad: every picture in its own row at full width, one under the other */
