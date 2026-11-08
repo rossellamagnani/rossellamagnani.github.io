@@ -58,8 +58,8 @@ const caseStudies = [
       'In a museum the ancient book becomes an object to look at: closed in a glass case, open on a single page, out of reach. Latin, old scripts and botanical codes add a cognitive barrier to the physical one, and for most visitors, especially those with sensory or cognitive disabilities, the book stays silent.',
     research: [
       { title: 'The existing exhibition', copy: "«Librària» brings the library's manuscripts, incunabula and herbarium to the public with touch screens, videos and tactile panels. The audit read it through four filters, information, senses and cognition, user experience and space, and found five main issues: too much text on the panels, no wayfinding in the circular room, overlapping audio from every video, a tactile version of the games poorer than the digital one, and a central module usable only through smooth glass." },
-      { title: 'Two ways to approach accessibility', copy: 'An integrative approach designs the exhibition for sighted visitors and adds dedicated tools afterwards. A structural approach starts from the visitors who meet the greatest barriers and builds one experience for all. The project sits close to the structural end: every station is designed from the start to be used with more than one sense.' },
-      { title: 'Thirteen principles', copy: 'Each issue became a rule. Video only where nothing else can replace it. Long text lives on the vertical panel, the tactile panel speaks to the hands. One audio guide replaces sound in the room. Screens are read seated. We play with our hands, not with a screen. The route can be read with closed eyes. One register, one typeface, contrast never optional.' },
+      { title: 'Two ways to approach accessibility', copy: 'Every exhibition answers, openly or not, the question of who its reference visitor is, and the order of the questions decides the whole project. The integrative approach designs for sighted visitors and adds dedicated tools afterwards: it is the approach of «Librària», the existing exhibition. The structural approach starts from the visitors who meet the greatest barriers and builds one experience for all: it is the approach of the ideal project.' },
+      { title: 'Thirteen principles', copy: 'The strategy becomes thirteen rules, each born from an issue found in the existing exhibition.' },
       { title: 'A visual identity for reading', copy: 'One typeface, Atkinson Hyperlegible, in its weights, with sizes set by reading distance following the Smithsonian guidelines. Two colours only, a deep red #61242D and white, with a contrast of about 95% on every support. Vertical and tactile panels share one bilingual grid built on a single module, with Braille embossed in the colour of the panel.' },
       { title: 'Space, materials and light', copy: 'A new route with an entrance room for orientation, a tactile plan and a LOGES floor guide. Modules at 105 cm with a 20° reading plane and free space below for wheelchairs. White 3D-printed resin for every reproduction, authentic materials where the material is the content, warm light focused on the stations.' },
     ],
@@ -86,9 +86,7 @@ const caseStudies = [
         src: `/projects/oltre-la-teca/existing/${String(n).padStart(2, '0')}.svg`,
         alt: 'The existing exhibition «Librària»: visitors at the touch screens and tactile panels.',
       })),
-      positioning: { src: '/projects/oltre-la-teca/positioning.svg', alt: 'Chart: six scales between the integrative and the structural approach, with the existing exhibition near the first and the project near the second.' },
       identity: [
-        { src: '/projects/oltre-la-teca/typeface.svg', alt: 'The typeface Atkinson Hyperlegible, with the glyphs it keeps distinct: I l 1, O 0, B 8, S 5, 6 b, b d p q.' },
         { src: '/projects/oltre-la-teca/grid.svg', alt: 'The bilingual grids of the vertical and the tactile panel, built on one module, with the Braille block below the text.' },
       ],
       space: [
@@ -970,7 +968,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
       book?: Pic[]
     }
     manual?: { logotype: Pic[]; pages: Pic[]; unveiling: Pic }
-    teca?: { existing: Pic[]; positioning: Pic; identity: Pic[]; space: (Pic & { tall?: boolean })[] }
+    teca?: { existing: Pic[]; identity: Pic[]; space: (Pic & { tall?: boolean })[] }
   }
   const deep = media.deep
   // projects without the optional deep dive (no research material shown)
@@ -1320,6 +1318,46 @@ function SovrapposizioniDeep({
   )
 }
 
+const TECA_PRINCIPLES = [
+  ['Video only where it cannot be replaced', 'Video is kept for what no other channel can give, such as interviews, gestures and craft seen in motion.'],
+  ['Text lives on the wall', 'The vertical panel holds the texts in Italian and English, always in a predictable place.'],
+  ['The panel speaks to the hands', 'The tactile panel keeps only a few lines with their Braille, leaving room for the tactile reproductions.'],
+  ['One voice for the whole route', 'An audio guide replaces sound in the room: each visitor hears only what they chose to hear.'],
+  ['Screens are read seated', 'Where a screen is needed it lies flat, readable from any height, standing or in a wheelchair.'],
+  ['Fewer steps, more immediacy', 'Interactive stations start their content with one direct gesture instead of a sequence of choices.'],
+  ['We play with our hands, not with a screen', 'The games become physical activities, the same for every visitor.'],
+  ['The central module excludes no one', 'Consulting the books no longer depends on touch screens that blind visitors cannot use.'],
+  ['The route can be read with closed eyes', 'A tactile plan at the entrance and a tactile floor guide lead from one station to the next.'],
+  ['Video is silent by definition', 'Every video is subtitled; its sound reaches the visitor only through the audio guide.'],
+  ['One register tells the whole exhibition', 'One tone of voice on every support, authoritative but accessible.'],
+  ['One typeface, read through its weights', 'Atkinson Hyperlegible on every support, with hierarchy built from its weights.'],
+  ['Contrast is never optional', 'A constant, verified contrast in every reading context, whatever the palette.'],
+] as const
+
+// A type specimen set in the typeface itself
+function TypeSpecimen() {
+  return (
+    <figure className="type-specimen reveal" aria-label="Atkinson Hyperlegible, the typeface of the project">
+      <p aria-hidden="true">
+        AaBbCcDdEeFfGgHhIiJj
+        <br />
+        KkLlMmNnOoPpQqRrSsTt
+        <br />
+        UuVvWwXxYyZz0123456
+        <br />
+        789#!?%&amp;@€()*+=/«»
+        <br />
+        Il1 O0 B8 S5 6b bdpq
+      </p>
+      <figcaption>
+        <span>Atkinson Hyperlegible</span>
+        <span>Braille Institute</span>
+      </figcaption>
+      <strong aria-hidden="true">Atkinson</strong>
+    </figure>
+  )
+}
+
 // Oltre la teca di vetro's deep dive: the audit of the existing exhibition (its photographs drifting in a
 // wall), the strategic choice, the principles, the visual identity and the space, texts with their
 // pictures below
@@ -1328,7 +1366,7 @@ function TecaDeep({
   teca,
 }: {
   project: (typeof caseStudies)[number]
-  teca: { existing: ManualPic[]; positioning: ManualPic; identity: ManualPic[]; space: (ManualPic & { tall?: boolean })[] }
+  teca: { existing: ManualPic[]; identity: ManualPic[]; space: (ManualPic & { tall?: boolean })[] }
 }) {
   const [existing, approach, principles, identity, space] = project.research
   const pictures = (list: (ManualPic & { tall?: boolean })[], turn = 0) => (
@@ -1347,8 +1385,29 @@ function TecaDeep({
         {text('01', existing)}
         <ImageWall pictures={teca.existing} label="Photographs of the existing exhibition" rows={2} pauseOnHover={false} />
         {text('02', approach)}
-        {pictures([teca.positioning], 1)}
+        <div className="approaches reveal">
+          {[
+            ['Integrative approach', '«Librària», the existing exhibition', 'What should the visitor see?', 'How do I make this content usable by those who cannot see it?'],
+            ['Structural approach', 'The ideal project', 'Through which senses can this content be perceived?', 'How do I make it engaging for every visitor?'],
+          ].map(([name, who, first, second]) => (
+            <div className="approach" key={name}>
+              <h3>{name}</h3>
+              <p className="approach__who">{who}</p>
+              <p className="approach__step"><span>First question</span>{first}</p>
+              <span className="approach__arrow" aria-hidden="true">↓</span>
+              <p className="approach__step"><span>Second question</span>{second}</p>
+            </div>
+          ))}
+        </div>
         {text('03', principles)}
+        <ol className="principles reveal">
+          {TECA_PRINCIPLES.map(([title, copy]) => (
+            <li key={title}>
+              <strong>{title}</strong>
+              <p>{copy}</p>
+            </li>
+          ))}
+        </ol>
       </section>
 
       <section id="insight" className="insight reveal">
@@ -1360,6 +1419,7 @@ function TecaDeep({
 
       <section className="section shell research sv-deep">
         {text('04', identity)}
+        <TypeSpecimen />
         {pictures(teca.identity)}
         {text('05', space)}
         {pictures(teca.space, 2)}

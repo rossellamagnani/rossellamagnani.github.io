@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap');
 @import 'tailwindcss';
 
 :root {
@@ -1763,4 +1764,26 @@ figure.placeholder.hero__media.is-cropped .placeholder__surface { aspect-ratio: 
 /* Education, tools and languages side by side */
 @media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
   .about-details { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* Oltre la teca di vetro: the two approaches, the thirteen principles and the type specimen */
+.approaches { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: clamp(32px, 4vw, 56px); }
+.approach { border-top: 1px solid var(--line); padding-top: 16px; display: flex; flex-direction: column; align-items: flex-start; }
+.approach h3 { margin: 0; font-size: clamp(20px, 1.8vw, 28px); font-weight: 400; }
+.approach__who { margin: 6px 0 32px; color: var(--muted); font-family: var(--font-label); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+.approach__step { margin: 0; max-width: 24ch; font-size: clamp(20px, 2vw, 30px); line-height: 1.2; }
+.approach__step span { display: block; margin-bottom: 8px; color: var(--muted); font-family: var(--font-label); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+.approach__arrow { margin: 20px 0; font-size: clamp(28px, 2.6vw, 40px); line-height: 1; }
+.principles { list-style: none; margin: clamp(32px, 4vw, 56px) 0 0; padding: 0; counter-reset: principle; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px 8px; }
+.principles li { counter-increment: principle; border-top: 1px solid var(--line); padding: 14px 24px 0 0; }
+.principles li::before { content: counter(principle, decimal-leading-zero); display: block; margin-bottom: 10px; color: var(--muted); font-family: var(--font-label); font-size: 12px; letter-spacing: .04em; }
+.principles strong { display: block; font-size: 17px; font-weight: 500; line-height: 1.25; }
+.principles p { margin: 8px 0 0; font-size: 14px; line-height: 1.5; color: var(--muted); }
+.type-specimen { margin: clamp(40px, 5vw, 72px) 0 0; font-family: 'Atkinson Hyperlegible', sans-serif; color: var(--ink); }
+.type-specimen p { margin: 0; font-size: clamp(32px, 5.6vw, 88px); line-height: 1.12; overflow-wrap: anywhere; }
+.type-specimen figcaption { display: flex; justify-content: space-between; margin-top: 16px; padding-top: 8px; border-top: 1px solid var(--ink); font-family: var(--font-label); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+.type-specimen strong { display: block; font-weight: 400; font-size: clamp(80px, 20vw, 320px); line-height: 1; letter-spacing: -.01em; }
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .approaches { grid-template-columns: 1fr; gap: 40px; }
+  .principles { grid-template-columns: 1fr; gap: 24px; }
 }
