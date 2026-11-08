@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
+import { TECA_PLAN } from './tecaPlan'
 
 const instruments = [
   {
@@ -66,7 +67,7 @@ const caseStudies = [
     insight: 'What is designed for the visitors who meet the greatest barriers ends up improving the experience of everyone.',
     processTitle: 'The existing exhibition',
     processDescription: 'Scroll sideways',
-    cover: { src: '/projects/oltre-la-teca/timeline-book.svg', alt: "Render: the Timeline Book station, a long red module with the panel 'Quando il libro era un rotolo', a scroll to unroll on the tactile plane and a visitor in a wheelchair." },
+    cover: { src: '/projects/oltre-la-teca/librarian.svg', alt: "Render: a visitor exploring the relief plates of the Librarian station, under the panels 'La classificazione della natura' and 'Micologia e regno dei funghi'." },
     outcome: [
       ['entrance', "Render: the entrance room, with the Librària logo in relief and the reception counter holding the tactile plan of the exhibition."],
       ['tactile-map', 'A hand exploring the tactile plan: red relief modules on a white base, with legends in Italian, English and Braille.', 'tall'],
@@ -76,7 +77,7 @@ const caseStudies = [
       ['tools', 'The tools of the illuminator on the reading plane: shell, pumice, scraper, quill and lead point.'],
       ['herbarium', 'Render: the Herbarium module, with visitors smelling the ampoules of the four plants.'],
       ['ampoules', 'The four tilted ampoules with the essences of the plants of the Aldini herbarium.'],
-      ['librarian', 'Render: the Librarian station, with scientific plates in relief and the catalogue cards to place on the reader.'],
+      ['timeline-book', "Render: the Timeline Book station, a long red module with the panel 'Quando il libro era un rotolo', a scroll to unroll on the tactile plane and a visitor in a wheelchair."],
       ['movable-type', 'Metal movable type to explore with the hands at the station on Gutenberg.', 'tall'],
       ['worn-page', 'A hand on a thermochromic page that keeps the imprint of the fingers, like the worn margins of books of hours.', 'tall'],
       ['memory-print', 'Render: the memory station, where each visitor prints their own souvenir on a small press.'],
@@ -90,7 +91,6 @@ const caseStudies = [
         { src: '/projects/oltre-la-teca/grid.svg', alt: 'The bilingual grids of the vertical and the tactile panel, built on one module, with the Braille block below the text.' },
       ],
       space: [
-        { src: '/projects/oltre-la-teca/plan.svg', alt: 'Plan of the new route: entrance, Timeline Library, Timeline Book, Illuminator, Herbarium, Librarian and the interactive module.' },
         { src: '/projects/oltre-la-teca/section.svg', alt: 'Elevation and section of a station: vertical panel 130 cm, reading plane tilted 20° at 105 cm, free space for a wheelchair below.' },
         { src: '/projects/oltre-la-teca/floor-light.svg', alt: 'The floor guide codes, straight line and stop, and the spotlights aimed at the reading planes.', tall: true },
       ],
@@ -1334,6 +1334,61 @@ const TECA_PRINCIPLES = [
   ['Contrast is never optional', 'A constant, verified contrast in every reading context, whatever the palette.'],
 ] as const
 
+const TECA_STATIONS = [
+  { name: 'The entrance station', x: 18.3, y: 17.5, copy: 'On the reception counter of the first room, the tactile plan of the exhibition, next to the cloakroom and the audio guides.' },
+  { name: 'The library timeline', x: 28, y: 26.3, copy: 'Three vertical panels on the history of the library, the resin reproduction of the cornice of the Salone Teresiano and three weights that turn the growth of the collections into something to lift.' },
+  { name: 'The book timeline', x: 62.7, y: 45.1, copy: 'On one side of the central module, five narrative stations that retrace the history of the book through forms and materials.' },
+  { name: 'The illuminator', x: 71.5, y: 76.8, copy: 'The documentary station on the short side and three narrative stations on the long side, between images in relief and the tools of the craft in their real materials.' },
+  { name: 'The herbarium', x: 82.5, y: 34, copy: 'Four plants of the Aldini herbarium, offered as form on the long side and as smell, with the ampoules, on the short side.' },
+  { name: 'The librarian', x: 64.4, y: 38.4, copy: 'On the other side of the central module, four scientific plates in relief and the hands-on station with the catalogue cards.' },
+  { name: 'The interactive module', x: 51.4, y: 16.2, copy: 'Three play stations without digital interfaces: the question and answer game, the incunabulum station and the printing of the souvenir.' },
+]
+
+// The plan of the redesigned route as a drawing in code: numbered points mark the stations, and
+// choosing one, on the plan or in the list, shows its description
+function TecaPlan() {
+  const [current, setCurrent] = useState(0)
+  const station = TECA_STATIONS[current]
+  return (
+    <div className="teca-plan reveal">
+      <div className="teca-plan__map">
+        <svg viewBox={`0 0 ${TECA_PLAN.width} ${TECA_PLAN.height}`} role="img" aria-label="Plan of the redesigned route, from the entrance through seven stations">
+          <path d={TECA_PLAN.d} fillRule="evenodd" />
+        </svg>
+        <span className="teca-plan__entrance" style={{ left: '8.5%', top: '50%' }} aria-hidden="true">Entrance / Exit</span>
+        {TECA_STATIONS.map((item, index) => (
+          <button
+            type="button"
+            key={item.name}
+            className={`teca-plan__dot ${index === current ? 'is-current' : ''}`}
+            style={{ left: `${item.x}%`, top: `${item.y}%` }}
+            aria-label={`${index + 1}. ${item.name}`}
+            aria-pressed={index === current}
+            aria-controls="teca-station"
+            onClick={() => setCurrent(index)}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
+      <ol className="teca-plan__legend">
+        {TECA_STATIONS.map((item, index) => (
+          <li key={item.name}>
+            <button type="button" aria-pressed={index === current} aria-controls="teca-station" onClick={() => setCurrent(index)}>
+              <span>{String(index + 1).padStart(2, '0')}</span> {item.name}
+            </button>
+          </li>
+        ))}
+      </ol>
+      <div id="teca-station" className="teca-plan__station" aria-live="polite">
+        <span>{String(current + 1).padStart(2, '0')}</span>
+        <strong>{station.name}</strong>
+        <p>{station.copy}</p>
+      </div>
+    </div>
+  )
+}
+
 // A type specimen set in the typeface itself
 function TypeSpecimen() {
   return (
@@ -1400,7 +1455,8 @@ function TecaDeep({
           ))}
         </div>
         {text('03', principles)}
-        <ol className="principles reveal">
+        <p className="principles__hint" aria-hidden="true">Scroll sideways →</p>
+        <ol className="principles reveal" tabIndex={0} aria-label="The thirteen principles, scroll sideways">
           {TECA_PRINCIPLES.map(([title, copy]) => (
             <li key={title}>
               <strong>{title}</strong>
@@ -1422,6 +1478,7 @@ function TecaDeep({
         <TypeSpecimen />
         {pictures(teca.identity)}
         {text('05', space)}
+        <TecaPlan />
         {pictures(teca.space, 2)}
       </section>
     </>
