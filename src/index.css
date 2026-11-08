@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap');
 @import 'tailwindcss';
 
 :root {
   --paper: #ffffff;
   --ink: #111111;
-  --accent: #1646ff;
-  --quote-bg: #c7cacc;
+  --accent: #111111;
+  --quote-bg: #e8e6e0;
   --line: #c8c6bf;
   --muted: #6b6a65;
 }
@@ -15,7 +15,7 @@
   body {
     background: var(--paper);
     color: var(--ink);
-    font-family: 'Inter', Helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     overflow-x: hidden;
   }
   a { color: inherit; text-decoration: none; }
@@ -23,18 +23,20 @@
 
 ::selection { background: var(--accent); color: white; }
 
+/* No dot: only an "Open project" label that follows the normal pointer over project images */
 .custom-cursor { display: none; }
 @media (hover: hover) and (pointer: fine) {
-  html, body, a, button, [role='button'] { cursor: none; }
   .custom-cursor {
-    position: fixed; z-index: 9999; top: 0; left: 0; width: 10px; height: 10px;
-    display: block; border-radius: 50%; background: #1646ff; opacity: 0;
-    pointer-events: none; will-change: transform, width, height, opacity;
-    transition: width .2s ease, height .2s ease, opacity .15s ease;
+    position: fixed; z-index: 9999; top: 0; left: 0; width: 0; height: 0;
+    display: block; pointer-events: none; will-change: transform;
   }
-  .custom-cursor.visible { opacity: 1; }
-  .custom-cursor.interactive { width: 24px; height: 24px; }
-  .custom-cursor.pressed { width: 16px; height: 16px; }
+  .custom-cursor__label {
+    position: absolute; top: 14px; left: 16px; white-space: nowrap;
+    padding: 4px 8px; background: var(--paper); color: var(--ink);
+    font-size: 12px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase;
+    opacity: 0; transition: opacity .2s ease;
+  }
+  .custom-cursor.labelled .custom-cursor__label { opacity: 1; }
 }
 
 main, article, section, figure, div { min-width: 0; }
@@ -48,7 +50,7 @@ img, video, svg { display: block; max-width: 100%; height: auto; }
 }
 .brand { font-weight: 700; letter-spacing: -.015em; text-transform: uppercase; }
 .nav nav { display: flex; gap: clamp(24px, 3vw, 52px); }
-.brand, .nav nav a { font-size: 11px; }
+.brand, .nav nav a { font-size: 12px; }
 .brand { font-size: 14px; }
 .nav nav a { font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
 .nav nav a, .footer a { position: relative; }
@@ -58,21 +60,20 @@ img, video, svg { display: block; max-width: 100%; height: auto; }
 }
 .nav nav a:hover::after, .footer a:hover::after { right: 0; }
 .site-header { position: relative; z-index: 30; }
-.home > .site-header { position: absolute; inset-inline: 0; }
 
 .hero { padding-top: clamp(12px, 2vw, 28px); }
 .eyebrow, .section-label {
-  color: var(--accent); font-size: 10px; font-weight: 600; letter-spacing: .16em;
+  color: var(--accent); font-size: 12px; font-weight: 600; letter-spacing: .16em;
   text-transform: uppercase;
 }
 article .section-label { display: none; }
 .hero h1 {
-  margin: clamp(46px, 6vw, 88px) 0 0; font: 500 clamp(68px, 12.8vw, 200px)/.8 'Inter', Helvetica, sans-serif;
+  margin: clamp(46px, 6vw, 88px) 0 0; font: 500 clamp(68px, 12.8vw, 200px)/.8 'Helvetica Neue', Helvetica, Arial, sans-serif;
   letter-spacing: -.075em;
 }
 .hero__subtitle {
   position: relative; z-index: 1; display: block; margin: clamp(40px, 4vw, 64px) 0 0;
-  font: 500 clamp(20px, 2.2vw, 34px)/1.2 'Inter', Helvetica, sans-serif; letter-spacing: -.05em;
+  font: 500 clamp(20px, 2.2vw, 34px)/1.2 'Helvetica Neue', Helvetica, Arial, sans-serif; letter-spacing: -.05em;
 }
 .hero__subtitle span { color: var(--accent); }
 .hero__subtitle--ink,
@@ -98,17 +99,17 @@ article .section-label { display: none; }
   content: ''; position: absolute; inset: 16px; border: 1px solid rgba(17,17,17,.16);
 }
 .placeholder__index {
-  position: absolute; top: 28px; left: 28px; z-index: 1; font-size: 9px;
+  position: absolute; top: 28px; left: 28px; z-index: 1; font-size: 12px;
   letter-spacing: .16em; color: #66655f;
 }
 .placeholder figcaption { display: none; }
-.hero__media .placeholder__surface { aspect-ratio: 16 / 8.5; }
+.hero__media .placeholder__surface { aspect-ratio: 21 / 9; max-height: 60svh; }
 
 .facts {
   margin-top: 28px; padding: 22px 0 76px; display: grid; grid-template-columns: 1fr 2fr .7fr 1fr 1.5fr;
   gap: 24px;
 }
-.fact span { color: var(--accent); font-size: 9px; letter-spacing: .14em; text-transform: uppercase; }
+.fact > span { color: var(--accent); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
 .fact p { margin-top: 9px; max-width: 235px; font-size: 14px; line-height: 1.5; }
 
 .reading-mode {
@@ -126,7 +127,7 @@ article .section-label { display: none; }
   letter-spacing: -.055em;
 }
 .reading-action small {
-  color: var(--accent); font-size: 9px; font-weight: 600;
+  color: var(--accent); font-size: 12px; font-weight: 600;
   letter-spacing: .12em; text-transform: uppercase;
 }
 .reading-action i {
@@ -145,7 +146,7 @@ article .section-label { display: none; }
 .quick-read > .section-label { grid-column: 1 / 3; }
 .quick-read__title { grid-column: 1 / 11; }
 .quick-read__title h2 {
-  max-width: 1250px; font: 500 clamp(48px, 7vw, 108px)/.9 'Inter', Helvetica, sans-serif;
+  max-width: 1250px; font: 500 clamp(48px, 7vw, 108px)/.9 'Helvetica Neue', Helvetica, Arial, sans-serif;
   letter-spacing: -.075em;
 }
 .quick-read__title > p { margin: 48px 0 0; max-width: 500px; font-size: 14px; line-height: 1.7; }
@@ -153,7 +154,7 @@ article .section-label { display: none; }
   grid-column: 1 / 13; margin-top: 90px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
 }
 .quick-read__steps article { padding-top: 14px; border-top: 1px solid var(--ink); }
-.quick-read__steps span { color: var(--accent); font-size: 9px; font-weight: 600; letter-spacing: .13em; text-transform: uppercase; }
+.quick-read__steps span { color: var(--accent); font-size: 12px; font-weight: 600; letter-spacing: .13em; text-transform: uppercase; }
 .quick-read__steps p { margin-top: 28px; max-width: 340px; font-size: 14px; line-height: 1.65; }
 .expand-research {
   grid-column: 3 / 13; margin-top: 60px; padding: 22px 0; display: flex; align-items: center;
@@ -183,7 +184,7 @@ article .section-label { display: none; }
 .challenge__copy { grid-column: 1 / 5; font-size: 14px; line-height: 1.75; }
 .challenge blockquote {
   grid-column: 1 / 11; margin: 110px 0 0; max-width: 1150px;
-  font: 500 clamp(48px, 7.4vw, 112px)/.88 'Inter', Helvetica, sans-serif; letter-spacing: -.07em;
+  font: 500 clamp(48px, 7.4vw, 112px)/.88 'Helvetica Neue', Helvetica, Arial, sans-serif; letter-spacing: -.07em;
 }
 .challenge blockquote span { color: var(--accent); }
 
@@ -196,9 +197,9 @@ article .section-label { display: none; }
   width: min(76%, 1100px); margin: 70px auto 0;
 }
 .research-row > .placeholder .placeholder__surface { aspect-ratio: 16 / 9; }
-.section-heading span { color: var(--accent); font-size: 10px; letter-spacing: .15em; }
+.section-heading > span { color: var(--accent); font-size: 12px; letter-spacing: .15em; }
 .section-heading h2, .process h2, .reflection h2 {
-  margin-top: 18px; font: 500 clamp(42px, 5.2vw, 82px)/.94 'Inter', Helvetica, sans-serif; letter-spacing: -.065em;
+  margin-top: 18px; font: 500 clamp(42px, 5.2vw, 82px)/.94 'Helvetica Neue', Helvetica, Arial, sans-serif; letter-spacing: -.065em;
 }
 .research-copy > p, .intro, .reflection p {
   margin-top: 32px; font-size: 14px; line-height: 1.75; max-width: 500px;
@@ -207,8 +208,8 @@ article .section-label { display: none; }
 .timeline div { position: relative; padding-top: 18px; display: flex; flex-direction: column; gap: 3px; }
 .timeline i { position: absolute; width: 5px; height: 5px; top: -3px; background: var(--ink); border-radius: 50%; }
 .timeline div:nth-child(2) i { width: 9px; height: 9px; top: -5px; background: var(--accent); }
-.timeline b { font-size: 9px; font-weight: 600; }
-.timeline span { font: 500 14px 'Inter', Helvetica, sans-serif; letter-spacing: -.025em; }
+.timeline b { font-size: 12px; font-weight: 600; }
+.timeline span { font: 500 14px 'Helvetica Neue', Helvetica, Arial, sans-serif; letter-spacing: -.025em; }
 .research-block .section-heading { width: 50%; margin-left: 0; }
 .research-block > .intro { margin-left: 0; }
 .instrument-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 70px; }
@@ -223,9 +224,9 @@ article .section-label { display: none; }
 .instrument-card__body {
   width: 100%; display: block; padding-top: 18px;
 }
-.instrument-card h3 { font: 500 clamp(25px, 2.7vw, 40px)/1 'Inter', Helvetica, sans-serif; letter-spacing: -.055em; }
+.instrument-card h3 { font: 500 clamp(25px, 2.7vw, 40px)/1 'Helvetica Neue', Helvetica, Arial, sans-serif; letter-spacing: -.055em; }
 .instrument-card p { margin-top: 20px; max-width: 340px; font-size: 14px; line-height: 1.65; }
-.instrument-card strong { display: block; margin-top: 7px; font-size: 9px; letter-spacing: .16em; text-transform: uppercase; }
+.instrument-card strong { display: block; margin-top: 7px; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; }
 .paired-media { display: block; }
 .paired-media .placeholder { width: 100%; }
 .paired-media .placeholder + .placeholder { margin-top: 90px; }
@@ -243,7 +244,7 @@ main:not(.is-deep) .insight { margin-top: 0; }
 }
 .insight .section-label { grid-column: 1 / 3; align-self: start; }
 .insight p {
-  grid-column: 1 / 11; font: 500 clamp(45px, 6.6vw, 100px)/.9 'Inter', Helvetica, sans-serif; letter-spacing: -.07em;
+  grid-column: 1 / 11; font: 500 clamp(45px, 6.6vw, 100px)/.9 'Helvetica Neue', Helvetica, Arial, sans-serif; letter-spacing: -.07em;
 }
 .insight em { color: var(--accent); font-style: normal; }
 
@@ -275,7 +276,7 @@ main:not(.is-deep) .insight { margin-top: 0; }
 .outcome { border-top: 0; }
 .outcome-gallery__number {
   display: block; margin-bottom: 18px; color: var(--accent);
-  font-size: 10px; font-weight: 600; letter-spacing: .15em;
+  font-size: 12px; font-weight: 600; letter-spacing: .15em;
 }
 .outcome-gallery h2 {
   margin-bottom: 60px; font-size: clamp(48px, 7vw, 108px);
@@ -327,7 +328,7 @@ main:not(.is-deep) .outcome-gallery__grid .placeholder__surface { aspect-ratio: 
   display: grid; grid-template-columns: 1fr auto; align-content: center; position: relative; overflow: hidden;
   border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
 }
-.next-project strong { margin-top: 0; align-self: center; font: 500 clamp(48px, 8vw, 120px)/.86 'Inter', Helvetica, sans-serif; letter-spacing: -.07em; }
+.next-project strong { margin-top: 0; align-self: center; font: 500 clamp(48px, 8vw, 120px)/.86 'Helvetica Neue', Helvetica, Arial, sans-serif; letter-spacing: -.07em; }
 .next-project__label { display: none; }
 .next-project i {
   width: clamp(110px, 14vw, 210px); align-self: center; color: var(--ink);
@@ -341,23 +342,28 @@ main:not(.is-deep) .outcome-gallery__grid .placeholder__surface { aspect-ratio: 
   align-items: flex-end; justify-content: space-between; gap: 30px;
 }
 .footer div { display: flex; justify-content: flex-end; gap: 30px; font-size: 12px; }
-.footer > span { color: var(--muted); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
+.footer > span { color: var(--muted); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
 
-.section-marker {
-  position: fixed; z-index: 10; left: 12px; top: 50%; translate: 0 -50%;
-  writing-mode: vertical-rl; rotate: 180deg; display: flex;
-  font-size: 8px; letter-spacing: .15em; text-transform: uppercase;
-}
-.section-marker strong { color: var(--accent); font-weight: 600; }
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s ease; }
 .reveal.is-visible { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
+  *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0s !important; }
 }
 
-@media (min-width: 761px) and (max-width: 1100px) {
+/* Keyboard focus reveals hidden-until-scrolled sections immediately */
+.reveal:focus-within { opacity: 1; transform: none; transition: none; }
+.skip-link {
+  position: fixed; z-index: 10000; top: 12px; left: 12px; padding: 10px 14px;
+  background: var(--ink); color: var(--paper); font-size: 13px; font-weight: 600;
+  transform: translateY(-200%);
+}
+.skip-link:focus { transform: none; }
+.process-strip:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+@media (min-width: 761px) and (max-width: 1100px) and (orientation: landscape) {
   .shell { width: calc(100% - 48px); }
   .hero h1 { font-size: 12vw; }
   .hero__media { margin-top: 90px; }
@@ -374,7 +380,6 @@ main:not(.is-deep) .outcome-gallery__grid .placeholder__surface { aspect-ratio: 
   .process-strip .placeholder { min-width: 78vw; }
   .reflection > div { grid-column: 1 / 11; }
   .reflection p { margin-left: 0; }
-  .section-marker { left: 7px; }
   .section { padding-block: 110px; }
   .process { padding-block: 110px; }
   .quick-read { padding-block: 100px; }
@@ -384,7 +389,7 @@ main:not(.is-deep) .outcome-gallery__grid .placeholder__surface { aspect-ratio: 
   .outcome-part + .outcome-part { margin-top: 150px; }
 }
 
-@media (min-width: 761px) and (max-width: 900px) {
+@media (min-width: 761px) and (max-width: 900px) and (orientation: landscape) {
   .nav nav { gap: 22px; }
   .quick-read__steps { grid-template-columns: 1fr; gap: 42px; }
   .quick-read__steps { margin-top: 65px; }
@@ -396,17 +401,13 @@ main:not(.is-deep) .outcome-gallery__grid .placeholder__surface { aspect-ratio: 
   .process__head p { grid-column: 1 / 6; }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .shell { width: calc(100% - 32px); }
   p, li, figcaption { overflow-wrap: break-word; }
   .nav { height: 70px; }
-  .nav nav { gap: 14px; font-size: 10px; }
-  .brand, .nav nav a { font-size: 10px; }
+  .nav nav { gap: 14px; font-size: 12px; }
+  .brand, .nav nav a { font-size: 12px; }
   .brand { font-size: 12px; }
-  .section-marker {
-    display: flex; left: 3px; top: 50%; font-size: 7px;
-    letter-spacing: .12em;
-  }
   .hero { padding-top: 18px; }
   .hero h1 { margin-top: 42px; font-size: clamp(62px, 21vw, 88px); }
   .hero__subtitle { margin: 36px 0 0; max-width: 280px; }
@@ -480,7 +481,7 @@ main:not(.is-deep) .outcome-gallery__grid .placeholder__surface { aspect-ratio: 
   }
   .next-project__label {
     position: absolute; top: 18px; left: 16px; display: block;
-    color: var(--accent); font-size: 8px; font-weight: 600;
+    color: var(--accent); font-size: 12px; font-weight: 600;
     letter-spacing: .14em; text-transform: uppercase;
   }
   .next-project i { position: static; width: clamp(62px, 14vw, 100px); }
@@ -505,7 +506,7 @@ main:not(.is-deep) .outcome-gallery__grid .placeholder__surface { aspect-ratio: 
   .nav { height: 62px; }
   .nav nav { gap: 8px; letter-spacing: .01em; }
   .brand { max-width: none; line-height: 1.05; }
-  .brand, .nav nav a { font-size: 10px; white-space: nowrap; }
+  .brand, .nav nav a { font-size: 12px; white-space: nowrap; }
   .brand { font-size: 12px; }
   .hero { padding-top: 16px; }
   .hero h1 { font-size: clamp(54px, 20vw, 76px); letter-spacing: -.08em; }
@@ -557,20 +558,17 @@ main:not(.is-deep) .outcome-gallery__grid .placeholder__surface { aspect-ratio: 
   .next-project i { width: clamp(54px, 15vw, 72px); }
   .footer { gap: 18px; }
   .footer div { flex-wrap: wrap; gap: 12px; }
-  .footer,
-  .home-footer {
+  .footer {
     min-height: 0; padding-top: 24px; flex-direction: column;
     align-items: center; justify-content: center; gap: 16px; text-align: center;
   }
-  .footer div,
-  .home-footer div {
+  .footer div {
     order: 1; flex-direction: column; align-items: center; gap: 12px;
   }
-  .footer > span,
-  .home-footer > span { order: 2; }
+  .footer > span { order: 2; }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .nav {
     height: auto;
     min-height: calc(72px + env(safe-area-inset-top, 0px));
@@ -605,7 +603,7 @@ main:not(.is-deep) .outcome-gallery__grid .placeholder__surface { aspect-ratio: 
 .generic-case__facts span,
 .generic-case__story > span,
 .generic-case__gallery > span {
-  color: var(--accent); font-size: 9px; font-weight: 600;
+  color: var(--accent); font-size: 12px; font-weight: 600;
   letter-spacing: .14em; text-transform: uppercase;
 }
 .generic-case__facts p { margin-top: 10px; max-width: 540px; font-size: 12px; line-height: 1.5; }
@@ -642,14 +640,14 @@ main:not(.is-deep) .outcome-gallery__grid .placeholder__surface { aspect-ratio: 
 }
 .generic-case__next small {
   grid-column: 1 / -1; margin-bottom: 30px; color: var(--accent);
-  font-size: 9px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
 }
 .generic-case__next strong {
   font-size: clamp(60px, 9vw, 145px); font-weight: 500; line-height: .86; letter-spacing: -.07em;
 }
 .generic-case__next i { align-self: end; color: var(--accent); font-size: 60px; font-style: normal; }
 
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .generic-case__hero { padding-top: 36px; }
   .generic-case__hero > img { aspect-ratio: 4 / 3; object-fit: cover; }
   .generic-case__hero h1 { margin-top: 48px; font-size: clamp(58px, 18vw, 92px); }
@@ -669,184 +667,6 @@ main:not(.is-deep) .deep-content {
   display: none !important;
 }
 
-/* Home */
-.home {
-  --home-bg: #ffffff;
-  --home-accent: #1646ff;
-  min-height: 100vh;
-  background: var(--home-bg);
-  color: var(--ink);
-}
-.home-nav {
-  position: absolute; z-index: 30; top: 0; left: 0; width: 100%;
-  height: 78px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between;
-}
-.home-brand, .home-nav nav a {
-  font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
-}
-.home-brand { font-size: 14px; font-weight: 700; letter-spacing: -.015em; }
-.home-nav nav { display: flex; gap: 30px; }
-.home-intro {
-  position: fixed; z-index: 15; inset: 0; min-height: 100svh;
-  padding: 110px 16px 70px; display: grid;
-  align-items: center; justify-items: start;
-  overflow: hidden; background: rgba(255,255,255,.16);
-  backdrop-filter: blur(6px); transition: opacity .06s linear;
-}
-.home-intro > div { position: relative; z-index: 2; width: min(1120px, 100%); text-align: left; }
-.home-intro h1 {
-  font: 500 clamp(48px, 6.8vw, 108px)/.92 'Inter', Helvetica, sans-serif;
-  letter-spacing: -.07em;
-}
-.home-intro p { margin-top: 36px; font-size: 11px; letter-spacing: .04em; }
-.home-scroll {
-  position: absolute; z-index: 2; bottom: 28px; left: 50%; translate: -50% 0;
-  display: flex; gap: 14px; font-size: 9px; letter-spacing: .12em; text-transform: uppercase;
-  cursor: pointer;
-}
-.home-scroll span { color: var(--home-accent); }
-.home-project-nav {
-  position: fixed; z-index: 20; left: 20px; top: 50%; translate: 0 -50%;
-  width: 235px; display: flex; flex-direction: column; align-items: flex-start; gap: 11px;
-  opacity: 0; pointer-events: none; transition: opacity .3s ease;
-}
-.home-project-nav.visible { opacity: 1; pointer-events: auto; }
-.home-project-nav button {
-  color: #8a8a87; text-align: left; font-size: 9px; letter-spacing: .08em;
-  text-transform: uppercase; cursor: pointer; transition: color .25s ease, font-size .25s ease;
-}
-.home-project-nav button.active { color: var(--ink); font-size: 20px; font-weight: 700; letter-spacing: -.04em; text-transform: none; }
-.home-project-nav small {
-  display: block; margin-top: 6px; color: var(--home-accent); font-size: 8px;
-  font-weight: 500; letter-spacing: .06em; text-transform: uppercase;
-}
-.home-view-toggle {
-  position: fixed; z-index: 30; right: 20px; top: 50%; translate: 0 -50%;
-  display: flex; gap: 7px; opacity: 0; pointer-events: none; transition: opacity .3s ease;
-  font-size: 9px; letter-spacing: .08em; text-transform: uppercase;
-}
-.home-view-toggle.visible { opacity: 1; pointer-events: auto; }
-.home-view-toggle button { color: #999893; cursor: pointer; }
-.home-view-toggle button.active { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
-.home-view-toggle span { color: var(--home-accent); }
-.home-gallery { padding: 44vh 0 4vh; }
-.home-project {
-  min-height: 0; padding-block: 2vh; display: grid; place-items: center;
-}
-.home-project > a {
-  display: block; width: min(44vw, 680px); position: relative;
-  transform: scale(.84); opacity: .74;
-  transition: transform .7s cubic-bezier(.2,.75,.2,1), opacity .5s ease;
-}
-.home-project--2 > a { width: min(60vw, 920px); }
-.home-project--3 > a { width: min(49vw, 750px); }
-.home-project.active > a { transform: scale(1); opacity: 1; }
-.home-project__image {
-  width: 100%; aspect-ratio: 16 / 10; position: relative; background: #dededb;
-  background-image: linear-gradient(135deg, transparent 49.85%, rgba(17,17,17,.12) 50%, transparent 50.15%);
-}
-.home-project--1 .home-project__image { aspect-ratio: 4 / 3; }
-.home-project--2 .home-project__image { aspect-ratio: 16 / 9; }
-.home-project--3 .home-project__image { aspect-ratio: 3 / 2; }
-.home-project__image::after { content: ''; position: absolute; inset: 14px; border: 1px solid rgba(17,17,17,.13); }
-.home-project__image > span {
-  position: absolute; top: 24px; left: 24px; font-size: 8px; letter-spacing: .14em;
-}
-.home-project__number {
-  position: absolute; left: -42px; top: 0; color: var(--home-accent);
-  font-size: 9px; letter-spacing: .08em;
-}
-.home-mobile-current { display: none; }
-.home-list {
-  width: min(100% - 40px, 1480px); min-height: 120vh; margin-inline: auto;
-  padding: 44vh 0 14vh;
-}
-.home-list__head, .home-list > a {
-  display: grid; grid-template-columns: 2fr 1.15fr 36px; gap: 28px; align-items: center;
-}
-.home-list__head {
-  padding-bottom: 14px; color: #666662; font-size: 9px; font-weight: 600;
-  letter-spacing: .12em; text-transform: uppercase;
-}
-.home-list > a {
-  padding: 30px 0; border-top: 1px solid #aaa9a4;
-  transition: color .2s ease, padding .25s ease;
-}
-.home-list > a:last-child { border-bottom: 1px solid #aaa9a4; }
-.home-list > a:hover { color: var(--home-accent); padding-left: 10px; }
-.home-list > a strong {
-  font: 500 clamp(30px, 3vw, 48px)/.95 'Inter', Helvetica, sans-serif;
-  letter-spacing: -.055em;
-}
-.home-list > a span { color: #50504d; font-size: 12px; line-height: 1.4; }
-.home-list > a i {
-  width: 26px; color: var(--home-accent); font-style: normal; line-height: 0; justify-self: end;
-}
-.home-list > a i svg {
-  width: 100%; height: auto; fill: currentColor; transform: scaleY(.9);
-}
-.home-footer {
-  min-height: 120px; padding: 32px 20px max(24px, env(safe-area-inset-bottom, 0px));
-  display: flex; justify-content: space-between; align-items: flex-end;
-}
-.home-footer > span { color: #777670; font-size: 9px; text-transform: uppercase; letter-spacing: .08em; }
-.home-footer div { display: flex; gap: 24px; font-size: 11px; }
-
-@media (max-width: 900px) {
-  .home-project-nav { width: 175px; }
-  .home-project-nav button.active { font-size: 15px; }
-  .home-project > a { width: min(51vw, 560px); }
-  .home-project--2 > a { width: min(65vw, 710px); }
-  .home-project--3 > a { width: min(57vw, 620px); }
-}
-
-@media (max-width: 760px) {
-  .home-nav {
-    height: auto; min-height: calc(82px + env(safe-area-inset-top, 0px));
-    padding: max(24px, env(safe-area-inset-top, 0px)) 16px 12px;
-  }
-  .home-brand { font-size: 11px; }
-  .home-nav nav { gap: 14px; }
-  .home-nav nav a { font-size: 9px; }
-  .home-intro { min-height: 100svh; padding: 120px 16px 70px; backdrop-filter: blur(5px); }
-  .home-intro h1 { font-size: clamp(42px, 12.5vw, 68px); }
-  .home-intro p { max-width: 310px; margin: 28px 0 0; line-height: 1.5; }
-  .home-project-nav { display: none; }
-  .home-view-toggle {
-    top: auto; right: 16px; bottom: max(18px, env(safe-area-inset-bottom, 0px));
-    padding: 9px 11px; background: rgba(255,255,255,.92); backdrop-filter: blur(8px);
-  }
-  .home-mobile-current {
-    position: fixed; z-index: 25; top: calc(env(safe-area-inset-top, 0px) + 12px); left: 16px;
-    right: 16px; padding: 10px 12px; display: flex; justify-content: space-between;
-    background: rgba(255,255,255,.92); backdrop-filter: blur(8px);
-    opacity: 0; pointer-events: none; transition: opacity .3s ease;
-    font-size: 9px; text-transform: uppercase; letter-spacing: .07em;
-  }
-  .home-mobile-current.visible { opacity: 1; }
-  .home-mobile-current span { color: var(--home-accent); }
-  .home-mobile-current strong { font-weight: 600; }
-  .home-gallery { padding: 48vh 16px 4vh; }
-  .home-project { min-height: 0; padding-block: 3vh; }
-  .home-project > a,
-  .home-project--2 > a,
-  .home-project--3 > a { width: 100%; transform: scale(.88); }
-  .home-project.active > a { transform: scale(1); }
-  .home-project__number { left: 0; top: -22px; }
-  .home-list {
-    width: calc(100% - 32px); min-height: 110vh; padding: 42vh 0 40px;
-  }
-  .home-list__head { display: none; }
-  .home-list > a { grid-template-columns: 1fr auto; gap: 12px 20px; padding: 24px 0; }
-  .home-list > a:hover { padding-left: 0; }
-  .home-list > a strong { font-size: clamp(27px, 8vw, 36px); }
-  .home-list > a span { font-size: 11px; }
-  .home-list > a i { grid-column: 2; grid-row: 1; }
-  .home-list > a i { width: 23px; }
-  .home-footer { min-height: 110px; padding-inline: 16px; gap: 18px; }
-  .home-footer div { gap: 12px; }
-}
-
 /* Shared spacing rhythm: section > content group > consecutive media */
 :root {
   --space-section: clamp(80px, 9vw, 132px);
@@ -856,60 +676,7 @@ main:not(.is-deep) .deep-content {
   --case-media-space: var(--space-media);
 }
 
-main:not(.home) .section,
-main:not(.home) .quick-read,
-main:not(.home) .insight__inner,
-main:not(.home) .process {
-  padding-top: var(--space-section);
-  padding-bottom: var(--space-section);
-}
-
-main:not(.home) .insight__inner { min-height: auto; }
-
-main:not(.home):not(.is-deep) .outcome {
-  padding-top: var(--space-section);
-}
-
-main:not(.home) .reading-mode {
-  padding-top: var(--space-content);
-  padding-bottom: var(--space-content);
-}
-
-main:not(.home) .research-row > .placeholder,
-main:not(.home) .paired-media,
-main:not(.home) .instrument-grid,
-main:not(.home) .process-strip {
-  margin-top: var(--space-content);
-}
-
-main:not(.home) .quick-read__title > p,
-main:not(.home) .quick-read__steps,
-main:not(.home) .research-copy > p,
-main:not(.home) .research-block > .intro {
-  margin-top: var(--space-content);
-}
-
-main:not(.home) .outcome-gallery__grid {
-  margin-top: var(--space-media);
-}
-
-main:not(.home) .paired-media .placeholder + .placeholder,
-main:not(.home) .outcome-gallery__grid .placeholder + .placeholder,
-main:not(.home):not(.is-deep) .outcome-gallery__grid .placeholder + .placeholder {
-  margin-top: var(--space-media);
-}
-
-main:not(.home) .research-row + .research-block,
-main:not(.home) .research-block + .research-row {
-  margin-top: var(--space-section);
-}
-
-main:not(.home) .instrument-grid,
-main:not(.home) .process-strip {
-  gap: var(--space-media);
-}
-
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   :root {
     --space-section: 76px;
     --space-content: 32px;
@@ -926,7 +693,7 @@ main:not(.home) .process-strip {
 }
 
 /* Final narrow-screen type safeguards */
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .hero h1,
   .quick-read__title h2,
   .challenge blockquote,
@@ -934,10 +701,7 @@ main:not(.home) .process-strip {
   .process h2,
   .insight p,
   .outcome-gallery h2,
-  .next-project strong,
-  .home-intro h1,
-  .home-list > a strong,
-  .home-mobile-current strong {
+  .next-project strong {
     max-width: 100%;
     overflow-wrap: anywhere;
   }
@@ -955,9 +719,6 @@ main:not(.home) .process-strip {
     line-height: .95;
     white-space: normal;
   }
-  .home-intro h1 { font-size: clamp(38px, 10.5vw, 58px); }
-  .home-list > a strong { font-size: clamp(25px, 7vw, 34px); }
-  .home-mobile-current strong { max-width: 72%; text-align: right; }
 }
 
 @media (max-width: 480px) {
@@ -972,8 +733,6 @@ main:not(.home) .process-strip {
   .outcome-gallery h2 { font-size: clamp(32px, 9vw, 38px); }
   .reading-action strong { font-size: 24px; }
   .next-project strong { font-size: clamp(22px, 6.5vw, 30px); }
-  .home-intro h1 { font-size: clamp(34px, 9.5vw, 44px); }
-  .home-list > a strong { font-size: clamp(23px, 7vw, 30px); }
 }
 
 /* About */
@@ -985,7 +744,7 @@ main:not(.home) .process-strip {
 }
 .about-hero h1 {
   max-width: 1380px;
-  font: 500 clamp(58px, 8vw, 124px)/.92 'Inter', Helvetica, sans-serif;
+  font: 500 clamp(58px, 8vw, 124px)/.92 'Helvetica Neue', Helvetica, Arial, sans-serif;
   letter-spacing: -.07em;
 }
 .about-hero__bio {
@@ -1026,7 +785,7 @@ main:not(.home) .process-strip {
 .about-table__head {
   padding: 14px 0;
   color: var(--muted);
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: .12em;
   text-transform: uppercase;
@@ -1102,7 +861,7 @@ main:not(.home) .process-strip {
   gap: var(--space-content);
 }
 .about-closing > p {
-  font: 500 clamp(38px, 5vw, 72px)/.95 'Inter', Helvetica, sans-serif;
+  font: 500 clamp(38px, 5vw, 72px)/.95 'Helvetica Neue', Helvetica, Arial, sans-serif;
   letter-spacing: -.06em;
 }
 .about-cv {
@@ -1111,7 +870,7 @@ main:not(.home) .process-strip {
   color: #fff;
   background: var(--accent);
   border-radius: 999px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -1119,7 +878,7 @@ main:not(.home) .process-strip {
 }
 .about-cv:hover { transform: scale(1.04); }
 
-@media (max-width: 760px) {
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .about-hero { padding-top: 56px; }
   .about-hero h1 {
     font-size: clamp(42px, 11.5vw, 64px);
@@ -1161,3 +920,951 @@ main:not(.home) .process-strip {
   .about-approach__grid strong { font-size: 24px; }
   .about-closing > p { font-size: clamp(30px, 9vw, 38px); }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .instrument-card:hover { transform: none; }
+}
+
+/* Long case study titles (Sovrapposizioni) must fit on one line on phones instead of breaking mid-word */
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .hero h1 { font-size: min(78px, calc((100vw - 64px) / 6.6)); }
+}
+
+/* ------------------------------------------------------------------
+   Header: the name in bold, a step larger than the black menu (shared by every page)
+------------------------------------------------------------------- */
+.site-header .brand { font-size: 14px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.site-header nav { align-items: baseline; }
+/* Menu in black, a step smaller than the name; on hover it turns grey */
+.site-header nav button, .site-header nav a {
+  font-size: 12px; font-weight: 500; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--ink); cursor: pointer; transition: color .2s ease;
+}
+.site-header nav a:hover, .site-header nav button:hover { color: var(--muted); }
+
+/* Contact drop-down: Email and LinkedIn drop in one under the other, just under Contact */
+.contact-menu { position: relative; }
+.contact-menu > button[aria-expanded="true"] { color: var(--ink); }
+.contact-menu__panel {
+  position: absolute; z-index: 40; top: 100%; right: 0; margin: 0; padding: 10px 0 8px 16px; list-style: none;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 6px; background: var(--paper);
+}
+.contact-menu__panel[hidden] { display: none; }
+.contact-menu.is-open .contact-menu__panel li { animation: contact-in .4s cubic-bezier(.22, 1, .36, 1) both; }
+.contact-menu.is-open .contact-menu__panel li + li { animation-delay: .05s; }
+@keyframes contact-in { from { opacity: 0; transform: translateY(-6px); } }
+.site-header .contact-menu__panel a { color: var(--ink); white-space: nowrap; }
+.site-header .contact-menu__panel a:hover { color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .contact-menu.is-open .contact-menu__panel li { animation: none; } }
+
+/* ------------------------------------------------------------------
+   Home: the projects in a row along the bottom of the screen that scrolls sideways
+------------------------------------------------------------------- */
+.hm { --card-w: calc((100vw - 64px) / 3.5); --card-h: min(calc(100svh - 270px), calc(var(--card-w) * 1.5)); min-height: 100svh; background: var(--paper); color: var(--ink); }
+.hm > .site-header {
+  position: fixed; z-index: 30; top: 0; left: 0; right: 0; width: auto; height: 64px;
+  padding-inline: 20px;
+}
+.hm-intro {
+  position: fixed; z-index: 20; top: 21px; left: calc(20px + var(--card-w) + 8px); width: min(36vw, 470px);
+  display: flex; flex-direction: column; gap: 14px;
+}
+.hm-intro h1 { font-size: 13px; font-weight: 400; line-height: 1.4; letter-spacing: .01em; text-wrap: balance; }
+.hm-intro p { color: var(--muted); font-size: 13px; line-height: 1.45; }
+
+/* The row sits in the lower part of the screen; the page itself does not scroll on desktop,
+   wheel, trackpad, drag and arrow keys move the endless row instead (see Home in App.tsx) */
+.hm-stage {
+  position: sticky; top: 0; height: 100svh; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 48px;
+}
+.hm-row:focus { outline: none; }
+.hm-track { display: flex; gap: 8px; width: max-content; padding-inline: 20px; will-change: transform; }
+.hm-card { display: flex; flex-direction: column; gap: 10px; width: var(--card-w); flex: none; }
+/* The whole project (title and image) shrinks a little while the row moves */
+.hm-card { scale: var(--hm-scale, 1); user-select: none; -webkit-user-drag: none; }
+.hm-row { touch-action: pan-y; cursor: grab; }
+.hm-row:active { cursor: grabbing; }
+.hm-card__label {
+  display: flex; justify-content: space-between; gap: 16px;
+  font-size: 13px; letter-spacing: .03em; text-transform: uppercase; white-space: nowrap;
+}
+.hm-card .hm-image { height: var(--card-h); overflow: hidden; }
+/* Hover, as on the reference site: the project lifts 8px while its picture slips 4px the other
+   way inside the frame (the picture is drawn slightly larger so no edge shows) */
+.hm-card { transition: transform .7s cubic-bezier(.22, 1, .36, 1); }
+.hm-card .hm-image > :is(img, video) { scale: 1.03; transition: transform .7s cubic-bezier(.22, 1, .36, 1); }
+.hm-card:hover, .hm-card:focus-visible { transform: translateY(-8px); }
+.hm-card:hover .hm-image > :is(img, video), .hm-card:focus-visible .hm-image > :is(img, video) { transform: translateY(4px); }
+/* Title roll on hover: the title slides up and an identical copy takes its place;
+   on leaving it snaps back unseen, so every hover rolls upwards */
+.hm-card__label { display: block; height: 1.2em; overflow: hidden; clip-path: inset(0); line-height: 1.2; }
+.hm-roll { display: block; will-change: transform; }
+/* Keep each project, and the moving picture inside it, on its own layer from the start:
+   Safari otherwise re-layers cards with a video or SVG on hover, making the title jump */
+.hm-card { will-change: transform; }
+.hm-card .hm-image { isolation: isolate; transform: translateZ(0); }
+.hm-roll > span { display: block; }
+.hm-card:hover .hm-roll, .hm-card:focus-visible .hm-roll { transform: translateY(-50%); transition: transform .45s cubic-bezier(.22, 1, .36, 1); }
+@media (prefers-reduced-motion: reduce) {
+  .hm-card, .hm-card .hm-image > :is(img, video), .hm-card .hm-roll { transition: none !important; }
+}
+.hm-image {
+  display: block; position: relative; background: #e2e0da;
+  background-image: linear-gradient(135deg, transparent 49.85%, rgba(17,17,17,.1) 50%, transparent 50.15%);
+}
+/* Licence, small, bottom right */
+.hm-licence {
+  position: fixed; z-index: 20; right: 20px; bottom: 18px;
+  font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted);
+}
+.hm-licence small { font-size: inherit; }
+.hm-image > span { position: absolute; top: 14px; left: 14px; font-size: 12px; letter-spacing: .12em; color: var(--muted); }
+
+
+/* Phone: the row is swiped sideways with the finger, one project at a time */
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .hm { --card-w: 78vw; }
+  .hm > .site-header { position: static; height: auto; padding: 20px 16px 0; }
+  .site-header { flex-wrap: wrap; row-gap: 10px; height: auto; padding-block: 20px 0; }
+  .site-header nav { gap: 18px; }
+  .hm-intro { position: static; width: auto; padding: 32px 16px 40px; }
+  .hm-licence { position: static; padding: 0 16px 32px; }
+  .hm-intro h1 { font-size: 22px; line-height: 1.3; }
+  .hm-stage { position: static; height: auto; overflow: visible; padding-bottom: 48px; }
+  .hm-row { cursor: auto; touch-action: auto; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; scrollbar-width: none; }
+  .hm-row::-webkit-scrollbar { display: none; }
+  .hm-track { padding-inline: 16px; }
+  .hm-card { scroll-snap-align: start; }
+  .hm-card .hm-image { height: auto; aspect-ratio: 4 / 5; }
+}
+
+/* ------------------------------------------------------------------
+   Case studies: title beside its lead, words rising into place,
+   images opening from an inset frame as they scroll in
+------------------------------------------------------------------- */
+.hero .hero__head {
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px;
+  align-items: start; margin-top: clamp(32px, 3.5vw, 56px);
+}
+.hero .hero__head h1 {
+  grid-column: 1 / 8; margin: 0; font-size: clamp(40px, 5.2vw, 84px); font-weight: 400;
+  line-height: .95; letter-spacing: -.035em;
+}
+.hero .hero__head .hero__subtitle {
+  grid-column: 8 / 13; margin: 0; max-width: none; font-size: clamp(18px, 1.6vw, 26px);
+  font-weight: 400; line-height: 1.3; letter-spacing: -.01em;
+}
+
+/* Images form from top to bottom: the opening one on load, the others with the scroll */
+@keyframes form-down { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0); } }
+.hero__media .placeholder__surface { animation: form-down 1.5s cubic-bezier(.5, 1, .89, 1) .15s both; }
+.placeholder__surface.will-form {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1.2s cubic-bezier(.5, 1, .89, 1) var(--form-delay, 0s);
+}
+.placeholder__surface.will-form.is-formed { clip-path: inset(0); }
+/* The picture inside settles from a slight zoom while it forms */
+.will-form > img, .will-form > video { scale: 1.12; transition: scale 1.3s cubic-bezier(.65, 0, .35, 1) var(--form-delay, 0s); }
+.will-form.is-formed > img, .will-form.is-formed > video { scale: 1; }
+
+
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .hero .hero__head { display: block; }
+  .hero .hero__head h1 { font-size: min(64px, calc((100vw - 60px) / 7.4)); }
+  .hero .hero__head .hero__subtitle { margin-top: 18px; font-size: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__media .placeholder__surface { animation: none; }
+  .placeholder__surface.will-form { clip-path: none; transition: none; }
+}
+
+/* Quieter scale for the large statements inside case studies */
+.quick-read__title h2,
+.outcome-gallery h2,
+.process h2,
+.insight p,
+.challenge blockquote,
+.section-heading h2 {
+  font-size: clamp(30px, 3.6vw, 58px); font-weight: 400; line-height: 1.06; letter-spacing: -.025em;
+}
+.next-project strong { font-weight: 400; letter-spacing: -.03em; }
+
+/* Case studies: text sits still, only images animate */
+main.case .reveal { opacity: 1; transform: none; transition: none; }
+
+
+/* Outcome images: smaller and centred, with more air between them */
+.outcome-gallery .placeholder { width: min(100%, 1040px); margin-inline: auto; }
+main .outcome-gallery .outcome-gallery__grid { margin-top: 64px; }
+main .outcome-gallery .outcome-gallery__grid .placeholder + .placeholder { margin-top: 64px; }
+
+/* ------------------------------------------------------------------
+   One language across the site, taken from the home page:
+   small uppercase grey labels, mid-size statements, plain text controls.
+   The project title in the case study opening stays the only large moment.
+------------------------------------------------------------------- */
+.fact > span,
+.quick-read__steps span,
+.section-heading > span,
+.reading-action small,
+.outcome-gallery__number,
+.about-table__head span,
+.about article .section-label,
+.instrument-card strong {
+  color: var(--muted); font-size: 13px; font-weight: 400; letter-spacing: .04em; text-transform: uppercase;
+}
+
+.quick-read__title h2,
+.outcome-gallery h2,
+.process h2,
+.insight p,
+.challenge blockquote,
+.section-heading h2,
+.reading-action strong,
+.about-hero h1,
+.about-closing > p {
+  font-size: clamp(24px, 2.4vw, 36px); font-weight: 400; line-height: 1.2; letter-spacing: -.015em;
+}
+.instrument-card h3,
+.about-approach__grid strong { font-size: 20px; font-weight: 400; line-height: 1.25; letter-spacing: -.01em; }
+
+/* "Got more time?": a text control like Gallery / List, no filled circle */
+.reading-action { min-height: 0; padding-block: 18px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.reading-action i {
+  width: auto; height: auto; background: none; color: var(--ink); border-radius: 0;
+  font-size: 28px; font-weight: 300;
+}
+.reading-action:hover { color: var(--ink); }
+.reading-action:hover strong { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
+.reading-action:hover i { transform: rotate(90deg); scale: 1; }
+
+/* Next project: label + title on a thin rule, like a row of the home list */
+.next-project {
+  min-height: 0; padding-block: 40px 56px; grid-template-columns: 1fr auto; row-gap: 14px;
+  border-top: 1px solid var(--line); border-bottom: 0;
+}
+.next-project__label {
+  display: block; grid-column: 1 / -1; color: var(--muted);
+  font-size: 13px; letter-spacing: .04em; text-transform: uppercase;
+}
+.next-project strong { font-size: clamp(28px, 3.2vw, 48px); font-weight: 400; line-height: 1.1; letter-spacing: -.02em; }
+.next-project i { width: clamp(36px, 3.4vw, 52px); }
+
+/* Footer: email and LinkedIn on the left, licence on the right, as on the home page */
+.footer { min-height: 0; padding-block: 64px 24px; align-items: baseline; font-size: 12px; letter-spacing: .04em; }
+.footer div { justify-content: flex-start; gap: 24px; }
+.footer > span { color: var(--muted); font-size: 11px; }
+
+/* CV: a text link instead of a filled pill */
+.about-cv {
+  padding: 0; color: var(--ink); background: none; border-radius: 0;
+  font-size: 13px; font-weight: 400; letter-spacing: .04em;
+  text-decoration: underline; text-underline-offset: 4px;
+}
+.about-cv:hover { transform: none; text-decoration-thickness: 2px; }
+
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .next-project { padding: 32px 16px 40px; }
+  .footer { flex-direction: column; align-items: flex-start; gap: 16px; text-align: left; }
+  .footer div { width: 100%; flex-direction: row; flex-wrap: wrap; align-items: baseline; justify-content: flex-start; gap: 8px 24px; }
+}
+.quick-read__steps article { border-top-color: var(--line); }
+.about-hero__bio p { font-size: 16px; line-height: 1.6; }
+.about-closing { border-top-color: var(--line); }
+
+/* Case study opening: subtitle under the title */
+.hero .hero__head { display: block; }
+.hero .hero__head .hero__subtitle { margin-top: 18px; max-width: 760px; }
+
+/* Outcome images placed at different positions: left, right, inset left, centre */
+.outcome-gallery .outcome-gallery__hero { width: min(100%, 1040px); margin-left: 0; margin-right: auto; }
+.outcome-gallery .outcome-gallery__grid .placeholder:nth-child(1) { width: min(56%, 820px); margin-left: auto; margin-right: 0; }
+.outcome-gallery .outcome-gallery__grid .placeholder:nth-child(2) { width: min(44%, 640px); margin-left: 8%; margin-right: auto; }
+.outcome-gallery .outcome-gallery__grid .placeholder:nth-child(3) { width: min(64%, 920px); margin-inline: auto; }
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .outcome-gallery .outcome-gallery__hero,
+  .outcome-gallery .outcome-gallery__grid .placeholder:nth-child(n) { width: 100%; margin-inline: 0; }
+}
+
+/* Real images and videos in case studies keep their own proportions */
+figure.placeholder .placeholder__surface:has(> img, > video) {
+  aspect-ratio: auto !important; max-height: none !important; background: none;
+}
+.placeholder__surface > img, .placeholder__surface > video { display: block; width: 100%; height: auto; }
+/* Home gallery pictures are cropped to the square frame */
+.hm-image > img, .hm-image > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hm-image > img.hm-image__crop { inset: auto; top: 50%; left: 50%; width: auto; max-width: none; object-fit: fill; }
+.hm-image--whole { background: #eeede9; }
+.hm-image--whole > img { inset: 8%; width: 84%; height: 84%; object-fit: contain; }
+
+/* Case study opening: title, subtitle and project details on the left half, image on the right half */
+.hero {
+  display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px;
+  align-items: start; padding-bottom: clamp(64px, 7vw, 112px);
+}
+.hero__text { grid-column: 1 / 7; display: flex; flex-direction: column; gap: clamp(40px, 5vw, 72px); padding-top: clamp(24px, 3vw, 48px); }
+.hero .hero__head { margin-top: 0; }
+.hero .hero__head h1 { font-size: clamp(40px, 5.2vw, 80px); }
+.hero .hero__media { grid-column: 7 / 13; margin-top: 0; }
+.hero__media .placeholder__surface { aspect-ratio: 4 / 5; max-height: 82svh; }
+.hero .facts {
+  margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px;
+}
+.hero .facts .fact { margin-top: 0; grid-column: auto; }
+.hero .facts .fact p { max-width: none; }
+
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .hero { display: flex; flex-direction: column; gap: 32px; padding-bottom: 56px; }
+  .hero .hero__media { order: -1; width: 100%; }
+  .hero__media .placeholder__surface { aspect-ratio: 4 / 5; max-height: 70svh; }
+  .hero__text { padding-top: 0; gap: 36px; }
+  .hero .hero__head h1 { font-size: min(64px, calc((100vw - 60px) / 7.4)); }
+}
+
+/* Opening image fills the right half of the screen, from the header to the bottom edge */
+.hero.shell {
+  width: 100%; margin: 0; padding: 0 0 clamp(64px, 7vw, 112px);
+  grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 0;
+}
+.hero__text {
+  grid-column: 1; padding: clamp(32px, 4vw, 64px) clamp(24px, 4vw, 64px) 0 max(16px, calc((100vw - 1600px) / 2));
+}
+.hero .hero__media { grid-column: 2; width: 100%; }
+.hero .hero__media .placeholder__surface { aspect-ratio: auto; height: calc(100svh - 72px); max-height: none; }
+.hero .hero__media .placeholder__surface > img,
+.hero .hero__media .placeholder__surface > video { height: 100%; object-fit: cover; }
+
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .hero.shell { display: flex; flex-direction: column; gap: 32px; padding: 0 0 56px; }
+  .hero__text { padding: 0 16px; }
+  .hero .hero__media .placeholder__surface { height: auto; aspect-ratio: 4 / 5; max-height: 70svh; }
+}
+
+/* Opening: the image keeps the page margin on the right; title, subtitle and project details
+   sit together at the bottom of the text column, ending on the image's bottom edge */
+@media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
+  .hero.shell { align-items: stretch; }
+  .hero .hero__media { width: auto; margin-right: max(16px, calc((100vw - 1600px) / 2)); }
+  .hero .hero__media .placeholder__surface { height: calc(100svh - 72px - 16px); }
+  .hero__text { padding-top: 0; padding-bottom: 0; justify-content: flex-end; gap: clamp(32px, 4vw, 56px); }
+}
+
+/* ------------------------------------------------------------------
+   Same page margins and header on every page as on the home page
+------------------------------------------------------------------- */
+:root { --page-margin: 20px; }
+.shell { width: calc(100% - 2 * var(--page-margin)); max-width: none; }
+.site-header.nav { height: 64px; min-height: 0; padding-top: 0; }
+.hero__text { padding-left: var(--page-margin); }
+@media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
+  .hero .hero__media { margin-right: var(--page-margin); }
+  .hero .hero__media .placeholder__surface { height: calc(100svh - 64px - var(--page-margin)); }
+}
+.next-project { padding-inline: var(--page-margin); }
+.process-strip { padding-inline: var(--page-margin); }
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  :root { --page-margin: 16px; }
+  .site-header.nav { height: auto; padding-top: 20px; }
+  .hero__text { padding-inline: var(--page-margin); }
+}
+
+/* A very light fade on the content each time a page opens */
+@keyframes page-in { from { opacity: 0; } to { opacity: 1; } }
+main { animation: page-in .45s ease-out both; }
+@media (prefers-reduced-motion: reduce) { main { animation: none; } }
+
+.footer, .footer div { align-items: center; }
+
+/* ------------------------------------------------------------------
+   Taken from the reference case study page: text rises line by line from a mask
+   (1s, power2.out, lines 0.08s apart); images uncover from the top on the same curve
+------------------------------------------------------------------- */
+.ln-w { display: inline-block; overflow: hidden; vertical-align: top; padding-block: .06em .16em; margin-block: -.06em -.16em; }
+.ln-w > span {
+  display: inline-block; transform: translateY(110%);
+  transition: transform 1s cubic-bezier(.5, 1, .89, 1) calc(var(--line, 0) * 80ms);
+}
+.lines.is-in .ln-w > span { transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ln-w > span { transform: none; transition: none; }
+}
+
+/* Outcome images on a four-column grid with narrow 8px gutters */
+@media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
+  .outcome-gallery .outcome-gallery__hero { width: calc((100% - 24px) / 4 * 3 + 16px); margin: 0; }
+  main .outcome-gallery .outcome-gallery__grid {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 8px; row-gap: 64px; margin-top: 64px;
+  }
+  main .outcome-gallery .outcome-gallery__grid .placeholder:nth-child(n) { width: auto; margin: 0; }
+  .outcome-gallery .outcome-gallery__grid .placeholder:nth-child(1) { grid-column: 4; }
+  .outcome-gallery .outcome-gallery__grid .placeholder:nth-child(2) { grid-column: 2 / 4; }
+  .outcome-gallery .outcome-gallery__grid .placeholder:nth-child(3) { grid-column: 1 / 3; }
+}
+
+/* Small uppercase labels, header, captions and footer in the label typeface, as on the reference site */
+:root { --font-label: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+.site-header, .site-header .brand, .site-header nav a, .site-header nav button,
+.footer, .hm-card__label, .hm-intro p, .hm-licence, .contact-menu__panel a,
+.fact > span, .quick-read__steps span, .section-heading > span, .reading-action small,
+.outcome-gallery__number, .about-table__head span, .about article .section-label,
+.instrument-card strong, .next-project__label, .about-cv, .custom-cursor__label, .hm-image > span, .placeholder__index {
+  font-family: var(--font-label);
+}
+
+/* Case studies: a paragraph sits right under its title */
+.quick-read__title > p,
+.research-copy > p,
+.research-block > .intro,
+.outcome-part > .intro { margin-top: 14px; }
+.instrument-card .instrument-card__body p { margin-top: 10px; }
+.section-heading h2 { margin-top: 8px; }
+
+/* "Got more time?": the deep dive opens as a near-black band starting right under the button */
+.expanded-research {
+  --ink: #f2f1ee; --muted: #a8a7a2; --line: rgba(242, 241, 238, .2); --accent: #f2f1ee;
+  background: #161616; color: var(--ink);
+}
+main.is-deep .reading-mode { padding-bottom: 0; }
+.expanded-research #challenge { padding-top: clamp(48px, 5vw, 72px); }
+
+/* Opening: the band unrolls downwards from the button over the first screen */
+@keyframes band-open {
+  from { clip-path: inset(0 -100vmax 100% -100vmax); }
+  to { clip-path: inset(0 -100vmax calc(100% - 100vh) -100vmax); }
+}
+.is-deep .expanded-research { animation: band-open .9s cubic-bezier(.5, 1, .89, 1); }
+@media (prefers-reduced-motion: reduce) {
+  .is-deep .expanded-research { animation: none; }
+}
+
+/* Image placeholders read as frames on the dark band */
+.expanded-research .placeholder__surface { background-color: #262625; background-image: linear-gradient(135deg, transparent 49.8%, rgba(242,241,238,.1) 50%, transparent 50.2%); }
+.expanded-research .placeholder__surface::after { border-color: rgba(242, 241, 238, .14); }
+.expanded-research .placeholder__index { color: var(--muted); }
+.reading-action[aria-expanded="true"]:hover i { transform: none; }
+
+/* ------------------------------------------------------------------
+   Outcome compositions, one per project, on the four-column grid (8px gutters).
+   --start / --span place the main image; grid-column places the three details.
+------------------------------------------------------------------- */
+@media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
+  .outcome-gallery { --col: calc((100% - 24px) / 4); }
+  .outcome-gallery .outcome-gallery__hero {
+    --start: 0; --span: 3;
+    width: calc(var(--span) * var(--col) + (var(--span) - 1) * 8px);
+    margin: 0 0 0 calc(var(--start) * (var(--col) + 8px));
+  }
+
+  /* Sovrapposizioni: the exhibition and its printed pieces; landscape pictures take two columns,
+     upright ones one, packed densely */
+  .outcome-gallery--sovrapposizioni .outcome-gallery__grid { grid-auto-flow: row dense; row-gap: 8px; align-items: start; }
+  .outcome-gallery--sovrapposizioni .outcome-gallery__grid .placeholder.is-wide { grid-column: span 2; }
+  .outcome-gallery--sovrapposizioni .outcome-gallery__grid .placeholder.is-tall { grid-column: span 1; }
+
+  /* Oltre l'ascolto: wide left, two pairs stepping across, then the three artefacts side by side */
+  .outcome-gallery--oltre-lascolto .outcome-gallery__hero { --start: 1; }
+  .outcome-gallery--oltre-lascolto .outcome-gallery__grid .placeholder:nth-child(1) { grid-column: 1 / 4; }
+  .outcome-gallery--oltre-lascolto .outcome-gallery__grid .placeholder:nth-child(2) { grid-column: 2 / 4; }
+  .outcome-gallery--oltre-lascolto .outcome-gallery__grid .placeholder:nth-child(3) { grid-column: 3 / 5; }
+  .outcome-gallery--oltre-lascolto .outcome-gallery__grid .placeholder:nth-child(4) { grid-column: 1 / 3; }
+  /* the three artefacts from above, side by side */
+  .outcome-gallery--oltre-lascolto .outcome-gallery__grid .placeholder:nth-child(5) { grid-column: 2; }
+  .outcome-gallery--oltre-lascolto .outcome-gallery__grid .placeholder:nth-child(6) { grid-column: 3; }
+  .outcome-gallery--oltre-lascolto .outcome-gallery__grid .placeholder:nth-child(7) { grid-column: 4; }
+
+  /* Marco Magnani Art: full width, then a pair side by side, then centre */
+  .outcome-gallery--marco-magnani-art .outcome-gallery__hero { --span: 4; }
+  .outcome-gallery--marco-magnani-art .outcome-gallery__grid .placeholder:nth-child(1) { grid-column: 1 / 3; }
+  .outcome-gallery--marco-magnani-art .outcome-gallery__grid .placeholder:nth-child(2) { grid-column: 3 / 5; }
+  .outcome-gallery--marco-magnani-art .outcome-gallery__grid .placeholder:nth-child(3) { grid-column: 2 / 4; }
+
+  /* Crossing Kyiv: centred, then left pair, single right, wide right */
+  .outcome-gallery--crossing-kyiv .outcome-gallery__hero { --start: 1; --span: 2; }
+  .outcome-gallery--crossing-kyiv .outcome-gallery__grid .placeholder:nth-child(1) { grid-column: 1 / 3; }
+  .outcome-gallery--crossing-kyiv .outcome-gallery__grid .placeholder:nth-child(2) { grid-column: 4; }
+  .outcome-gallery--crossing-kyiv .outcome-gallery__grid .placeholder:nth-child(3) { grid-column: 2 / 5; }
+
+  /* PRO Brera: right half, then a staircase from left to right */
+  .outcome-gallery--brera-district .outcome-gallery__hero { --start: 2; --span: 2; }
+  .outcome-gallery--brera-district .outcome-gallery__grid .placeholder:nth-child(1) { grid-column: 1; }
+  .outcome-gallery--brera-district .outcome-gallery__grid .placeholder:nth-child(2) { grid-column: 2 / 4; }
+  .outcome-gallery--brera-district .outcome-gallery__grid .placeholder:nth-child(3) { grid-column: 3 / 5; }
+
+  /* a drop of corruption: a single video in the centre */
+  .outcome-gallery--a-drop-of-corruption .outcome-gallery__hero { width: min(100%, 1040px); margin-inline: auto; }
+}
+
+/* ------------------------------------------------------------------
+   Phone menu: three lines that turn into a cross; About, Email and LinkedIn
+------------------------------------------------------------------- */
+.phone-menu__toggle, .phone-menu { display: none; }
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .site-header nav { display: none; }
+  .phone-menu__toggle {
+    position: relative; z-index: 41; display: grid; place-content: center; gap: 5px;
+    width: 32px; height: 32px; margin-right: -6px; cursor: pointer;
+  }
+  .phone-menu__toggle span {
+    display: block; width: 20px; height: 1.5px; background: var(--ink);
+    transition: transform .35s cubic-bezier(.22, 1, .36, 1), opacity .2s ease;
+  }
+  .phone-menu__toggle.is-open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .phone-menu__toggle.is-open span:nth-child(2) { opacity: 0; }
+  .phone-menu__toggle.is-open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+  .site-header .brand { position: relative; z-index: 41; }
+  .phone-menu {
+    position: fixed; z-index: 40; inset: 0; padding: 96px 16px 32px; background: var(--paper);
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .phone-menu[hidden] { display: none; }
+  .phone-menu a {
+    color: var(--ink); font-size: 32px; line-height: 1.1; letter-spacing: -.02em;
+    animation: contact-in .5s cubic-bezier(.22, 1, .36, 1) both;
+  }
+  .phone-menu a:nth-child(2) { animation-delay: .05s; }
+  .phone-menu a:nth-child(3) { animation-delay: .1s; }
+}
+@media (max-width: 760px) and (prefers-reduced-motion: reduce), (max-width: 1024px) and (orientation: portrait) and (prefers-reduced-motion: reduce) {
+  .phone-menu a, .phone-menu__toggle span { animation: none; transition: none; }
+}
+
+/* ------------------------------------------------------------------
+   Home on the phone: smaller intro, more air before the projects, projects nearly
+   as tall as the screen, a free-moving row and the licence underneath
+------------------------------------------------------------------- */
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .hm { --card-w: 82vw; }
+  .hm-intro { padding: 28px 16px 0; }
+  .hm-intro h1 { font-size: 17px; line-height: 1.35; }
+  .hm-stage { padding: 0; margin-top: 96px; }
+  .hm-row { scroll-snap-type: none; }
+  .hm-card { scroll-snap-align: none; }
+  .hm-card .hm-image { aspect-ratio: auto; height: calc(100svh - 96px); }
+  .hm-licence { padding: 16px 16px 24px; }
+}
+
+/* ------------------------------------------------------------------
+   Project pages: the cover a little below the header; sideways galleries
+   move freely instead of stopping on each image
+------------------------------------------------------------------- */
+.process-strip { scroll-snap-type: none; }
+.process-strip .placeholder { scroll-snap-align: none; }
+@media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
+  .hero .hero__media { margin-top: 16px; }
+  .hero .hero__media .placeholder__surface { height: calc(100svh - 64px - 16px - var(--page-margin)); }
+}
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .hero .hero__media { margin-top: 20px; }
+  /* Outcome images closer together */
+  main .outcome-gallery .outcome-gallery__grid { margin-top: 8px; }
+  main .outcome-gallery .outcome-gallery__grid .placeholder + .placeholder { margin-top: 8px; }
+  /* Next project: label and title apart, and the block nearer the end of the page */
+  main .outcome { padding-bottom: 32px; }
+  .next-project { margin-top: 24px; padding: 40px 16px 32px; row-gap: 12px; }
+  .next-project__label { position: static; margin: 0; padding: 0; }
+  .footer { padding-block: 24px 32px; align-items: flex-start; }
+}
+
+/* Licence on its own, centred, at the foot of every page; phone menu items at the bottom left */
+.footer { justify-content: center; text-align: center; }
+.hm-licence { left: 20px; text-align: center; }
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .footer { align-items: center; padding-block: 24px 28px; }
+  .hm-licence { text-align: center; }
+  .phone-menu { justify-content: flex-end; padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* Phone: the introduction lives in the menu, under the name; the home fits one screen:
+   header, some air, the row of projects sized to the remaining height, the licence */
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .phone-menu__intro { margin: 0 0 auto; max-width: 340px; color: var(--ink); font-size: 20px; line-height: 1.3; }
+  .phone-menu { justify-content: flex-start; padding-top: 72px; }
+  .phone-menu__intro + a { margin-top: auto; }
+  .phone-menu .phone-menu__intro { animation: contact-in .5s cubic-bezier(.22, 1, .36, 1) both; }
+  .hm-intro { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .hm { height: 100svh; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+  .hm > .site-header { width: 100%; margin: 0; }
+  .hm-stage { flex: 1; margin-top: 32px; padding-bottom: 16px; display: flex; flex-direction: column; justify-content: flex-end; }
+  .hm-card .hm-image { height: min(calc(100svh - 300px), 150vw); }
+  .hm-licence { padding: 0 16px 20px; }
+}
+
+/* Touch screens (phone, iPad): no hover effects on the home projects. A tap would leave
+   the title roll and the lift stuck halfway, so the titles and pictures stay still */
+@media (hover: none), (pointer: coarse) {
+  .hm-card:hover, .hm-card:hover .hm-roll, .hm-card:hover .hm-image > :is(img, video) { transform: none; }
+  .hm-card, .hm-roll, .hm-card .hm-image > :is(img, video) { transition: none !important; }
+}
+
+/* iPad upright uses the phone layout; its project row gets narrower cards than a phone */
+@media (min-width: 600px) and (max-width: 1024px) and (orientation: portrait) {
+  .hm { --card-w: 46vw; }
+  .hm-card .hm-image { height: min(calc(100svh - 300px), calc(var(--card-w) * 1.25)); }
+  .hero .hero__media .placeholder__surface { max-height: 56svh; }
+  .phone-menu__intro { max-width: min(64vw, 40ch); font-size: 24px; line-height: 1.3; }
+}
+
+/* iPad in the desktop layout (landscape, or a 13" iPad upright): a larger, wider introduction */
+@media (pointer: coarse) and (min-width: 761px) {
+  .hm-intro { width: min(46vw, 560px); }
+  .hm-intro h1 { font-size: 17px; line-height: 1.35; }
+}
+
+/* About: the expand control is a plain small "+" (no black circle) */
+.about-table__row--button i,
+.about-table__row--button i:is(*) {
+  width: auto; height: auto; background: none; border-radius: 0; color: var(--ink);
+  font-size: 16px; font-weight: 400; line-height: 1;
+}
+.about-table__row--button:hover i { background: none; color: var(--muted); }
+
+/* Oltre l'ascolto: where it was exhibited, centred under the opening, with the venues' logos */
+.exhibited { display: flex; flex-direction: column; align-items: center; gap: 32px; padding-block: clamp(56px, 7vw, 104px); text-align: center; }
+.exhibited__text { margin: 0; max-width: 46ch; font-size: clamp(18px, 1.6vw, 24px); line-height: 1.35; text-wrap: balance; }
+.exhibited__logos {
+  margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 28px 56px;
+  color: var(--muted); font-family: var(--font-label); font-size: 12px; letter-spacing: .04em; text-transform: uppercase;
+}
+.exhibited__logos img { display: block; height: var(--logo-h, 40px); width: auto; }
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .exhibited { padding-block: 48px; gap: 24px; }
+  .exhibited__logos { gap: 14px 28px; }
+  .exhibited__logos img { height: calc(var(--logo-h, 40px) * .72); }
+}
+
+/* Media start slightly enlarged while they form: keep them inside their frame so the page never scrolls sideways */
+.placeholder__surface:has(> img, > video) { overflow: clip; }
+
+/* Oltre l'ascolto research: the three instrument photographs share one frame shape */
+.instrument-card figure.placeholder .placeholder__surface:has(> img) { aspect-ratio: 4 / 5 !important; }
+.instrument-card .placeholder__surface > img { height: 100%; object-fit: cover; }
+@media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
+  .research-row > .placeholder:has(img) { width: min(52%, 640px); margin-left: auto; }
+}
+/* Process: the intercode score across the page */
+.process-score { display: grid; gap: 16px; }
+.process-score h2 { margin: 0; font-size: clamp(24px, 2.4vw, 36px); font-weight: 400; line-height: 1.2; letter-spacing: -.015em; }
+.process-score__intro { margin: 0 0 16px; max-width: 56ch; }
+.process-score .placeholder { margin: 0; }
+.process-score figcaption { display: none; }
+
+/* Oltre l'ascolto accessibility research: the tactile photograph across the full width */
+.research-row > .placeholder.research-wide { width: 100% !important; margin-left: 0; }
+
+/* Large screens, following the reference site: nothing is capped, the layout keeps the
+   proportions it has at 1440px. Above that the cover takes ~42% of the width, titles grow with
+   the screen and running text a little, so pictures and text stay in balance instead of the
+   pictures looking oversized. The small labels, header and menu keep their size. */
+@media (min-width: 1441px) {
+  .hero.shell { grid-template-columns: minmax(0, 1fr) 42vw; }
+  .hero .hero__head h1 { font-size: 5.2vw; }
+  .hero .hero__subtitle { font-size: 1.6vw; }
+  main.case p:not(.hero__subtitle):not(.exhibited__text):not(.insight p),
+  .about p { font-size: max(14px, .8vw); }
+  .fact p { font-size: max(14px, .8vw); }
+  .section-heading h2, .process-score h2, .outcome-gallery h2, .reading-action strong { font-size: 2.5vw; }
+  .next-project strong { font-size: 3.3vw; }
+  .exhibited__text { font-size: 1.67vw; }
+  .insight p, .expanded-research blockquote { font-size: 2.4vw; }
+  /* home row: a little more than four projects in view, so the pictures do not swell */
+  .hm { --card-w: calc((100vw - 64px) / 4.4); }
+}
+
+/* Every picture and video in the project pages fits the screen's height: never taller than the
+   window, so it can always be seen whole without scrolling */
+main figure.placeholder:not(.hero__media) .placeholder__surface:has(> img, > video) { width: fit-content; max-width: 100%; }
+/* the instrument photographs keep their fixed frame: a frame sized from its own picture and a
+   picture sized from its frame can resolve to zero width in Safari */
+main .instrument-card figure.placeholder:not(.hero__media) .placeholder__surface:has(> img) { width: 100%; }
+main .instrument-card figure.placeholder:not(.hero__media) .placeholder__surface > img { width: 100%; height: 100%; max-height: none; object-fit: cover; }
+main figure.placeholder:not(.hero__media) .placeholder__surface > img,
+main figure.placeholder:not(.hero__media) .placeholder__surface > video {
+  width: auto; max-width: 100%; max-height: calc(100svh - 160px);
+}
+.research-row > .placeholder.research-wide .placeholder__surface { margin-inline: auto; }
+
+/* Sovrapposizioni deep dive: the training collage across the block; backstage photographs in the
+   sideways strip, all at one height and their own width */
+.research-collage { margin: clamp(32px, 4vw, 64px) auto clamp(40px, 5vw, 80px); }
+main figure.research-collage { width: 100%; margin-inline: auto; }
+main figure.research-collage .placeholder__surface:has(> img) { width: 100%; margin-inline: auto; }
+main figure.research-collage .placeholder__surface > img { display: block; width: 100%; height: auto; max-height: none; margin-inline: auto; }
+.research-collage figcaption { display: none; }
+.process-strip .placeholder:has(img) { min-width: 0 !important; flex: none; width: max-content; }
+main .process-strip figure.placeholder .placeholder__surface:has(> img) { width: max-content; height: min(64svh, 640px); }
+main .process-strip figure.placeholder .placeholder__surface > img { height: 100%; width: auto; max-width: none; max-height: none; }
+.process-strip .placeholder:has(img) figcaption { display: none; }
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  main .process-strip figure.placeholder .placeholder__surface:has(> img) { height: 52svh; }
+}
+
+/* Sovrapposizioni outcome: every picture fills its grid cell's width */
+main .outcome-gallery--sovrapposizioni .outcome-gallery__grid figure.placeholder .placeholder__surface:has(> img) { width: 100%; }
+main .outcome-gallery--sovrapposizioni .outcome-gallery__grid figure.placeholder .placeholder__surface > img { width: 100%; max-height: none; }
+.outcome-gallery--sovrapposizioni .outcome-gallery__hero { --start: 0; }
+
+/* ------------------------------------------------------------------
+   Outcome pictures, as on the reference site: a 7-column grid with 8px gaps, one or two pictures
+   per row, wide rows of air between them; in a pair the second picture sits lower
+------------------------------------------------------------------- */
+.outcome-rows { margin-top: clamp(40px, 5vw, 72px); }
+.orow { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); column-gap: 8px; align-items: start; }
+.orow + .orow { margin-top: min(18vw, 260px); }
+.orow__item { grid-column: var(--start) / span var(--span); justify-self: stretch; margin: 0 !important; width: 100% !important; max-width: none !important; }
+.orow__item.is-shifted { margin-top: min(16.7vw, 240px) !important; }
+.orow__item.is-shifted { margin-top: min(16.7vw, 240px); }
+/* a picture fills its columns; when the window's height would make it too tall it shrinks, keeping its
+   shape, and sits in the middle of its columns (no empty bands beside it) */
+main .orow figure.placeholder .placeholder__surface:has(> img, > video) { width: fit-content; max-width: 100%; margin-inline: auto; }
+main .orow figure.placeholder .placeholder__surface > video { width: 100%; height: auto; max-height: calc(100svh - 120px); }
+main .orow figure.placeholder .placeholder__surface:has(> video) { width: 100%; }
+main .orow figure.placeholder:not(.is-cropped) .placeholder__surface > img {
+  width: min(100cqw, calc((100svh - 120px) * var(--ratio, 1.5))); max-width: none; height: auto; max-height: none;
+}
+main .orow figure.placeholder { container-type: inline-size; }
+.orow .placeholder__surface:not(:has(> img, > video)) { aspect-ratio: 16 / 9; }
+.orow .is-tall .placeholder__surface:not(:has(> img, > video)) { aspect-ratio: 2 / 3; }
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .orow { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 8px; }
+  .orow + .orow { margin-top: 8px; }
+  .orow__item { grid-column: span 2; }
+  .orow__item.is-tall { grid-column: span 1; }
+  .orow__item.is-shifted { margin-top: 0 !important; }
+}
+
+/* A picture shown only in part (see OutcomeRows `crop`): as large as fits the screen, centred in its cell */
+main .orow figure.placeholder.is-cropped .placeholder__surface:has(> img) {
+  position: relative; overflow: hidden; aspect-ratio: var(--crop-ratio) !important;
+  width: min(100%, calc((100svh - 120px) * var(--crop-ratio))) !important; margin-inline: auto;
+}
+main .orow figure.placeholder.is-cropped .placeholder__surface > img {
+  position: absolute; left: var(--crop-x); top: var(--crop-y);
+  width: var(--crop-w) !important; max-width: none !important; height: auto !important; max-height: none !important;
+}
+
+/* Sovrapposizioni deep dive: texts in the usual column, pictures large below them */
+.sv-deep .sv-text { max-width: 640px; margin-top: min(14vw, 200px); }
+.sv-deep .section-label + .sv-text, .sv-deep > .sv-text:first-child { margin-top: clamp(32px, 4vw, 56px); }
+.sv-deep .sv-text p { margin: 14px 0 0; }
+.sv-deep .research-collage { margin: clamp(40px, 5vw, 72px) auto 0; }
+.sv-strip-copy { max-width: 56ch; margin: 0; }
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .sv-deep .sv-text { margin-top: 56px; }
+}
+
+/* ------------------------------------------------------------------
+   One set of picture rules for every project page (outcome and deep dive), from the reference site:
+   - a 7-column grid with 8px gaps, as wide as the page's text
+   - a landscape picture alone: 5 columns; the first of a block in the middle, the next ones moving left
+     and right
+   - an upright picture: 2 columns beside a 4-column landscape one, sitting lower; 2 or 3 upright
+     pictures side by side; alone and first, 3 columns in the middle
+   - a very wide picture (a score): all 7 columns
+   - never taller than the window
+   - many small pictures (the training images): a wall of two rows drifting sideways
+------------------------------------------------------------------- */
+.research-row.accessibility { display: block; }
+.research-row.accessibility .outcome-rows,
+.process-score .outcome-rows { margin-top: clamp(32px, 4vw, 56px); }
+
+.image-wall { display: grid; gap: 8px; margin-top: clamp(40px, 5vw, 72px); overflow: hidden; }
+.image-wall:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.image-wall__row { overflow: hidden; }
+.image-wall__track { display: flex; gap: 8px; width: max-content; animation: wall-drift 90s linear infinite; }
+.image-wall__row.is-reverse .image-wall__track { animation-direction: reverse; }
+/* the rows together fill about three quarters of the window */
+.image-wall__track img { display: block; height: clamp(160px, calc(76svh / var(--wall-rows, 2)), 420px); width: auto; flex: none; }
+.image-wall.pause-on-hover:hover .image-wall__track, .image-wall:focus-within .image-wall__track { animation-play-state: paused; }
+@keyframes wall-drift { from { transform: translateX(0); } to { transform: translateX(calc(-50% - 4px)); } }
+@media (prefers-reduced-motion: reduce) {
+  .image-wall__row { overflow-x: auto; }
+  .image-wall__track { animation: none; }
+}
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .image-wall__track img { height: calc(440px / var(--wall-rows, 2)); }
+  .image-wall__track { animation-duration: 60s; }
+}
+
+/* A cover shown only in part: the chosen area is scaled to cover the whole opening (no border shows)
+   and centred in it */
+.hero .hero__media.is-cropped .placeholder__surface { position: relative; overflow: hidden; container-type: size; }
+.hero .hero__media.is-cropped .placeholder__surface > img {
+  position: absolute; top: 50%; left: 50%; width: auto !important; max-width: none; max-height: none; object-fit: fill;
+  height: max(calc(var(--crop-h) * 100cqh), calc(var(--crop-w) * 100cqw)) !important;
+  transform: translate(calc(var(--crop-cx) * -100%), calc(var(--crop-cy) * -100%));
+}
+/* the cropped picture is taken out of the flow, so the opening keeps its own shape */
+.hero .hero__media.is-cropped figure.placeholder .placeholder__surface,
+figure.placeholder.hero__media.is-cropped .placeholder__surface { aspect-ratio: 4 / 5 !important; }
+@media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
+  figure.placeholder.hero__media.is-cropped .placeholder__surface { aspect-ratio: auto !important; }
+}
+/* a video beside the title fills the same opening as a picture on phones too */
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  figure.placeholder.hero__media .placeholder__surface:has(> video) { aspect-ratio: 4 / 5 !important; max-height: 70svh; }
+  .hero .hero__media .placeholder__surface > video { width: 100%; height: 100%; object-fit: cover; }
+}
+
+/* A cover shown whole, in its own proportions: as tall as the opening allows, aligned to its bottom
+   edge like the text beside it */
+.hero .hero__media.is-whole { display: flex; align-items: flex-end; justify-content: center; }
+.hero .hero__media.is-whole .placeholder__surface { height: auto !important; width: auto; max-width: 100%; aspect-ratio: auto !important; }
+.hero .hero__media.is-whole .placeholder__surface > img {
+  height: calc(100svh - 64px - 16px - var(--page-margin)) !important; width: auto !important; max-width: 100%; object-fit: contain;
+}
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .hero .hero__media.is-whole .placeholder__surface > img { height: auto !important; width: 100% !important; max-height: none; }
+  .hero .hero__media.is-whole .placeholder__surface { width: 100%; max-height: none; }
+}
+
+/* Next project: the label, the name, and at the right a text arrow like the "+" of "Got more time?" */
+.next-project { grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto auto; justify-content: stretch; align-items: center; column-gap: 24px; }
+.next-project .next-project__label { grid-column: 1 / -1; grid-row: 1; }
+/* the arrow sits inside the title, so it always has the size of the text, pushed to the right edge */
+.next-project strong { grid-column: 1 / -1; grid-row: 2; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.next-project strong .next-project__arrow {
+  display: block; flex: 0 0 auto; width: auto; margin: 0; color: var(--ink);
+  font-style: normal; font-size: 1em; font-weight: 300; line-height: 1; letter-spacing: 0;
+  transition: transform .4s cubic-bezier(.22, 1, .36, 1);
+}
+.next-project:hover .next-project__arrow { color: var(--ink); transform: translateX(6px); text-decoration: none; }
+.next-project:hover strong > span { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
+@media (prefers-reduced-motion: reduce) { .next-project__arrow { transition: none; } }
+
+/* Phone and upright iPad: every picture in its own row at full width, one under the other */
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .orow { grid-template-columns: minmax(0, 1fr); }
+  .orow__item, .orow__item.is-tall { grid-column: 1 !important; }
+  main .orow figure.placeholder .placeholder__surface:has(> img, > video) { width: 100%; }
+  main .orow figure.placeholder:not(.is-cropped) .placeholder__surface > img { width: 100% !important; height: auto; }
+  main .orow figure.placeholder .placeholder__surface > video { max-height: none; }
+  main .orow figure.placeholder.is-cropped .placeholder__surface:has(> img) { width: 100% !important; }
+}
+
+/* About: what each experience involved, as a short list under the opened row */
+.about-table__detail ul { min-height: 0; overflow: hidden; margin: 0; padding: 0; list-style: none; max-width: 760px; }
+.about-table__detail li { font-size: 14px; line-height: 1.6; }
+.about-table__detail li + li { margin-top: 8px; }
+.about-table__item.is-open .about-table__detail ul { padding: 0 76px 26px 0; }
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .about-table__item.is-open .about-table__detail ul { padding: 0 0 22px; }
+}
+/* Education, tools and languages side by side */
+@media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
+  .about-details { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* Oltre la teca di vetro: the two approaches, the thirteen principles and the type specimen */
+.approaches { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: clamp(32px, 4vw, 56px); }
+.approach { border-top: 1px solid var(--line); padding-top: 16px; display: flex; flex-direction: column; align-items: flex-start; }
+.approach h3 { margin: 0; font-size: clamp(28px, 3vw, 44px); font-weight: 400; line-height: 1.05; letter-spacing: -.02em; }
+.approach__who { margin: 10px 0 40px; color: var(--muted); font-family: var(--font-label); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+.approach__step { margin: 0; max-width: 30ch; font-size: 17px; line-height: 1.4; }
+.approach__step span { display: block; margin-bottom: 8px; color: var(--muted); font-family: var(--font-label); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+.approach__arrow { margin: 14px 0; font-size: 22px; line-height: 1; color: var(--muted); }
+.principles__hint { margin: clamp(32px, 4vw, 56px) 0 12px; color: var(--muted); font-family: var(--font-label); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+.principles {
+  list-style: none; margin: 0; padding: 0 0 16px; counter-reset: principle; display: flex; gap: 8px;
+  overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: var(--line) transparent;
+}
+.principles:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.principles li { counter-increment: principle; flex: none; width: min(78vw, 340px); border-top: 1px solid var(--line); padding: 14px 24px 0 0; scroll-snap-align: start; }
+.principles li::before { content: counter(principle, decimal-leading-zero); display: block; margin-bottom: 10px; color: var(--muted); font-family: var(--font-label); font-size: 12px; letter-spacing: .04em; }
+.principles strong { display: block; font-size: 17px; font-weight: 500; line-height: 1.25; }
+.principles p { margin: 8px 0 0; font-size: 14px; line-height: 1.5; color: var(--muted); }
+.type-specimen { margin: clamp(40px, 5vw, 72px) 0 0; font-family: 'Atkinson Hyperlegible', sans-serif; color: var(--ink); }
+.type-specimen p { margin: 0; font-size: clamp(32px, 5.6vw, 88px); line-height: 1.12; overflow-wrap: anywhere; }
+.type-specimen figcaption { display: flex; justify-content: space-between; margin-top: 16px; padding-top: 8px; border-top: 1px solid var(--ink); font-family: var(--font-label); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+.type-specimen strong { display: block; margin-top: 8px; font-weight: 400; font-size: clamp(44px, 7vw, 112px); line-height: 1; letter-spacing: -.01em; }
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .approaches { grid-template-columns: 1fr; gap: 40px; }
+}
+
+/* Oltre la teca di vetro: the interactive plan */
+.teca-plan { margin-top: clamp(40px, 5vw, 72px); }
+.teca-plan__map { position: relative; width: min(100%, 1100px); margin-inline: auto; }
+.teca-plan__map svg { display: block; width: 100%; height: auto; fill: var(--ink); }
+.teca-plan__dot {
+  position: absolute; translate: -50% -50%; width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+  display: grid; place-items: center; background: var(--ink); color: #161616; border: 2px solid #161616;
+  font-family: var(--font-label); font-size: 13px; font-weight: 700; transition: transform .2s ease, background .2s ease;
+}
+.teca-plan__dot:hover { transform: scale(1.12); }
+.teca-plan__dot.is-current { background: #61242D; color: #fff; border-color: #fff; transform: scale(1.18); }
+.teca-plan__dot:focus-visible, .teca-plan__legend button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.teca-plan__entrance { position: absolute; translate: 0 -50%; color: var(--muted); font-family: var(--font-label); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+.teca-plan__legend { list-style: none; margin: 32px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: center; }
+.teca-plan__legend button { color: var(--muted); cursor: pointer; font-size: 14px; padding: 4px 0; }
+.teca-plan__legend button span { font-family: var(--font-label); font-size: 12px; margin-right: 4px; }
+.teca-plan__legend button[aria-pressed="true"], .teca-plan__legend button:hover { color: var(--ink); }
+.teca-plan__station { max-width: 640px; margin: 28px auto 0; text-align: center; min-height: 120px; }
+.teca-plan__station span { display: block; color: var(--muted); font-family: var(--font-label); font-size: 12px; letter-spacing: .04em; }
+.teca-plan__station strong { display: block; margin-top: 6px; font-size: clamp(22px, 2.2vw, 32px); font-weight: 400; }
+.teca-plan__station p { margin: 10px 0 0; font-size: 15px; line-height: 1.55; }
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .teca-plan__dot { width: 24px; height: 24px; font-size: 11px; }
+  .teca-plan__entrance { display: none; }
+  .teca-plan__legend { justify-content: flex-start; flex-direction: column; gap: 2px; }
+  .teca-plan__station { text-align: left; }
+}
+
+/* Plan: on computers the map at the left, the legend and the station at the right */
+@media (min-width: 1025px), (min-width: 761px) and (orientation: landscape) {
+  .teca-plan { display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(260px, 1fr); gap: clamp(32px, 4vw, 72px); align-items: center; }
+  .teca-plan__map { width: 100%; margin: 0; }
+  .teca-plan__legend { margin: 0; flex-direction: column; justify-content: flex-start; gap: 4px; }
+  .teca-plan__station { margin: 28px 0 0; padding-top: 24px; border-top: 1px solid var(--line); text-align: left; max-width: none; min-height: 200px; }
+}
+
+/* Phone and iPad portrait: body text one step larger */
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .quick-read__title > p,
+  .quick-read__steps p,
+  .challenge__copy p,
+  .research-copy p,
+  .research-block p.intro,
+  .instrument-card p,
+  .principles p,
+  .about-table__detail li,
+  .about-section > div > p,
+  .teca-plan__station p,
+  .process-sticky .shell > p { font-size: 16px; line-height: 1.6; }
+  .fact p, .reading-action small { font-size: 15px; }
+}
+
+/* Phone and iPad portrait: the wall of the existing exhibition drifts more slowly */
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .image-wall.is-slow .image-wall__track { animation-duration: 150s; }
+}
+
+/* Two versions of a block: one for computers, one for phones and iPad portrait */
+.only-narrow { display: none; }
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .only-wide { display: none; }
+  .only-narrow { display: block; }
+}
+
+/* Oltre la teca, phones only: a smaller type specimen, so the grids below can be larger */
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .type-specimen p { font-size: 24px; line-height: 1.18; }
+  .type-specimen strong { font-size: 40px; }
+  .type-specimen figcaption { font-size: 11px; }
+}
+
+/* Oltre la teca, phones only: the two approaches read as name, who, then two numbered questions */
+@media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
+  .approaches { gap: 48px; }
+  .approach h3 { font-size: 30px; }
+  .approach__who { margin: 8px 0 24px; font-family: inherit; font-size: 15px; letter-spacing: 0; text-transform: none; }
+  .approach__step { max-width: none; padding: 14px 0 0 14px; border-left: 1px solid var(--line); font-size: 19px; line-height: 1.35; }
+  .approach__step span { margin-bottom: 6px; font-size: 11px; }
+  .approach__arrow { display: none; }
+  .approach__arrow + .approach__step { margin-top: 20px; }
+}
+
+/* Link to a project's live website, styled like the "Got more time?" control */
+.site-link { display: flex; width: 100%; margin-top: clamp(48px, 6vw, 96px); text-decoration: none; color: var(--ink); border-top: 0; border-bottom: 0; }
+.site-link:hover i { transform: translate(3px, -3px); }
+.site-link i { transition: transform .3s ease; font-style: normal; }

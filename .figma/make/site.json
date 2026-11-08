@@ -1,10 +1,12 @@
 {
-  "description": "Explore a communication designer’s case study on accessible exhibition design, showcasing research, creative process, video, and tactile sound-inspired artefacts.",
+  "description": "Rossella Magnani, communication designer in Milan (MSc Communication Design, Politecnico di Milano). Exhibition and experiential design, accessibility, event and visual design.",
   "robots": {
-    "index": false
+    "index": true
   },
   "accessibility": {
     "addBypassLinks": false,
     "ignoreReducedMotion": false
-  }
+  },
+  "title": "Rossella Magnani · Exhibition and experiential designer",
+  "language": "en"
 }
