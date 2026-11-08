@@ -1716,6 +1716,12 @@ function About() {
             ['Loro Piana Global Summit', 'Event visual system', '2024', [
               'Designed the presentation graphics for the global summit of a luxury brand, in line with its identity and addressed to executive stakeholders, and managed the visual content during the live broadcasts.',
             ]],
+            ['Lavazza Training Center', 'Experience design workshop, Turin', '2024', [
+              'Selected for a one-week professional workshop on brand storytelling and physical space at the Lavazza Training Center.',
+              'Stage and experience setting: worked on the creative direction and physical setup of a new product launch presentation.',
+              "Spatial storytelling: turned Lavazza's brand heritage into a tangible experience, designing the environmental assets and the stage layout for the product reveal.",
+              'Within a multidisciplinary team, from concept to execution on agency-style deadlines.',
+            ]],
           ]}
         />
 
