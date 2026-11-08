@@ -932,8 +932,10 @@ function NextProject({ project }: { project: (typeof projects)[number] }) {
   return (
     <a id="next-project" className="next-project reveal" href={`/${project.slug}`}>
       <span className="next-project__label">Next project</span>
-      <strong lang={project.lang}><Lines text={project.title} /></strong>
-      <i className="next-project__arrow" aria-hidden="true">→</i>
+      <strong lang={project.lang}>
+        <Lines text={project.title} />
+        <i className="next-project__arrow" aria-hidden="true">→</i>
+      </strong>
     </a>
   )
 }
