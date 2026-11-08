@@ -27,6 +27,7 @@ const instruments = [
 // `whole` shows the entire image, uncropped, on a plain background (for cut-out shapes such as a sticker). For now they are taken from the current site
 // (rossellamagnani.figma.site); once the files are uploaded to public/, point these to the local copies.
 const projects: { title: string; type: string; slug: string; lang?: 'it'; image: string; video?: string; focus?: string; whole?: boolean; crop?: { x: number; y: number; zoom: number } }[] = [
+  { title: 'Oltre la teca di vetro', type: 'EXHIBITION DESIGN · ACCESSIBILITY', slug: 'oltre-la-teca', lang: 'it', image: '/projects/oltre-la-teca/timeline-book.svg', focus: '45% 50%' },
   { title: "Oltre l'ascolto", type: 'MULTISENSORY DESIGN · ACCESSIBILITY', slug: 'oltre-lascolto', lang: 'it', image: 'https://rossellamagnani.figma.site/_assets/v11/176474d4960ebe154d49f3d2840823b84d71f931.png' },
   { title: 'Sovrapposizioni', type: 'EXHIBITION DESIGN · AI', slug: 'sovrapposizioni', lang: 'it', image: 'https://rossellamagnani.figma.site/_assets/v11/141ddc64b5b5362cf1d47cddb155b8aefeecc258.png?w=1536' },
   { title: 'Marco Magnani Art', type: 'BRAND IDENTITY · ART DIRECTION', slug: 'marco-magnani-art', image: 'https://rossellamagnani.figma.site/_assets/v11/6eb7ffe7a5b70424dcb96a2ca56a52145979e5ba.png?w=1536' },
@@ -39,6 +40,64 @@ const projects: { title: string; type: string; slug: string; lang?: 'it'; image:
 const CURRENT_SITE = 'https://rossellamagnani.figma.site'
 
 const caseStudies = [
+  {
+    slug: 'oltre-la-teca',
+    title: 'Oltre la teca di vetro',
+    lead: 'Synaesthetic accessibility for the book heritage of the University Library of Pavia.',
+    type: 'Exhibition design, accessibility, visual identity',
+    year: '2026',
+    context: "Individual MSc thesis · Politecnico di Milano · with Spazio Geco and Pavia's University Library · Redesign concept",
+    summary:
+      'An exhibition redesigned so that every visitor, sighted, partially sighted or blind, has the same experience of ancient books.',
+    quickSteps: [
+      ['01 / Audit', "A design audit of «Librària», the library's existing exhibition, across content, senses, interaction and space."],
+      ['02 / Strategy', 'Accessibility as the starting point rather than an added layer: one experience for everyone, through more senses.'],
+      ['03 / Project', 'Thirteen principles, a visual identity, a new plan and seven stations of vertical and tactile panels, rendered in 3D.'],
+    ],
+    challenge:
+      'In a museum the ancient book becomes an object to look at: closed in a glass case, open on a single page, out of reach. Latin, old scripts and botanical codes add a cognitive barrier to the physical one, and for most visitors, especially those with sensory or cognitive disabilities, the book stays silent.',
+    research: [
+      { title: 'The existing exhibition', copy: "«Librària» brings the library's manuscripts, incunabula and herbarium to the public with touch screens, videos and tactile panels. The audit read it through four filters, information, senses and cognition, user experience and space, and found five main issues: too much text on the panels, no wayfinding in the circular room, overlapping audio from every video, a tactile version of the games poorer than the digital one, and a central module usable only through smooth glass." },
+      { title: 'Two ways to approach accessibility', copy: 'An integrative approach designs the exhibition for sighted visitors and adds dedicated tools afterwards. A structural approach starts from the visitors who meet the greatest barriers and builds one experience for all. The project sits close to the structural end: every station is designed from the start to be used with more than one sense.' },
+      { title: 'Thirteen principles', copy: 'Each issue became a rule. Video only where nothing else can replace it. Long text lives on the vertical panel, the tactile panel speaks to the hands. One audio guide replaces sound in the room. Screens are read seated. We play with our hands, not with a screen. The route can be read with closed eyes. One register, one typeface, contrast never optional.' },
+      { title: 'A visual identity for reading', copy: 'One typeface, Atkinson Hyperlegible, in its weights, with sizes set by reading distance following the Smithsonian guidelines. Two colours only, a deep red #61242D and white, with a contrast of about 95% on every support. Vertical and tactile panels share one bilingual grid built on a single module, with Braille embossed in the colour of the panel.' },
+      { title: 'Space, materials and light', copy: 'A new route with an entrance room for orientation, a tactile plan and a LOGES floor guide. Modules at 105 cm with a 20° reading plane and free space below for wheelchairs. White 3D-printed resin for every reproduction, authentic materials where the material is the content, warm light focused on the stations.' },
+    ],
+    insight: 'What is designed for the visitors who meet the greatest barriers ends up improving the experience of everyone.',
+    processTitle: 'The existing exhibition',
+    processDescription: 'Scroll sideways',
+    cover: { src: '/projects/oltre-la-teca/timeline-book.svg', alt: "Render: the Timeline Book station, a long red module with the panel 'Quando il libro era un rotolo', a scroll to unroll on the tactile plane and a visitor in a wheelchair." },
+    outcome: [
+      ['entrance', "Render: the entrance room, with the Librària logo in relief and the reception counter holding the tactile plan of the exhibition."],
+      ['tactile-map', 'A hand exploring the tactile plan: red relief modules on a white base, with legends in Italian, English and Braille.', 'tall'],
+      ['timeline-library', 'Render: the Timeline Library, three vertical panels on the history of the library with the resin cornice of the Salone Teresiano and three metal weights for the growth of the collections.'],
+      ['scroll', 'Render: the scroll to unroll on the tactile plane of the first Timeline Book station.', 'tall'],
+      ['illuminator', 'Render: the Illuminator module, with a video of the masters, a relief drôlerie and the tools of the craft in their real materials.'],
+      ['tools', 'The tools of the illuminator on the reading plane: shell, pumice, scraper, quill and lead point.'],
+      ['herbarium', 'Render: the Herbarium module, with visitors smelling the ampoules of the four plants.'],
+      ['ampoules', 'The four tilted ampoules with the essences of the plants of the Aldini herbarium.'],
+      ['librarian', 'Render: the Librarian station, with scientific plates in relief and the catalogue cards to place on the reader.'],
+      ['movable-type', 'Metal movable type to explore with the hands at the station on Gutenberg.', 'tall'],
+      ['worn-page', 'A hand on a thermochromic page that keeps the imprint of the fingers, like the worn margins of books of hours.', 'tall'],
+      ['memory-print', 'Render: the memory station, where each visitor prints their own souvenir on a small press.'],
+    ].map(([name, alt, tall]) => ({ src: `/projects/oltre-la-teca/${name}.svg`, alt, tall: Boolean(tall) })),
+    teca: {
+      existing: Array.from({ length: 20 }, (_, n) => ({
+        src: `/projects/oltre-la-teca/existing/${String(n).padStart(2, '0')}.svg`,
+        alt: 'The existing exhibition «Librària»: visitors at the touch screens and tactile panels.',
+      })),
+      positioning: { src: '/projects/oltre-la-teca/positioning.svg', alt: 'Chart: six scales between the integrative and the structural approach, with the existing exhibition near the first and the project near the second.' },
+      identity: [
+        { src: '/projects/oltre-la-teca/typeface.svg', alt: 'The typeface Atkinson Hyperlegible, with the glyphs it keeps distinct: I l 1, O 0, B 8, S 5, 6 b, b d p q.' },
+        { src: '/projects/oltre-la-teca/grid.svg', alt: 'The bilingual grids of the vertical and the tactile panel, built on one module, with the Braille block below the text.' },
+      ],
+      space: [
+        { src: '/projects/oltre-la-teca/plan.svg', alt: 'Plan of the new route: entrance, Timeline Library, Timeline Book, Illuminator, Herbarium, Librarian and the interactive module.' },
+        { src: '/projects/oltre-la-teca/section.svg', alt: 'Elevation and section of a station: vertical panel 130 cm, reading plane tilted 20° at 105 cm, free space for a wheelchair below.' },
+        { src: '/projects/oltre-la-teca/floor-light.svg', alt: 'The floor guide codes, straight line and stop, and the spotlights aimed at the reading planes.', tall: true },
+      ],
+    },
+  },
   {
     slug: 'sovrapposizioni',
     title: 'Sovrapposizioni',
@@ -911,6 +970,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
       book?: Pic[]
     }
     manual?: { logotype: Pic[]; pages: Pic[]; unveiling: Pic }
+    teca?: { existing: Pic[]; positioning: Pic; identity: Pic[]; space: (Pic & { tall?: boolean })[] }
   }
   const deep = media.deep
   // projects without the optional deep dive (no research material shown)
@@ -958,8 +1018,8 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
                 ['Type', project.type],
                 ['Context', project.context],
                 ['Year', project.year],
-                ['Role', project.slug === 'sovrapposizioni' ? 'Concept, exhibition and editorial design' : project.slug === 'marco-magnani-art' ? 'Positioning, brand identity, art direction' : project.slug === 'crossing-kyiv' ? 'Editorial design, layout and typography' : project.slug === 'brera-district' ? 'Research, concept and visual identity' : project.slug === 'a-drop-of-corruption' ? 'Concept, art direction and AI video production' : 'Designer, researcher'],
-                ['Tools', project.slug === 'sovrapposizioni' ? 'Midjourney, Illustrator, Indesign, Photoshop' : project.slug === 'marco-magnani-art' ? 'Illustrator, Photoshop, Figma, Framer, Indesign' : project.slug === 'crossing-kyiv' ? 'Indesign, Illustrator, Photoshop' : project.slug === 'brera-district' ? 'Illustrator, Photoshop, Indesign' : project.slug === 'a-drop-of-corruption' ? 'Midjourney, Premiere' : 'Replace with project tools'],
+                ['Role', project.slug === 'oltre-la-teca' ? 'Audit, research, exhibition and visual design (individual)' : project.slug === 'sovrapposizioni' ? 'Concept, exhibition and editorial design' : project.slug === 'marco-magnani-art' ? 'Positioning, brand identity, art direction' : project.slug === 'crossing-kyiv' ? 'Editorial design, layout and typography' : project.slug === 'brera-district' ? 'Research, concept and visual identity' : project.slug === 'a-drop-of-corruption' ? 'Concept, art direction and AI video production' : 'Designer, researcher'],
+                ['Tools', project.slug === 'oltre-la-teca' ? 'Rhino, Blender, Illustrator, InDesign, Photoshop' : project.slug === 'sovrapposizioni' ? 'Midjourney, Illustrator, Indesign, Photoshop' : project.slug === 'marco-magnani-art' ? 'Illustrator, Photoshop, Figma, Framer, Indesign' : project.slug === 'crossing-kyiv' ? 'Indesign, Illustrator, Photoshop' : project.slug === 'brera-district' ? 'Illustrator, Photoshop, Indesign' : project.slug === 'a-drop-of-corruption' ? 'Midjourney, Premiere' : 'Replace with project tools'],
               ].map(([label, value]) => (
                 <div className="fact" key={label}>
                   <span><Lines text={label} /></span>
@@ -1056,6 +1116,8 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
             <SovrapposizioniDeep project={project} deep={deep} />
           ) : media.manual ? (
             <MarcoMagnaniDeep project={project} manual={media.manual} />
+          ) : media.teca ? (
+            <TecaDeep project={project} teca={media.teca} />
           ) : (
           <>
           <section id="research" className="section shell research">
@@ -1253,6 +1315,54 @@ function SovrapposizioniDeep({
             {deep.editorial?.map(({ src, alt }) => <Placeholder key={src} caption={alt} alt={alt} src={src} />)}
           </div>
         </div>
+      </section>
+    </>
+  )
+}
+
+// Oltre la teca di vetro's deep dive: the audit of the existing exhibition (its photographs drifting in a
+// wall), the strategic choice, the principles, the visual identity and the space, texts with their
+// pictures below
+function TecaDeep({
+  project,
+  teca,
+}: {
+  project: (typeof caseStudies)[number]
+  teca: { existing: ManualPic[]; positioning: ManualPic; identity: ManualPic[]; space: (ManualPic & { tall?: boolean })[] }
+}) {
+  const [existing, approach, principles, identity, space] = project.research
+  const pictures = (list: (ManualPic & { tall?: boolean })[], turn = 0) => (
+    <OutcomeRows turn={turn} items={list.map(pic => ({ ...pic, caption: pic.alt }))} />
+  )
+  const text = (number: string, item: { title: string; copy: string }) => (
+    <div className="sv-text reveal">
+      <SectionHeading number={number}>{item.title}</SectionHeading>
+      <p>{item.copy}</p>
+    </div>
+  )
+  return (
+    <>
+      <section id="research" className="section shell research sv-deep">
+        <div className="section-label reveal">Research</div>
+        {text('01', existing)}
+        <ImageWall pictures={teca.existing} label="Photographs of the existing exhibition" rows={2} pauseOnHover={false} />
+        {text('02', approach)}
+        {pictures([teca.positioning], 1)}
+        {text('03', principles)}
+      </section>
+
+      <section id="insight" className="insight reveal">
+        <div className="shell insight__inner">
+          <div className="section-label">Key insight</div>
+          <p><Lines text={project.insight} /></p>
+        </div>
+      </section>
+
+      <section className="section shell research sv-deep">
+        {text('04', identity)}
+        {pictures(teca.identity)}
+        {text('05', space)}
+        {pictures(teca.space, 2)}
       </section>
     </>
   )
@@ -1952,7 +2062,7 @@ function CaseStudy() {
           </div>
         </section>
 
-        <NextProject project={projects[1]} />
+        <NextProject project={projects.find(item => item.slug === 'sovrapposizioni')!} />
       </article>
 
       <footer className="footer shell">
