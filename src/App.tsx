@@ -852,7 +852,7 @@ function SiteHeader({ skipTo = 'content', children }: { skipTo?: string; childre
 }
 
 const introduction =
-  'Communication designer working on exhibitions and multisensory experiences designed for the widest possible audience.'
+  'Visual designer working on exhibitions, visual identities and multisensory experiences designed for the widest possible audience.'
 
 // Phone only: three lines that open a menu and turn into a cross to close it. The menu shows the
 // introduction under the name and About, Email and LinkedIn at the bottom left.
@@ -1661,12 +1661,17 @@ function About() {
           <h1>I design the moment when content meets people in a physical space.</h1>
           <div className="about-hero__bio">
             <p>
-              I&apos;m Rossella, a communication designer based in Milan. I work on exhibitions,
-              event identities and multisensory experiences, translating cultural content into
-              spaces, objects and graphics that everyone can read, touch and enjoy.
+              I&apos;m Rossella, a visual designer based in Milan. I work on exhibitions, visual
+              identities and multisensory experiences, translating cultural and brand content into
+              spaces, objects and graphics designed for the widest possible audience.
             </p>
             <p>
-              Accessibility shapes everything I do. My MSc thesis at Politecnico di Milano,
+              Visual design is the other half of my work. A year in agency taught me to build brand
+              systems, editorial projects and large-format campaigns, where clarity and typographic
+              care matter as much as in a museum.
+            </p>
+            <p>
+              Accessibility is the thread that runs through my projects. My MSc thesis at Politecnico di Milano,
               developed with the University Library of Pavia, redesigns its exhibition stations
               around tactile and inclusive interaction. Before that, I explored how sound can be
               experienced beyond hearing, and how artificial intelligence can become the subject
@@ -2248,7 +2253,7 @@ export default function App() {
       ? `${project.title} (${project.year}). ${project.type}. ${project.team}. Role: ${project.role}. ${project.shortCopy}`
       : path === 'oltre-lascolto'
         ? "Oltre l'ascolto (2025), multisensory design and accessibility. Group of 5. Role: concept and making of the tactile artefacts, contribution to the video. An animated video and tactile artefacts that translate electronic music into images and relief."
-        : 'Rossella Magnani, communication designer in Milan. Exhibition and experiential design, accessibility, visual identity and editorial design.'
+        : 'Rossella Magnani, visual designer in Milan. Exhibition and visual design, visual identity, editorial design and accessibility.'
     let meta = document.querySelector<HTMLMetaElement>('meta[name="description"]')
     if (!meta) {
       meta = document.createElement('meta')
