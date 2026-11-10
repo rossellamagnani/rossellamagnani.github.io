@@ -304,14 +304,11 @@ const caseStudies = [
       unveiling: { span: 6, squareOnPhone: true, src: '/media/marco-magnani-unveiling.mp4', poster: '/media/marco-magnani-unveiling.jpg', alt: 'The unveiling system on a portrait from the Trame collection: a torn-edged blue shape, sampled from the crochet cap, covers part of the painting and moves around it, always leaving the eyes visible.', autoPlay: true, controls: false },
       // the logotype taking shape: scan, vector curves with their anchor points, then the filled mark
       logotype: [{ src: '/media/marco-magnani-logotype.mp4', poster: '/media/marco-magnani-logotype.jpg', alt: "From the artist's scanned signature to the logotype: the brushed outline is redrawn curve by curve as a vector, with its anchor points and handles, then filled.", full: true, autoPlay: true, controls: false }],
-      // the brand manual as a video: six pages, then the camera draws back over all sixty pages of the manual
+      // the brand manual as one picture: a grid of its pages, cut at every edge as if it went on
       pagesVideo: {
-        src: '/media/marco-magnani-manual.mp4',
-        poster: '/media/marco-magnani-manual.jpg',
-        alt: 'Pages of the brand manual: the camera starts on six pages about the logotype and draws back over a grid of the whole manual, from the brand strategy to the applications.',
+        src: '/media/marco-magnani-manual-grid.jpg',
+        alt: 'A grid of pages from the brand manual, cut at every edge as if it went on: brand strategy, copy strategy, brand messaging, the logotype and its rules, colours, typography and the applications.',
         full: true,
-        autoPlay: true,
-        controls: false,
       },
       pages: [3, 5, 7, 8, 9, 13, 19, 21, 25, 33, 37, 39, 41, 42, 44, 45, 47, 48, 49, 50, 51, 52, 53, 54, 55, 60, 61, 63, 66, 67, 69, 71].map(n => ({
         src: `/projects/marco-magnani-art/manual/page-${String(n).padStart(2, '0')}.svg`,
