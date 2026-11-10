@@ -567,10 +567,12 @@ function Placeholder({
           isVideo ? (
             <video
               src={asset(src)}
-              poster={asset(poster)}
+              // a video that starts on its own opens on its first frame, so it shows no poster (a frame from
+              // later on would flash before the start); with reduced motion it never plays and keeps the poster
+              poster={autoPlay && !prefersReducedMotion() ? undefined : asset(poster)}
               controls={controls}
               playsInline
-              preload="metadata"
+              preload={autoPlay && !prefersReducedMotion() ? 'auto' : 'metadata'}
               aria-label={alt || caption}
               // a silent video can start on its own: muted and looping, only while it is on screen,
               // never with reduced motion; the controls stay to pause it
