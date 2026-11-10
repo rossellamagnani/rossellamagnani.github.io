@@ -1861,7 +1861,7 @@ figure.placeholder.hero__media.is-cropped .placeholder__surface { aspect-ratio: 
 /* Oltre la teca, phones only: the two approaches read as name, who, then two numbered questions */
 @media (max-width: 760px), (max-width: 1024px) and (orientation: portrait) {
   .approaches { gap: 48px; }
-  .approach h3 { font-size: 30px; }
+  .approach h3 { font-size: 21px; }   /* below the section title (24px) */
   .approach__who { margin: 8px 0 24px; font-family: inherit; font-size: 15px; letter-spacing: 0; text-transform: none; }
   .approach__step { max-width: none; padding: 14px 0 0 14px; border-left: 1px solid var(--line); font-size: 19px; line-height: 1.35; }
   .approach__step span { margin-bottom: 6px; font-size: 11px; }
