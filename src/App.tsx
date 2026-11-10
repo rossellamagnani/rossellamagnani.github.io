@@ -2185,9 +2185,13 @@ function CaseStudy() {
             <OutcomeRows
               items={[
                 {
-                  caption: 'Tactile study: sound waves and Braille',
-                  alt: 'A white relief panel with wavy ridges, continued by silver strips that keep the wave form, dotted with Braille.',
-                  src: '/projects/oltre/tactile-waves.svg',
+                  caption: 'From sound to tactile pattern',
+                  alt: 'An illustrative animation, not a recording of the instruments. For each instrument a line draws its sound and turns into the relief pattern, which rises in 3D: the Tempophon into triangular sections, longer and shorter; the Speed Variator into squares stacked and turning; the Amplitude Modulator into parallel crests, softer and tighter, that never touch.',
+                  src: '/media/oltre-lascolto-sound-pattern.mp4',
+                  poster: '/media/oltre-lascolto-sound-pattern.jpg',
+                  full: true,
+                  autoPlay: true,
+                  controls: false,
                 },
               ]}
             />
