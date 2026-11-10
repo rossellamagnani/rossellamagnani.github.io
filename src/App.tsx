@@ -275,7 +275,8 @@ const caseStudies = [
     // the deep dive has its own structure (see MarcoMagnaniDeep), with plates and pages from the brand manual
     manual: {
       unveiling: { src: '/projects/marco-magnani-art/unveiling-bus-shelter.svg', alt: "Poster 'Trama IV' at a bus stop: a burgundy shape with a torn edge covers half of the portrait, leaving only the eyes and part of the face visible." },
-      logotype: [{ src: '/projects/marco-magnani-art/logo-signature.svg', alt: "The artist's signature as found on the canvas, the starting point of the logotype." }],
+      // the logotype taking shape: scan, vector curves with their anchor points, then the filled mark
+      logotype: [{ src: '/media/marco-magnani-logotype.mp4', poster: '/media/marco-magnani-logotype.jpg', alt: "From the artist's scanned signature to the logotype: the brushed outline is redrawn curve by curve as a vector, with its anchor points and handles, then filled.", full: true, autoPlay: true, controls: false }],
       pages: [3, 5, 7, 8, 9, 13, 19, 21, 25, 33, 37, 39, 41, 42, 44, 45, 47, 48, 49, 50, 51, 52, 53, 54, 55, 60, 61, 63, 66, 67, 69, 71].map(n => ({
         src: `/projects/marco-magnani-art/manual/page-${String(n).padStart(2, '0')}.svg`,
         alt: `Brand manual, page ${n}.`,
@@ -680,7 +681,7 @@ function ImageWall({
 // two or three upright ones share a row.
 // `crop` shows only part of a picture: [x, y, width, height, picture width, picture height] in pixels
 // `full` spreads a very wide picture (a score, a panorama) across all seven columns
-type OutcomePic = { src?: string; alt?: string; caption: string; tall?: boolean; full?: boolean; poster?: string; autoPlay?: boolean; crop?: readonly number[] }
+type OutcomePic = { src?: string; alt?: string; caption: string; tall?: boolean; full?: boolean; poster?: string; autoPlay?: boolean; controls?: boolean; crop?: readonly number[] }
 function OutcomeRows({ items, turn = 0 }: { items: OutcomePic[]; turn?: number }) {
   type Cell = OutcomePic & { start: number; span: number; shift?: boolean }
   const rows: Cell[][] = []
@@ -732,6 +733,7 @@ function OutcomeRows({ items, turn = 0 }: { items: OutcomePic[]; turn?: number }
               src={cell.src}
               poster={cell.poster}
               autoPlay={cell.autoPlay}
+              controls={cell.controls ?? true}
               style={
                 {
                   '--start': cell.start,
@@ -997,7 +999,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
       editorial?: Pic[]
       book?: Pic[]
     }
-    manual?: { logotype: Pic[]; pages: Pic[]; unveiling: Pic }
+    manual?: { logotype: (Pic & { poster?: string; full?: boolean; autoPlay?: boolean; controls?: boolean })[]; pages: Pic[]; unveiling: Pic }
     teca?: { existing: Pic[]; identity: Pic[]; space: (Pic & { tall?: boolean })[] }
   }
   const deep = media.deep
@@ -1526,7 +1528,7 @@ function TecaDeep({
 
 // Marco Magnani Art's deep dive: texts in the usual column, the scanned signature, the colour sampling, and the brand manual's pages
 // drifting in a wall
-type ManualPic = { src: string; alt: string }
+type ManualPic = { src: string; alt: string; poster?: string; full?: boolean; autoPlay?: boolean; controls?: boolean }
 function MarcoMagnaniDeep({
   project,
   manual,
