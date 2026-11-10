@@ -119,8 +119,14 @@ const caseStudies = [
         },
       ],
       space: [
-        { src: '/projects/oltre-la-teca/section.svg', alt: 'Elevation and section of a station: vertical panel 130 cm, reading plane tilted 20° at 105 cm, free space for a wheelchair below.' },
-        { src: '/projects/oltre-la-teca/floor-light.svg', alt: 'The floor guide codes, straight line and stop, and the spotlights aimed at the reading planes.', tall: true },
+        {
+          src: '/media/oltre-la-teca-station.mp4',
+          poster: '/media/oltre-la-teca-station.jpg',
+          alt: 'The Timeline Book splits into its five modules; one module turns to show its elevation and section, 250 cm high with a vertical panel of 130 cm, a reading plane tilted about 20° at 105 cm and free space for a wheelchair below, then a spotlight aims its beam at the reading surface.',
+          full: true,
+          autoPlay: true,
+          controls: false,
+        },
       ],
     },
   },
@@ -1013,7 +1019,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
       book?: Pic[]
     }
     manual?: { logotype: (Pic & { poster?: string; full?: boolean; autoPlay?: boolean; controls?: boolean })[]; pages: Pic[]; unveiling: ManualPic }
-    teca?: { existing: Pic[]; identity: ManualPic[]; space: (Pic & { tall?: boolean })[] }
+    teca?: { existing: Pic[]; identity: ManualPic[]; space: (ManualPic & { tall?: boolean })[] }
   }
   const deep = media.deep
   // projects without the optional deep dive (no research material shown)
