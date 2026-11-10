@@ -1744,6 +1744,7 @@ figure.placeholder.hero__media.is-cropped .placeholder__surface { aspect-ratio: 
   main .orow figure.placeholder .placeholder__surface:has(> img, > video) { width: 100%; }
   main .orow figure.placeholder:not(.is-cropped) .placeholder__surface > img { width: 100% !important; height: auto; }
   main .orow figure.placeholder .placeholder__surface > video { max-height: none; }
+  main .orow figure.placeholder.is-square-phone .placeholder__surface > video { aspect-ratio: 1; width: 100%; height: auto; object-fit: cover; }
   main .orow figure.placeholder.is-cropped .placeholder__surface:has(> img) { width: 100% !important; }
 }
 
