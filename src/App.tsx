@@ -217,8 +217,21 @@ const caseStudies = [
         })),
       ),
       works: [
-        { src: '/projects/sovrapposizioni/painting-pool.svg', alt: 'AI-generated work: a swimming pool in front of a modernist house, in the manner of Hockney.' },
-        { src: '/projects/sovrapposizioni/painting-lake.svg', alt: 'AI-generated work: boats on a lake among trees, in an impressionist manner.' },
+        // each work appears as a simulated generation: dots in two of its colours, then sharper step by step
+        {
+          src: '/media/sovrapposizioni-pool-generation.mp4',
+          poster: '/media/sovrapposizioni-pool-generation.jpg',
+          alt: 'AI-generated work: a swimming pool in front of a modernist house, in the manner of Hockney. A simulated generation, not a recording: it starts as dots in two colours and sharpens step by step.',
+          autoPlay: true,
+          controls: false,
+        },
+        {
+          src: '/media/sovrapposizioni-lake-generation.mp4',
+          poster: '/media/sovrapposizioni-lake-generation.jpg',
+          alt: 'AI-generated work: boats on a lake among trees, in an impressionist manner. A simulated generation, not a recording: it starts as dots in two colours and sharpens step by step.',
+          autoPlay: true,
+          controls: false,
+        },
       ],
       // the book, large, before the strip
       book: [
@@ -1016,7 +1029,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
       cards?: Pic[]
       pair?: Pic[]
       backstage?: Pic[]
-      works?: Pic[]
+      works?: ManualPic[]
       editorial?: Pic[]
       book?: Pic[]
     }
