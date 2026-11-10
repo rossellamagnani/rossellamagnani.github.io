@@ -274,7 +274,8 @@ const caseStudies = [
     processDescription: 'Scroll sideways',
     // the deep dive has its own structure (see MarcoMagnaniDeep), with plates and pages from the brand manual
     manual: {
-      unveiling: { src: '/projects/marco-magnani-art/unveiling-bus-shelter.svg', alt: "Poster 'Trama IV' at a bus stop: a burgundy shape with a torn edge covers half of the portrait, leaving only the eyes and part of the face visible." },
+      // the unveiling system on a portrait from the Trame collection: the torn shape is drawn, filled with a blue sampled from the painting, then moves around the work
+      unveiling: { src: '/media/marco-magnani-unveiling.mp4', poster: '/media/marco-magnani-unveiling.jpg', alt: 'The unveiling system on a portrait from the Trame collection: a torn-edged blue shape, sampled from the crochet cap, covers part of the painting and moves around it, always leaving the eyes visible.', autoPlay: true, controls: false },
       // the logotype taking shape: scan, vector curves with their anchor points, then the filled mark
       logotype: [{ src: '/media/marco-magnani-logotype.mp4', poster: '/media/marco-magnani-logotype.jpg', alt: "From the artist's scanned signature to the logotype: the brushed outline is redrawn curve by curve as a vector, with its anchor points and handles, then filled.", full: true, autoPlay: true, controls: false }],
       pages: [3, 5, 7, 8, 9, 13, 19, 21, 25, 33, 37, 39, 41, 42, 44, 45, 47, 48, 49, 50, 51, 52, 53, 54, 55, 60, 61, 63, 66, 67, 69, 71].map(n => ({
@@ -999,7 +1000,7 @@ function ProjectCase({ project }: { project: (typeof caseStudies)[number] }) {
       editorial?: Pic[]
       book?: Pic[]
     }
-    manual?: { logotype: (Pic & { poster?: string; full?: boolean; autoPlay?: boolean; controls?: boolean })[]; pages: Pic[]; unveiling: Pic }
+    manual?: { logotype: (Pic & { poster?: string; full?: boolean; autoPlay?: boolean; controls?: boolean })[]; pages: Pic[]; unveiling: Pic & { poster?: string; autoPlay?: boolean; controls?: boolean } }
     teca?: { existing: Pic[]; identity: Pic[]; space: (Pic & { tall?: boolean })[] }
   }
   const deep = media.deep
