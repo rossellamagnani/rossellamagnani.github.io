@@ -111,6 +111,7 @@ const caseStudies = [
       identity: [
         {
           src: '/media/oltre-la-teca-grid.mp4',
+          squareOnPhone: true,
           poster: '/media/oltre-la-teca-grid.jpg',
           alt: 'One bilingual grid built on the module x adapts to the vertical panel, the tactile panel and a narrow panel, keeping its structure: audio guide number, Italian and English titles and texts, Braille and the tactile reproduction.',
           full: true,
@@ -121,6 +122,8 @@ const caseStudies = [
       space: [
         {
           src: '/media/oltre-la-teca-station.mp4',
+          phoneSrc: '/media/oltre-la-teca-station-phone.mp4',
+          phonePoster: '/media/oltre-la-teca-station-phone.jpg',
           poster: '/media/oltre-la-teca-station.jpg',
           alt: 'The Timeline Book splits into its five modules; one module turns to show its elevation and section, 250 cm high with a vertical panel of 130 cm, a reading plane tilted about 20° at 105 cm and free space for a wheelchair below, then a spotlight aims its beam at the reading surface.',
           full: true,
@@ -554,6 +557,19 @@ function playWhileVisible(video: HTMLVideoElement | null) {
 
 // Pass `src` (and `alt`) to show a real image or video; the frame then takes the file's own proportions.
 // `poster` is the frame a video shows before it starts. Without `src` a grey placeholder is shown.
+// true on phones and upright iPads: the same widths as the phone layout in the CSS
+const PHONE_QUERY = '(max-width: 760px), (max-width: 1024px) and (orientation: portrait)'
+function useIsPhone() {
+  const [phone, setPhone] = useState(() => window.matchMedia(PHONE_QUERY).matches)
+  useEffect(() => {
+    const query = window.matchMedia(PHONE_QUERY)
+    const update = () => setPhone(query.matches)
+    query.addEventListener('change', update)
+    return () => query.removeEventListener('change', update)
+  }, [])
+  return phone
+}
+
 function Placeholder({
   caption,
   className = '',
@@ -565,6 +581,8 @@ function Placeholder({
   autoPlay = false,
   focus,
   controls = true,
+  phoneSrc,
+  phonePoster,
 }: {
   caption: string
   className?: string
@@ -576,7 +594,14 @@ function Placeholder({
   autoPlay?: boolean
   focus?: string // where a cropped picture is anchored (CSS object-position)
   controls?: boolean // a silent looping video beside a title needs none
+  phoneSrc?: string // a version of the video laid out for phones (square or upright), shown on narrow screens
+  phonePoster?: string
 }) {
+  const onPhone = useIsPhone()
+  if (phoneSrc && onPhone) {
+    src = phoneSrc
+    poster = phonePoster ?? poster
+  }
   // files ending in .mp4/.webm/.mov, or videos served by the current site (/_videos/...)
   const isVideo = Boolean(src && /\.(mp4|webm|mov)$|\/_videos\//i.test(src))
   return (
@@ -718,7 +743,7 @@ function ImageWall({
 // `full` spreads a very wide picture (a score, a panorama) across all seven columns
 // `span` sets a wider landscape picture by hand: it ends on the last column
 // `squareOnPhone` crops a wide video with its subject in the middle to a square on phones, so the subject reads larger
-type OutcomePic = { src?: string; alt?: string; caption: string; tall?: boolean; full?: boolean; span?: number; squareOnPhone?: boolean; poster?: string; autoPlay?: boolean; controls?: boolean; crop?: readonly number[] }
+type OutcomePic = { src?: string; alt?: string; caption: string; tall?: boolean; full?: boolean; span?: number; squareOnPhone?: boolean; phoneSrc?: string; phonePoster?: string; poster?: string; autoPlay?: boolean; controls?: boolean; crop?: readonly number[] }
 function OutcomeRows({ items, turn = 0 }: { items: OutcomePic[]; turn?: number }) {
   type Cell = OutcomePic & { start: number; span: number; shift?: boolean }
   const rows: Cell[][] = []
@@ -772,6 +797,8 @@ function OutcomeRows({ items, turn = 0 }: { items: OutcomePic[]; turn?: number }
               alt={cell.alt}
               src={cell.src}
               poster={cell.poster}
+              phoneSrc={cell.phoneSrc}
+              phonePoster={cell.phonePoster}
               autoPlay={cell.autoPlay}
               controls={cell.controls ?? true}
               style={
@@ -1561,7 +1588,7 @@ function TecaDeep({
 
 // Marco Magnani Art's deep dive: texts in the usual column, the scanned signature, the colour sampling, and the brand manual's pages
 // drifting in a wall
-type ManualPic = { src: string; alt: string; poster?: string; full?: boolean; span?: number; squareOnPhone?: boolean; autoPlay?: boolean; controls?: boolean }
+type ManualPic = { src: string; alt: string; poster?: string; full?: boolean; span?: number; squareOnPhone?: boolean; phoneSrc?: string; phonePoster?: string; autoPlay?: boolean; controls?: boolean }
 function MarcoMagnaniDeep({
   project,
   manual,
@@ -2207,6 +2234,8 @@ function CaseStudy() {
                   caption: 'From sound to tactile pattern',
                   alt: 'An illustrative animation, not a recording of the instruments. For each instrument a line draws its sound and turns into the relief pattern, which rises in 3D: the Tempophon into triangular sections, longer and shorter; the Speed Variator into squares stacked and turning; the Amplitude Modulator into parallel crests, softer and tighter, that never touch.',
                   src: '/media/oltre-lascolto-sound-pattern.mp4',
+                  phoneSrc: '/media/oltre-lascolto-sound-pattern-phone.mp4',
+                  phonePoster: '/media/oltre-lascolto-sound-pattern-phone.jpg',
                   poster: '/media/oltre-lascolto-sound-pattern.jpg',
                   full: true,
                   autoPlay: true,
